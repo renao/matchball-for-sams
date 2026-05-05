@@ -64,11 +64,12 @@
             var baseSeasonOptions = [{ label: 'Select season', value: '' }];
             var baseLeagueOptions = [{ label: 'Select league', value: '' }];
             var baseTeamOptions = [{ label: 'Optional team', value: '' }];
+            var loadingOption = [{ label: 'Loading...', value: '__loading__' }];
 
             var _useState = useState(baseSourceOptions), sourceOptions = _useState[0], setSourceOptions = _useState[1];
-            var _useState2 = useState(baseSeasonOptions), seasonOptions = _useState2[0], setSeasonOptions = _useState2[1];
-            var _useState3 = useState(baseLeagueOptions), leagueOptions = _useState3[0], setLeagueOptions = _useState3[1];
-            var _useState4 = useState(baseTeamOptions), teamOptions = _useState4[0], setTeamOptions = _useState4[1];
+            var _useState2 = useState(attrs.sourceId ? loadingOption : baseSeasonOptions), seasonOptions = _useState2[0], setSeasonOptions = _useState2[1];
+            var _useState3 = useState(attrs.seasonUuid ? loadingOption : baseLeagueOptions), leagueOptions = _useState3[0], setLeagueOptions = _useState3[1];
+            var _useState4 = useState(attrs.leagueUuid ? loadingOption : baseTeamOptions), teamOptions = _useState4[0], setTeamOptions = _useState4[1];
 
             useEffect(function () {
                 var active = true;
@@ -105,6 +106,7 @@
                     return function () { active = false; };
                 }
 
+                setSeasonOptions(loadingOption);
                 fetchApi('seasons', { source: attrs.sourceId })
                     .then(function (res) {
                         if (!active) {
@@ -131,6 +133,7 @@
                     return function () { active = false; };
                 }
 
+                setLeagueOptions(loadingOption);
                 fetchApi('leagues', { source: attrs.sourceId, season: attrs.seasonUuid })
                     .then(function (res) {
                         if (!active) {
@@ -156,6 +159,7 @@
                     return function () { active = false; };
                 }
 
+                setTeamOptions(loadingOption);
                 fetchApi('teams', { source: attrs.sourceId, league: attrs.leagueUuid })
                     .then(function (res) {
                         if (!active) {

@@ -1,9 +1,14 @@
 .sik-block {
     border: 1px solid #d8dde3;
     border-radius: 8px;
-    padding: 12px;
+    padding: 16px;
     margin: 12px 0;
     background: #ffffff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.sik-table-scroll {
+    overflow-x: auto;
 }
 
 .sik-block table {
@@ -11,11 +16,53 @@
     border-collapse: collapse;
 }
 
+.sik-table {
+    min-width: 360px;
+}
+
+.sik-block thead th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #475467;
+    background: #f8fafc;
+}
+
 .sik-block th,
 .sik-block td {
     text-align: left;
-    padding: 8px;
+    padding: 10px 12px;
     border-bottom: 1px solid #eef1f4;
+}
+
+.sik-block tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.sik-standings__table tbody tr.is-selected-team {
+    background: #e8f1ff;
+}
+
+.sik-standings__table tbody tr.is-selected-team td {
+    border-top: 1px solid #b8d0ff;
+    border-bottom: 1px solid #b8d0ff;
+}
+
+.sik-standings__table tbody tr.is-selected-team + tr td {
+    border-top-color: transparent;
+}
+
+.sik-standings__rank,
+.sik-standings__played,
+.sik-standings__points {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.sik-standings__team {
+    font-weight: 600;
+    color: #101828;
 }
 
 .sik-block ul {
@@ -34,18 +81,20 @@
     border-bottom: 0;
 }
 
-.sik-banner {
-    background: #fff3cd;
-    color: #664d03;
-    border: 1px solid #ffecb5;
-    border-radius: 6px;
-    padding: 8px;
-    margin-bottom: 10px;
-}
-
 .sik-notice {
     border-left: 4px solid #2271b1;
     background: #f0f6fc;
     padding: 10px;
     margin: 10px 0;
+}
+
+@media (max-width: 640px) {
+    .sik-block {
+        padding: 12px;
+    }
+
+    .sik-block th,
+    .sik-block td {
+        padding: 9px 10px;
+    }
 }

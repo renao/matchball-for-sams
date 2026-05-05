@@ -93,6 +93,7 @@ class SIK_Blocks {
     public function render_standings($attributes) {
         $source_id = $this->resolve_source_id($attributes);
         $league_uuid = isset($attributes['leagueUuid']) ? sanitize_text_field($attributes['leagueUuid']) : '';
+        $team_uuid = isset($attributes['teamUuid']) ? sanitize_text_field($attributes['teamUuid']) : '';
 
         if ($source_id === '' || $league_uuid === '') {
             return $this->notice('Please configure source, season, and league.');
@@ -110,17 +111,30 @@ class SIK_Blocks {
 
         ob_start();
         echo '<div class="sik-block sik-standings">';
-        $this->render_meta_banner($result);
-        echo '<table><thead><tr><th>Rank</th><th>Team</th><th>Played</th><th>Points</th></tr></thead><tbody>';
+        echo '<div class="sik-table-scroll">';
+        echo '<table class="sik-table sik-standings__table">';
+        echo '<caption class="screen-reader-text">Standings</caption>';
+        echo '<thead><tr><th scope="col">Rank</th><th scope="col">Team</th><th scope="col">Played</th><th scope="col">Points</th></tr></thead><tbody>';
         foreach ($rows as $row) {
-            echo '<tr>';
-            echo '<td>' . esc_html(isset($row['rank']) ? $row['rank'] : '') . '</td>';
-            echo '<td>' . esc_html(isset($row['teamName']) ? $row['teamName'] : '') . '</td>';
-            echo '<td>' . esc_html(isset($row['matchesPlayed']) ? $row['matchesPlayed'] : '') . '</td>';
-            echo '<td>' . esc_html(isset($row['points']) ? $row['points'] : '') . '</td>';
+            $rank = isset($row['rank']) ? $row['rank'] : '';
+            $team_name = isset($row['teamName']) ? $row['teamName'] : '';
+            $matches_played = isset($row['matchesPlayed']) ? $row['matchesPlayed'] : '';
+            $points = isset($row['points']) ? $row['points'] : '';
+            $row_team_uuid = isset($row['uuid']) ? (string) $row['uuid'] : '';
+            $is_selected_team = $team_uuid !== '' && $row_team_uuid === $team_uuid;
+
+            echo '<tr' . ($is_selected_team ? ' class="is-selected-team"' : '') . '>';
+            echo '<td class="sik-standings__rank">' . esc_html($rank) . '</td>';
+            echo '<td class="sik-standings__team">' . esc_html($team_name);
+            if ($is_selected_team) {
+                echo ' <span class="screen-reader-text">(selected team)</span>';
+            }
+            echo '</td>';
+            echo '<td class="sik-standings__played">' . esc_html($matches_played) . '</td>';
+            echo '<td class="sik-standings__points">' . esc_html($points) . '</td>';
             echo '</tr>';
         }
-        echo '</tbody></table></div>';
+        echo '</tbody></table></div></div>';
         return ob_get_clean();
     }
 
@@ -200,7 +214,6 @@ class SIK_Blocks {
 
         ob_start();
         echo '<div class="sik-block sik-matches">';
-        $this->render_meta_banner($result);
         echo '<ul>';
         foreach ($filtered as $row) {
             $date = isset($row['date']) ? esc_html(wp_date(get_option('date_format') . ' ' . get_option('time_format'), strtotime($row['date']))) : '';
@@ -232,12 +245,5 @@ class SIK_Blocks {
 
     private function notice($message) {
         return '<div class="sik-notice">' . esc_html($message) . '</div>';
-    }
-
-    private function render_meta_banner($result) {
-        if (empty($result['meta']) || empty($result['meta']['stale'])) {
-            return;
-        }
-        echo '<div class="sik-banner">Live update failed. Showing latest available data.</div>';
     }
 }
