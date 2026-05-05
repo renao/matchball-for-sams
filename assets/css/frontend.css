@@ -81,6 +81,97 @@
     border-bottom: 0;
 }
 
+/* Match cards (Results + Schedules) */
+.sik-match-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.sik-match-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.sik-match-card:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Teams + score: 3-column grid so scores always align */
+.sik-match-card__matchup {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 8px;
+}
+
+.sik-match-card__team {
+    font-weight: 600;
+    color: #101828;
+    word-break: break-word;
+}
+
+.sik-match-card__team--home {
+    text-align: right;
+}
+
+.sik-match-card__team--away {
+    text-align: left;
+}
+
+.sik-match-card__score {
+    background: #f0f6fc;
+    border: 1px solid #b8d0ff;
+    border-radius: 4px;
+    padding: 2px 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1a3c6e;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+
+.sik-match-card__vs {
+    font-size: 0.75rem;
+    color: #98a2b3;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+/* Meta row: date · time · venue */
+.sik-match-card__meta {
+    font-size: 0.78rem;
+    color: #667085;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.4;
+}
+
+.sik-match-card__sep::before {
+    content: '·';
+    color: #d0d5dd;
+}
+
+.sik-match-card--upcoming .sik-match-card__meta {
+    color: #2271b1;
+}
+
+@media (max-width: 480px) {
+    .sik-match-card__team {
+        font-size: 0.9rem;
+    }
+}
+
 .sik-notice {
     border-left: 4px solid #2271b1;
     background: #f0f6fc;

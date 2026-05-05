@@ -212,24 +212,49 @@ class SIK_Blocks {
             $filtered = array_reverse($filtered);
         }
 
+        $block_class = $for_schedule ? 'sik-block sik-schedules' : 'sik-block sik-results';
+
         ob_start();
-        echo '<div class="sik-block sik-matches">';
-        echo '<ul>';
+        echo '<div class="' . esc_attr($block_class) . '">';
+        echo '<ul class="sik-match-list">';
         foreach ($filtered as $row) {
-            $date = isset($row['date']) ? esc_html(wp_date(get_option('date_format') . ' ' . get_option('time_format'), strtotime($row['date']))) : '';
+            $timestamp = isset($row['date']) ? strtotime($row['date']) : false;
+            $date_label = $timestamp ? esc_html(wp_date(get_option('date_format'), $timestamp)) : '';
+            $time_label = isset($row['time']) && $row['time'] !== '' ? esc_html($row['time']) . ' Uhr' : ($timestamp ? esc_html(wp_date(get_option('time_format'), $timestamp)) . ' Uhr' : '');
             $home = isset($row['team1Description']) ? esc_html($row['team1Description']) : '';
             $away = isset($row['team2Description']) ? esc_html($row['team2Description']) : '';
 
-            $score = '';
-            if (isset($row['results']) && is_array($row['results'])) {
-                if (!empty($row['results']['setPoints'])) {
-                    $score = ' - ' . esc_html($row['results']['setPoints']);
-                } elseif (!empty($row['results']['ballPoints'])) {
-                    $score = ' - ' . esc_html($row['results']['ballPoints']);
-                }
+            $set_points  = isset($row['results']['setPoints'])  && $row['results']['setPoints']  !== '' ? esc_html($row['results']['setPoints'])  : '';
+            $ball_points = isset($row['results']['ballPoints']) && $row['results']['ballPoints'] !== '' ? esc_html($row['results']['ballPoints']) : '';
+            $has_result  = $set_points !== '' || $ball_points !== '';
+            $venue_parts = array();
+            if (isset($row['location']['name']) && $row['location']['name'] !== '') {
+                $venue_parts[] = esc_html($row['location']['name']);
             }
+            $street = isset($row['location']['address']['street']) && $row['location']['address']['street'] !== '' ? esc_html($row['location']['address']['street']) : '';
+            $city   = isset($row['location']['address']['city'])   && $row['location']['address']['city']   !== '' ? esc_html($row['location']['address']['city'])   : '';
+            if ($street !== '' || $city !== '') {
+                $venue_parts[] = implode(', ', array_filter(array($street, $city)));
+            }
+            $venue = implode(' · ', $venue_parts);
 
-            echo '<li><strong>' . $date . '</strong> ' . $home . ' vs ' . $away . $score . '</li>';
+            $meta_parts = array_filter(array($date_label, $time_label, $venue));
+
+            echo '<li class="sik-match-card' . ($for_schedule && !$has_result ? ' sik-match-card--upcoming' : '') . '">';
+            echo '<div class="sik-match-card__matchup">';
+            echo '<span class="sik-match-card__team sik-match-card__team--home">' . $home . '</span>';
+            if ($has_result) {
+                $score = $set_points !== '' ? $set_points : $ball_points;
+                echo '<span class="sik-match-card__score">' . $score . '</span>';
+            } else {
+                echo '<span class="sik-match-card__vs">vs</span>';
+            }
+            echo '<span class="sik-match-card__team sik-match-card__team--away">' . $away . '</span>';
+            echo '</div>';
+            if (!empty($meta_parts)) {
+                echo '<div class="sik-match-card__meta">' . implode('<span class="sik-match-card__sep" aria-hidden="true"></span>', $meta_parts) . '</div>';
+            }
+            echo '</li>';
         }
         echo '</ul></div>';
         return ob_get_clean();
