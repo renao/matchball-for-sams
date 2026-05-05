@@ -59,8 +59,8 @@ Pflichtfelder aus LeagueRankingsEntryDto
 2. teamName -> Team
 3. matchesPlayed -> Spiele
 4. points -> Punkte
-5. wins -> Siege
-6. losses -> Niederlagen
+5. ballWins + ballLosses -> Erzielte/Kassierte Bälle als Paar (z.B. 812:744)
+6. ballDifference -> Differenz in Klammern (z.B. +68)
 
 Erweiterte Felder (optional für Darstellung)
 
@@ -78,6 +78,7 @@ Regel zur Sortierung
 
 1. Rang kommt aus dem Feld rank der Quelle
 2. Keine lokale Ersatzsortierung im Plugin
+3. Fuehrende Statistik in der Darstellung bleibt Punkte (points)
 
 ---
 

@@ -107,12 +107,25 @@ class SIK_Blocks {
         echo '<div class="sik-table-scroll">';
         echo '<table class="sik-table sik-standings__table">';
         echo '<caption class="screen-reader-text">Standings</caption>';
-        echo '<thead><tr><th scope="col">Rank</th><th scope="col">Team</th><th scope="col">Played</th><th scope="col">Points</th></tr></thead><tbody>';
+        echo '<thead><tr><th scope="col">Rank</th><th scope="col">Team</th><th scope="col">Played</th><th scope="col">Balls</th><th scope="col">Points</th></tr></thead><tbody>';
         foreach ($rows as $row) {
             $rank = isset($row['rank']) ? $row['rank'] : '';
             $team_name = isset($row['teamName']) ? $row['teamName'] : '';
             $matches_played = isset($row['matchesPlayed']) ? $row['matchesPlayed'] : '';
             $points = isset($row['points']) ? $row['points'] : '';
+            $ball_wins = isset($row['ballWins']) ? $row['ballWins'] : '';
+            $ball_losses = isset($row['ballLosses']) ? $row['ballLosses'] : '';
+            $ball_difference = isset($row['ballDifference']) ? $row['ballDifference'] : '';
+            $balls_display = '';
+            if ($ball_wins !== '' || $ball_losses !== '' || $ball_difference !== '') {
+                $balls_display = $ball_wins . ':' . $ball_losses;
+                if ($ball_difference !== '') {
+                    $ball_difference_text = (is_numeric($ball_difference) && (int) $ball_difference > 0)
+                        ? '+' . $ball_difference
+                        : (string) $ball_difference;
+                    $balls_display .= ' (' . $ball_difference_text . ')';
+                }
+            }
             $row_team_uuid = isset($row['uuid']) ? (string) $row['uuid'] : '';
             $is_selected_team = $team_uuid !== '' && $row_team_uuid === $team_uuid;
 
@@ -124,6 +137,7 @@ class SIK_Blocks {
             }
             echo '</td>';
             echo '<td class="sik-standings__played">' . esc_html($matches_played) . '</td>';
+            echo '<td class="sik-standings__balls">' . esc_html($balls_display) . '</td>';
             echo '<td class="sik-standings__points">' . esc_html($points) . '</td>';
             echo '</tr>';
         }

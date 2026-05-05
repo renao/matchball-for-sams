@@ -1,8 +1,10 @@
 # Feature-Spezifikation: Spielpläne
 
-**Status:** In Bearbeitung  
+**Status:** Außer Scope (MVP)  
 **Letzter Update:** 05.05.2026  
 **Owner:** Product Owner
+
+> Hinweis: Diese Spezifikation bleibt aus Dokumentationsgruenden erhalten, der Spielplan-Block ist im aktuellen MVP bewusst deaktiviert/entfernt.
 
 ---
 

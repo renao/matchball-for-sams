@@ -55,9 +55,15 @@
 
 .sik-standings__rank,
 .sik-standings__played,
+.sik-standings__balls,
 .sik-standings__points {
     width: 1%;
     white-space: nowrap;
+}
+
+.sik-standings__points {
+    font-weight: 700;
+    text-align: right;
 }
 
 .sik-standings__team {

@@ -35,10 +35,10 @@ Owner: Product Owner
 2. Query: page, size
 3. Zweck: Rangliste für Tabellen-Block
 
-5. Match-Daten für Ergebnisse und Spielpläne
+5. Match-Daten für Ergebnisse
 1. Endpoint: GET /league-matches
 2. Query: for-season (Pflicht), for-league (Pflicht), for-team (optional), association (optional), page, size
-3. Zweck: Ergebnisse- und Spielplan-Block aus derselben Matchquelle speisen
+3. Zweck: Ergebnis-Block aus Matchquelle speisen
 
 ## Feldmapping Kernobjekte
 
@@ -71,17 +71,14 @@ Owner: Product Owner
 2. teamName
 3. matchesPlayed
 4. points
-5. wins
-6. losses
-7. setWins
-8. setLosses
-9. setDifference
-10. setRatio
-11. ballWins
-12. ballLosses
-13. ballDifference
-14. ballRatio
-15. resultTypes (optional)
+5. ballDifference
+6. ballWins
+7. ballLosses
+8. setWins
+9. setLosses
+10. setDifference
+11. setRatio
+12. resultTypes (optional)
 
 5. Matches aus LeagueMatchDto
 1. uuid

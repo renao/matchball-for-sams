@@ -1,4 +1,4 @@
-# Projektbrief: WordPress-Plugin Tabellen/Ergebnisse/Spielpläne
+# Projektbrief: WordPress-Plugin Tabellen/Ergebnisse
 
 **Version:** 1.0  
 **Datum:** 05.05.2026  
@@ -8,7 +8,7 @@
 
 ## Vision & Ziel
 
-Schaffung eines **verlässlichen, wartungsarmen WordPress-Plugins**, das Tabellen, Ergebnisse und Spielpläne aus einer externen API-Quelle automatisiert bereitstellt.
+Schaffung eines **verlässlichen, wartungsarmen WordPress-Plugins**, das Tabellen und Ergebnisse aus einer externen API-Quelle automatisiert bereitstellt.
 
 **Nutzer profitieren von:**
 - Automatisierter Datensynchronisation (kein manueller Update nötig)
@@ -23,7 +23,7 @@ Schaffung eines **verlässlichen, wartungsarmen WordPress-Plugins**, das Tabelle
 
 **Aktivitäten:**
 - Erstellen/Editieren von Seiten im WordPress-Backend
-- Wählen Gutenberg-Block (Tabellen, Ergebnisse oder Spielpläne)
+- Wählen Gutenberg-Block (Tabellen oder Ergebnisse)
 - Konfigurieren Block-Attribute: Liga, Saison, Team
 - System kümmert sich um Datenabruf & Aktualisierung
 
@@ -33,7 +33,7 @@ Schaffung eines **verlässlichen, wartungsarmen WordPress-Plugins**, das Tabelle
 
 **Aktivitäten:**
 - Besuchen Seite mit Block-Inhalten
-- Sehen aktuelle Tabellen/Ergebnisse/Spielpläne
+- Sehen aktuelle Tabellen/Ergebnisse
 - Ggf. Filter anwenden (if applicable in Frontend)
 
 **Anforderung:** Schnelle Ladezeiten, verlässliche Daten, verständliche Fehler-UI.
@@ -44,7 +44,7 @@ Schaffung eines **verlässlichen, wartungsarmen WordPress-Plugins**, das Tabelle
 
 ### 1. Funktionale Erfolgskriterien
 
-✓ Alle 3 Features sind nach Akzeptanzkriterien fehlerfrei umgesetzt  
+✓ Beide Features sind nach Akzeptanzkriterien fehlerfrei umgesetzt  
 ✓ Daten entsprechen der Quelle (keine Berechnungen/Korrektionen)  
 ✓ Filter funktionieren erwartungskonform  
 ✓ Fallback bei API-Fehler funktioniert (≤ 5 Sekunden)
@@ -107,7 +107,7 @@ Schaffung eines **verlässlichen, wartungsarmen WordPress-Plugins**, das Tabelle
 
 | KPI | Ziel | Messung |
 |-----|------|---------|
-| Features implementiert | 3/3 (Tabellen, Ergebnisse, Spielpläne) | Countdown |
+| Features implementiert | 2/2 (Tabellen, Ergebnisse) | Countdown |
 | AC Erfüllung | 100% | Pass-Quote je Feature |
 | Performance | Render ≤ 2.5s, Sync ≥ 97% | Monitoring |
 | Security | Keine High-Risks offen | Security-Audit |
@@ -117,5 +117,5 @@ Schaffung eines **verlässlichen, wartungsarmen WordPress-Plugins**, das Tabelle
 
 **Referenzen:**  
 - ANFORDERUNGEN.md (Überblick)  
-- /docs/02-04_ANFORDERUNGEN_*.md (Feature-Details)  
+- /docs/02-03_ANFORDERUNGEN_*.md (Feature-Details)  
 - .instructions.md (Prozess)

@@ -27,9 +27,9 @@
 
 | Begriff | Definition | Im Plugin |
 |---------|-----------|----------|
-| **Gutenberg-Block** | Editierbares Element in WordPress 5.8+ | Unser Plugin = 3 Blöcke |
+| **Gutenberg-Block** | Editierbares Element in WordPress 5.8+ | Unser Plugin = 2 Blöcke |
 | **Block-Attribut** | Konfigurierbare Eigenschaft eines Blocks | Liga, Saison, Team (Konfiguration) |
-| **Transient** | WordPress-Caching mit TTL (automatischer Ablauf) | Cache für Tabellen/Ergebnisse/Spielpläne |
+| **Transient** | WordPress-Caching mit TTL (automatischer Ablauf) | Cache für Tabellen/Ergebnisse |
 | **WP-Cron** | WordPress Pseudo-Cron-Job (triggert auf Seiten-Anfrage) | Sync-Trigger alle 5 Min |
 | **i18n** | Internationalisierung (Mehrsprachigkeit) | UI-Texte in Deutsch + Englisch |
 | **Option** | WordPress-Konfigurationswert in Datenbank | API-Keys, Settings |
@@ -79,7 +79,7 @@
 - `endstand` (String): z.B. "3:2"
 - *(weitere TBD nach API-Discovery)*
 
-### Spielplan-Felder (verbindlich)
+### Spielplan-Felder (historisch, aktuell außer Scope)
 
 - `liga` (String): Liga
 - `saison` (String): Saison

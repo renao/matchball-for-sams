@@ -5,8 +5,8 @@ if (!defined('ABSPATH')) {
 }
 
 class SIK_Api_Client {
-    private const FRESH_TTL = 3600;      // 1 hour for stable data (seasons, leagues, teams)
-    private const STALE_TTL = 604800;    // 7 days stale tolerance
+    private const FRESH_TTL = 300;       // 5 minutes target freshness for MVP
+    private const STALE_TTL = 86400;     // 24 hours stale tolerance
     private const HTTP_TIMEOUT = 5;
     private const MAX_PAGES = 200;
 
