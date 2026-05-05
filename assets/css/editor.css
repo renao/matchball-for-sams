@@ -4,6 +4,30 @@
     padding: 20px;
 }
 
+.sik-editor-preview {
+    margin-top: 8px;
+    border: 1px solid #d8dde3;
+    border-radius: 6px;
+    background: #ffffff;
+    padding: 12px;
+}
+
+.sik-editor-preview__title {
+    display: block;
+    margin-bottom: 6px;
+    color: #1d2327;
+}
+
+.sik-editor-preview__list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.sik-editor-preview__list li {
+    margin: 2px 0;
+    color: #50575e;
+}
+
 .sik-select-field {
     margin-bottom: 15px;
 }

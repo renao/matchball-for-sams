@@ -7,6 +7,19 @@
     var SelectControl = wp.components.SelectControl;
     var PanelBody = wp.components.PanelBody;
 
+    function findOptionLabel(options, value, fallback) {
+        if (!value) {
+            return fallback || 'Not selected';
+        }
+        var list = Array.isArray(options) ? options : [];
+        for (var i = 0; i < list.length; i++) {
+            if (list[i] && list[i].value === value) {
+                return list[i].label;
+            }
+        }
+        return value;
+    }
+
     function mapOptions(items, labelKey, firstLabel) {
         var list = [{ label: firstLabel || 'Select...', value: '' }];
         var mapped = (items || []).map(function (item) {
@@ -37,6 +50,10 @@
         return list.concat(mapped);
     }
 
+    // Shared cache so all block instances on the same page reuse one request per endpoint+params.
+    var _apiCache = {};   // cacheKey → resolved data
+    var _apiPending = {}; // cacheKey → in-flight Promise
+
     function fetchApi(endpoint, params) {
         var url = new URL(sikConfig.root + endpoint, window.location.origin);
         if (params && typeof params === 'object') {
@@ -48,10 +65,30 @@
             });
         }
 
-        return wp.apiFetch({
-            url: url.toString(),
+        var cacheKey = url.toString();
+
+        if (_apiCache[cacheKey] !== undefined) {
+            return Promise.resolve(_apiCache[cacheKey]);
+        }
+
+        if (_apiPending[cacheKey]) {
+            return _apiPending[cacheKey];
+        }
+
+        var promise = wp.apiFetch({
+            url: cacheKey,
             headers: { 'X-WP-Nonce': sikConfig.nonce },
+        }).then(function (data) {
+            _apiCache[cacheKey] = data;
+            delete _apiPending[cacheKey];
+            return data;
+        }, function (err) {
+            delete _apiPending[cacheKey];
+            return Promise.reject(err);
         });
+
+        _apiPending[cacheKey] = promise;
+        return promise;
     }
 
     function BlockEdit(kind) {
@@ -232,6 +269,22 @@
                 }));
             }
 
+            var blockTypeLabel = kind === 'results' ? 'SAMS Results' : 'SAMS Standings';
+            var configItems = [
+                'Source: ' + findOptionLabel(sourceOptions, attrs.sourceId, 'Not selected'),
+                'Season: ' + findOptionLabel(seasonOptions, attrs.seasonUuid, 'Not selected'),
+                'League: ' + findOptionLabel(leagueOptions, attrs.leagueUuid, 'Not selected'),
+                'Team: ' + findOptionLabel(teamOptions, attrs.teamUuid, 'All teams'),
+            ];
+
+            if (kind === 'results') {
+                configItems.push('Include future matches: ' + (attrs.includeFuture ? 'Yes' : 'No'));
+            }
+
+            var previewLines = configItems.map(function (line, index) {
+                return el('li', { key: 'cfg-' + index }, line);
+            });
+
             return el(
                 'div',
                 blockProps,
@@ -240,7 +293,10 @@
                     null,
                     el(PanelBody, { title: 'SAMS settings', initialOpen: true }, controls)
                 ),
-                el('p', null, 'SAMS block configured in sidebar.')
+                el('div', { className: 'sik-editor-preview' },
+                    el('strong', { className: 'sik-editor-preview__title' }, blockTypeLabel),
+                    el('ul', { className: 'sik-editor-preview__list' }, previewLines)
+                )
             );
         };
     }
