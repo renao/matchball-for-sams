@@ -81,7 +81,7 @@
     border-bottom: 0;
 }
 
-/* Match cards (Results + Schedules) */
+/* Match cards (Results) */
 .sik-match-list {
     display: flex;
     flex-direction: column;
@@ -160,10 +160,6 @@
 .sik-match-card__sep::before {
     content: '·';
     color: #d0d5dd;
-}
-
-.sik-match-card--upcoming .sik-match-card__meta {
-    color: #2271b1;
 }
 
 @media (max-width: 480px) {

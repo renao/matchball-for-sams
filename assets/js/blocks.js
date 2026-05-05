@@ -232,16 +232,6 @@
                 }));
             }
 
-            if (kind === 'schedules') {
-                controls.push(el(wp.components.ToggleControl, {
-                    label: 'Include past matches',
-                    checked: !!attrs.includePast,
-                    onChange: function (value) {
-                        setAttrs({ includePast: !!value });
-                    },
-                }));
-            }
-
             return el(
                 'div',
                 blockProps,
@@ -276,8 +266,5 @@
     register('sik/standings', 'SAMS Standings', 'list-view', 'standings');
     register('sik/results', 'SAMS Results', 'chart-bar', 'results', {
         includeFuture: { type: 'boolean', default: false },
-    });
-    register('sik/schedules', 'SAMS Schedules', 'calendar-alt', 'schedules', {
-        includePast: { type: 'boolean', default: false },
     });
 })(window.wp);

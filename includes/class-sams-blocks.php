@@ -37,13 +37,6 @@ class SIK_Blocks {
             )),
         ));
 
-        register_block_type('sik/schedules', array(
-            'api_version' => 2,
-            'render_callback' => array($this, 'render_schedules'),
-            'attributes' => array_merge($this->base_attributes(), array(
-                'includePast' => array('type' => 'boolean', 'default' => false),
-            )),
-        ));
     }
 
     public function enqueue_editor_assets() {
@@ -139,14 +132,6 @@ class SIK_Blocks {
     }
 
     public function render_results($attributes) {
-        return $this->render_matches($attributes, false);
-    }
-
-    public function render_schedules($attributes) {
-        return $this->render_matches($attributes, true);
-    }
-
-    private function render_matches($attributes, $for_schedule) {
         $source_id = $this->resolve_source_id($attributes);
         $season_uuid = isset($attributes['seasonUuid']) ? sanitize_text_field($attributes['seasonUuid']) : '';
         $league_uuid = isset($attributes['leagueUuid']) ? sanitize_text_field($attributes['leagueUuid']) : '';
@@ -170,32 +155,22 @@ class SIK_Blocks {
 
         $result = $this->api->get_matches($source_id, $filters);
         if (empty($result['ok'])) {
-            return $this->notice($for_schedule ? 'Schedule unavailable.' : 'Results unavailable.');
+            return $this->notice('Results unavailable.');
         }
 
         $rows = isset($result['data']['content']) && is_array($result['data']['content']) ? $result['data']['content'] : array();
         if (empty($rows)) {
-            return $this->notice($for_schedule
-                ? 'No upcoming matches available for this selection.'
-                : 'No results available for this selection.');
+            return $this->notice('No results available for this selection.');
         }
 
         $now = current_time('timestamp', true);
         $include_future = !empty($attributes['includeFuture']);
-        $include_past = !empty($attributes['includePast']);
 
-        $filtered = array_values(array_filter($rows, function ($row) use ($for_schedule, $include_future, $include_past, $now) {
+        $filtered = array_values(array_filter($rows, function ($row) use ($include_future, $now) {
             $timestamp = isset($row['date']) ? strtotime($row['date']) : false;
             if ($timestamp === false) {
                 return false;
             }
-            if ($for_schedule) {
-                if ($include_past) {
-                    return true;
-                }
-                return $timestamp >= $now;
-            }
-
             if ($include_future) {
                 return true;
             }
@@ -208,14 +183,12 @@ class SIK_Blocks {
             return $ta <=> $tb;
         });
 
-        if (!$for_schedule && !$include_future) {
+        if (!$include_future) {
             $filtered = array_reverse($filtered);
         }
 
-        $block_class = $for_schedule ? 'sik-block sik-schedules' : 'sik-block sik-results';
-
         ob_start();
-        echo '<div class="' . esc_attr($block_class) . '">';
+        echo '<div class="sik-block sik-results">';
         echo '<ul class="sik-match-list">';
         foreach ($filtered as $row) {
             $timestamp = isset($row['date']) ? strtotime($row['date']) : false;
@@ -240,7 +213,7 @@ class SIK_Blocks {
 
             $meta_parts = array_filter(array($date_label, $time_label, $venue));
 
-            echo '<li class="sik-match-card' . ($for_schedule && !$has_result ? ' sik-match-card--upcoming' : '') . '">';
+            echo '<li class="sik-match-card">';
             echo '<div class="sik-match-card__matchup">';
             echo '<span class="sik-match-card__team sik-match-card__team--home">' . $home . '</span>';
             if ($has_result) {
