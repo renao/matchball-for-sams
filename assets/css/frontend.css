@@ -1,0 +1,51 @@
+.sik-block {
+    border: 1px solid #d8dde3;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+    background: #ffffff;
+}
+
+.sik-block table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sik-block th,
+.sik-block td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.sik-block ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sik-block li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eef1f4;
+}
+
+.sik-block li:last-child,
+.sik-block tr:last-child td {
+    border-bottom: 0;
+}
+
+.sik-banner {
+    background: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.sik-notice {
+    border-left: 4px solid #2271b1;
+    background: #f0f6fc;
+    padding: 10px;
+    margin: 10px 0;
+}
