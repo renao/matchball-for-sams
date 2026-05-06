@@ -5,7 +5,7 @@ on:
 
 jobs:
   deploy-to-wporg-svn:
-    runs-on: ubuntu-latest
+    runs-on: forgejo-docker
     if: github.ref == 'refs/heads/main'
     environment:
       name: production

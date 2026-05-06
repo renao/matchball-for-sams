@@ -29,6 +29,14 @@ Die Forgejo-Release-Pipeline laeuft bei:
 - Manuellem Start (`workflow_dispatch`)
 - nur fuer Branch `main`
 
+## Runner-Label
+
+Die Forgejo-Workflows verwenden ein eindeutiges Label:
+
+- `forgejo-docker`
+
+Dieses Label muss am Runner konfiguriert sein, sonst bleiben Jobs in der Queue.
+
 Die Forgejo-Release-Pipeline laeuft bei:
 
 - Manuellem Start (`workflow_dispatch`)
