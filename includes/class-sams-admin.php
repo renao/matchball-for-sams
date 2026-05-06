@@ -101,6 +101,10 @@ class SIK_Admin {
         echo '<div class="wrap">';
         echo '<h1>SAMS Sources</h1>';
 
+        echo '<div class="notice notice-info is-dismissible">';
+        echo '<p><strong>Sicherheit:</strong> API-Keys werden automatisch verschlüsselt und sicher in der Datenbank gespeichert. Sie werden niemals im Backend angezeigt.</p>';
+        echo '</div>';
+
         if (isset($_GET['updated'])) {
             echo '<div class="notice notice-success"><p>Sources saved.</p></div>';
         }
