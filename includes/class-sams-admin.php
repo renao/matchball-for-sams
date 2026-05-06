@@ -19,8 +19,8 @@ class SIK_Admin {
 
     public function add_menu() {
         add_options_page(
-            'SAMS Sources',
-            'SAMS Sources',
+            __('SAMS Sources', 'sams-integration'),
+            __('SAMS Sources', 'sams-integration'),
             'manage_options',
             'sik-sources',
             array($this, 'render_page')
@@ -29,7 +29,7 @@ class SIK_Admin {
 
     public function handle_save() {
         if (!current_user_can('manage_options')) {
-            wp_die('Forbidden');
+            wp_die(esc_html__('Forbidden', 'sams-integration'));
         }
 
         check_admin_referer('sik_save_sources');
@@ -80,7 +80,7 @@ class SIK_Admin {
 
     public function render_page() {
         if (!current_user_can('manage_options')) {
-            wp_die('Forbidden');
+            wp_die(esc_html__('Forbidden', 'sams-integration'));
         }
 
         $sources = $this->sources->get_all();
@@ -99,14 +99,14 @@ class SIK_Admin {
         }
 
         echo '<div class="wrap">';
-        echo '<h1>SAMS Sources</h1>';
+        echo '<h1>' . esc_html__('SAMS Sources', 'sams-integration') . '</h1>';
 
         echo '<div class="notice notice-info is-dismissible">';
-        echo '<p><strong>Sicherheit:</strong> API-Keys werden automatisch verschlüsselt und sicher in der Datenbank gespeichert. Sie werden niemals im Backend angezeigt.</p>';
+        echo '<p><strong>' . esc_html__('Security:', 'sams-integration') . '</strong> ' . esc_html__('API keys are encrypted automatically and stored securely in the database. They are never shown in the admin UI.', 'sams-integration') . '</p>';
         echo '</div>';
 
         if (isset($_GET['updated'])) {
-            echo '<div class="notice notice-success"><p>Sources saved.</p></div>';
+            echo '<div class="notice notice-success"><p>' . esc_html__('Sources saved.', 'sams-integration') . '</p></div>';
         }
 
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
@@ -125,7 +125,7 @@ class SIK_Admin {
 
         echo '<table class="widefat striped">';
         echo '<thead><tr>';
-        echo '<th>ID</th><th>Name</th><th>Base URL</th><th>API Key</th><th>Association UUID</th><th>Active</th><th>Default</th>';
+    echo '<th>' . esc_html__('ID', 'sams-integration') . '</th><th>' . esc_html__('Name', 'sams-integration') . '</th><th>' . esc_html__('Base URL', 'sams-integration') . '</th><th>' . esc_html__('API Key', 'sams-integration') . '</th><th>' . esc_html__('Association UUID', 'sams-integration') . '</th><th>' . esc_html__('Active', 'sams-integration') . '</th><th>' . esc_html__('Default', 'sams-integration') . '</th>';
         echo '</tr></thead><tbody>';
 
         foreach ($sources as $index => $source) {
@@ -135,9 +135,9 @@ class SIK_Admin {
             echo '<td><input type="text" name="' . esc_attr($prefix . '[name]') . '" value="' . esc_attr($source['name']) . '" /></td>';
             echo '<td><input type="url" size="32" name="' . esc_attr($prefix . '[base_url]') . '" value="' . esc_attr($source['base_url']) . '" /></td>';
             echo '<td>';
-            echo '<input type="password" autocomplete="new-password" placeholder="leave empty to keep existing" name="' . esc_attr($prefix . '[api_key]') . '" value="" />';
+            echo '<input type="password" autocomplete="new-password" placeholder="' . esc_attr__('Leave empty to keep existing key', 'sams-integration') . '" name="' . esc_attr($prefix . '[api_key]') . '" value="" />';
             if (!empty($source['id']) && $this->sources->uses_external_api_key($source['id'])) {
-                echo '<p><small>Using server-side key override.</small></p>';
+                echo '<p><small>' . esc_html__('Using server-side key override.', 'sams-integration') . '</small></p>';
             }
             echo '</td>';
             echo '<td><input type="text" size="24" name="' . esc_attr($prefix . '[association_uuid]') . '" value="' . esc_attr($source['association_uuid']) . '" /></td>';
@@ -147,7 +147,7 @@ class SIK_Admin {
         }
 
         echo '</tbody></table>';
-        submit_button('Save Sources');
+        submit_button(__('Save Sources', 'sams-integration'));
         echo '</form>';
         echo '</div>';
     }

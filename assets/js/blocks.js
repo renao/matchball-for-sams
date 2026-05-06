@@ -1,5 +1,6 @@
 (function (wp) {
     var el = wp.element.createElement;
+    var __ = wp.i18n.__;
     var useState = wp.element.useState;
     var useEffect = wp.element.useEffect;
     var InspectorControls = (wp.blockEditor || wp.editor).InspectorControls;
@@ -9,7 +10,7 @@
 
     function findOptionLabel(options, value, fallback) {
         if (!value) {
-            return fallback || 'Not selected';
+            return fallback || __('Not selected', 'sams-integration');
         }
         var list = Array.isArray(options) ? options : [];
         for (var i = 0; i < list.length; i++) {
@@ -21,7 +22,7 @@
     }
 
     function mapOptions(items, labelKey, firstLabel) {
-        var list = [{ label: firstLabel || 'Select...', value: '' }];
+        var list = [{ label: firstLabel || __('Select...', 'sams-integration'), value: '' }];
         var mapped = (items || []).map(function (item) {
             return {
                 label: item[labelKey] || item.name || item.uuid,
@@ -36,7 +37,7 @@
     }
 
     function mapSeasonOptions(items, firstLabel) {
-        var list = [{ label: firstLabel || 'Select...', value: '' }];
+        var list = [{ label: firstLabel || __('Select...', 'sams-integration'), value: '' }];
         var mapped = (items || []).map(function (item) {
             return {
                 label: item.name,
@@ -97,11 +98,11 @@
             var setAttrs = props.setAttributes;
             var blockProps = useBlockProps({ className: 'sik-editor-block' });
 
-            var baseSourceOptions = [{ label: 'Select source', value: '' }];
-            var baseSeasonOptions = [{ label: 'Select season', value: '' }];
-            var baseLeagueOptions = [{ label: 'Select league', value: '' }];
-            var baseTeamOptions = [{ label: 'Optional team', value: '' }];
-            var loadingOption = [{ label: 'Loading...', value: '__loading__' }];
+            var baseSourceOptions = [{ label: __('Select source', 'sams-integration'), value: '' }];
+            var baseSeasonOptions = [{ label: __('Select season', 'sams-integration'), value: '' }];
+            var baseLeagueOptions = [{ label: __('Select league', 'sams-integration'), value: '' }];
+            var baseTeamOptions = [{ label: __('Optional team', 'sams-integration'), value: '' }];
+            var loadingOption = [{ label: __('Loading...', 'sams-integration'), value: '__loading__' }];
 
             var _useState = useState(baseSourceOptions), sourceOptions = _useState[0], setSourceOptions = _useState[1];
             var _useState2 = useState(attrs.sourceId ? loadingOption : baseSeasonOptions), seasonOptions = _useState2[0], setSeasonOptions = _useState2[1];
@@ -118,14 +119,14 @@
                         var items = (res.items || []).map(function (item) {
                             return { id: item.id, name: item.name };
                         });
-                        setSourceOptions(mapOptions(items, 'name', 'Select source'));
+                        setSourceOptions(mapOptions(items, 'name', __('Select source', 'sams-integration')));
                         if (!attrs.sourceId && res.default_source) {
                             setAttrs({ sourceId: res.default_source });
                         }
                     })
                     .catch(function () {
                         if (active) {
-                            setSourceOptions([{ label: 'No sources available', value: '' }]);
+                            setSourceOptions([{ label: __('No sources available', 'sams-integration'), value: '' }]);
                         }
                     });
 
@@ -149,7 +150,7 @@
                         if (!active) {
                             return;
                         }
-                        setSeasonOptions(mapSeasonOptions(res.items || [], 'Select season'));
+                        setSeasonOptions(mapSeasonOptions(res.items || [], __('Select season', 'sams-integration')));
                     })
                     .catch(function () {
                         if (active) {
@@ -176,7 +177,7 @@
                         if (!active) {
                             return;
                         }
-                        setLeagueOptions(mapOptions(res.items || [], 'name', 'Select league'));
+                        setLeagueOptions(mapOptions(res.items || [], 'name', __('Select league', 'sams-integration')));
                     })
                     .catch(function () {
                         if (active) {
@@ -202,7 +203,7 @@
                         if (!active) {
                             return;
                         }
-                        setTeamOptions(mapOptions(res.items || [], 'name', 'Optional team'));
+                        setTeamOptions(mapOptions(res.items || [], 'name', __('Optional team', 'sams-integration')));
                     })
                     .catch(function () {
                         if (active) {
@@ -226,7 +227,7 @@
 
             var controls = [
                 createSelectField(
-                    'Data source',
+                    __('Data source', 'sams-integration'),
                     attrs.sourceId || '',
                     sourceOptions,
                     function (value) {
@@ -234,7 +235,7 @@
                     }
                 ),
                 createSelectField(
-                    'Season',
+                    __('Season', 'sams-integration'),
                     attrs.seasonUuid || '',
                     seasonOptions,
                     function (value) {
@@ -242,7 +243,7 @@
                     }
                 ),
                 createSelectField(
-                    'League',
+                    __('League', 'sams-integration'),
                     attrs.leagueUuid || '',
                     leagueOptions,
                     function (value) {
@@ -250,7 +251,7 @@
                     }
                 ),
                 createSelectField(
-                    'Team (optional)',
+                    __('Team (optional)', 'sams-integration'),
                     attrs.teamUuid || '',
                     teamOptions,
                     function (value) {
@@ -261,7 +262,7 @@
 
             if (kind === 'results') {
                 controls.push(el(wp.components.ToggleControl, {
-                    label: 'Include future matches',
+                    label: __('Include future matches', 'sams-integration'),
                     checked: !!attrs.includeFuture,
                     onChange: function (value) {
                         setAttrs({ includeFuture: !!value });
@@ -269,16 +270,16 @@
                 }));
             }
 
-            var blockTypeLabel = kind === 'results' ? 'SAMS Results' : 'SAMS Standings';
+            var blockTypeLabel = kind === 'results' ? __('SAMS Results', 'sams-integration') : __('SAMS Standings', 'sams-integration');
             var configItems = [
-                'Source: ' + findOptionLabel(sourceOptions, attrs.sourceId, 'Not selected'),
-                'Season: ' + findOptionLabel(seasonOptions, attrs.seasonUuid, 'Not selected'),
-                'League: ' + findOptionLabel(leagueOptions, attrs.leagueUuid, 'Not selected'),
-                'Team: ' + findOptionLabel(teamOptions, attrs.teamUuid, 'All teams'),
+                __('Source:', 'sams-integration') + ' ' + findOptionLabel(sourceOptions, attrs.sourceId, __('Not selected', 'sams-integration')),
+                __('Season:', 'sams-integration') + ' ' + findOptionLabel(seasonOptions, attrs.seasonUuid, __('Not selected', 'sams-integration')),
+                __('League:', 'sams-integration') + ' ' + findOptionLabel(leagueOptions, attrs.leagueUuid, __('Not selected', 'sams-integration')),
+                __('Team:', 'sams-integration') + ' ' + findOptionLabel(teamOptions, attrs.teamUuid, __('All teams', 'sams-integration')),
             ];
 
             if (kind === 'results') {
-                configItems.push('Include future matches: ' + (attrs.includeFuture ? 'Yes' : 'No'));
+                configItems.push(__('Include future matches:', 'sams-integration') + ' ' + (attrs.includeFuture ? __('Yes', 'sams-integration') : __('No', 'sams-integration')));
             }
 
             var previewLines = configItems.map(function (line, index) {
@@ -291,7 +292,7 @@
                 el(
                     InspectorControls,
                     null,
-                    el(PanelBody, { title: 'SAMS settings', initialOpen: true }, controls)
+                    el(PanelBody, { title: __('SAMS settings', 'sams-integration'), initialOpen: true }, controls)
                 ),
                 el('div', { className: 'sik-editor-preview' },
                     el('strong', { className: 'sik-editor-preview__title' }, blockTypeLabel),
@@ -319,8 +320,8 @@
         });
     }
 
-    register('sik/standings', 'SAMS Standings', 'list-view', 'standings');
-    register('sik/results', 'SAMS Results', 'chart-bar', 'results', {
+    register('sik/standings', __('SAMS Standings', 'sams-integration'), 'list-view', 'standings');
+    register('sik/results', __('SAMS Results', 'sams-integration'), 'chart-bar', 'results', {
         includeFuture: { type: 'boolean', default: false },
     });
 })(window.wp);

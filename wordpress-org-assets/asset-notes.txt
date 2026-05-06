@@ -1,0 +1,11 @@
+WordPress.org asset files generated locally.
+
+Included:
+- banner-772x250.png
+- banner-1544x500.png
+- icon-128x128.png
+- icon-256x256.png
+
+Optional next step:
+- add real screenshots as screenshot-1.png, screenshot-2.png, ...
+- upload these files to the top-level assets directory in the WordPress.org SVN repository

@@ -1,0 +1,60 @@
+=== SAMS Integration ===
+Contributors: renao
+Tags: standings, results, sports, api, gutenberg
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 7.4
+Stable tag: 0.1.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Gutenberg blocks for standings and results via SAMS API with 5-minute sync and fallback cache.
+
+== Description ==
+
+SAMS Integration provides two Gutenberg blocks for sports websites:
+
+* Standings block (league table)
+* Results block (finished matches)
+
+Data is fetched from a SAMS API source and cached via WordPress transients. A 5-minute WP-Cron sync keeps data fresh, while fallback cache protects frontend output during API issues.
+
+External service usage:
+
+* This plugin connects to a SAMS API endpoint configured by the site administrator.
+* Requests include an API key in the HTTP header X-Api-Key.
+* No visitor personal data is transmitted by default.
+
+== Installation ==
+
+1. Upload the plugin folder to /wp-content/plugins/ or install the ZIP via Plugins > Add New > Upload Plugin.
+2. Activate SAMS Integration in the WordPress admin.
+3. Open SAMS Sources in admin and add at least one source (base URL and API key).
+4. Insert a Standings or Results block in Gutenberg and configure source, season, and league.
+
+== Frequently Asked Questions ==
+
+= Does the plugin need cron? =
+
+Yes. WP-Cron is used for regular data refresh every 5 minutes.
+
+= Where are API keys stored? =
+
+API keys are stored in WordPress options and encrypted at rest.
+
+= What happens if the API is unavailable? =
+
+The plugin shows cached data and a "last updated" hint instead of failing hard.
+
+== Changelog ==
+
+= 0.1.0 =
+* Initial public release with Standings and Results blocks
+* 5-minute sync with WP-Cron
+* Encrypted API key storage
+* Graceful fallback on API errors
+
+== Upgrade Notice ==
+
+= 0.1.0 =
+Initial release.

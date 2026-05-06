@@ -1,9 +1,13 @@
 <?php
 /**
  * Plugin Name: SAMS Integration
- * Description: Gutenberg blocks for standings, results, and schedules via SAMS API.
+ * Plugin URI: https://codeberg.org/renao/sams-integration
+ * Description: Gutenberg blocks for standings and results via SAMS API.
  * Version: 0.1.0
  * Author: SAMS Integration Team
+ * Author URI: https://codeberg.org/renao
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: sams-integration
  * Domain Path: /languages
  * Requires at least: 6.0
@@ -32,6 +36,10 @@ function sik_bootstrap() {
     $plugin->init();
 }
 
+function sik_load_textdomain() {
+    load_plugin_textdomain('sams-integration', false, dirname(plugin_basename(SIK_PLUGIN_FILE)) . '/languages');
+}
+
 function sik_activate() {
     SIK_Cron::activate();
 }
@@ -43,4 +51,5 @@ function sik_deactivate() {
 register_activation_hook(SIK_PLUGIN_FILE, 'sik_activate');
 register_deactivation_hook(SIK_PLUGIN_FILE, 'sik_deactivate');
 
-add_action('plugins_loaded', 'sik_bootstrap');
+add_action('plugins_loaded', 'sik_load_textdomain');
+add_action('plugins_loaded', 'sik_bootstrap', 20);

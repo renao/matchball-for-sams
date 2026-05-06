@@ -178,6 +178,40 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 
 ---
 
+## WordPress.org Release Anforderungen
+
+### Pflichtartefakte
+
+- Plugin-Hauptdatei mit vollständigem Header (Name, Version, Requires, PHP, License, Text Domain)
+- `readme.txt` im WordPress.org-Format (Contributors, Tags, Stable Tag, Changelog)
+- GPL-kompatible Lizenzdatei im Projekt (empfohlen: GPL-2.0-or-later)
+- Vollständiger, lauffähiger Plugin-Code ohne Build-Abhängigkeiten im Release-Paket
+
+### Compliance-Gates vor Einreichung
+
+- Keine Obfuskation, keine versteckten externen Code-Downloads
+- Keine Telemetrie ohne explizites Opt-in
+- Nur sparsame, dismissible Admin-Notices
+- Keine geheimen Schlüssel im Repository oder in Ausgaben/Logs
+- Versionen konsistent: Plugin-Header Version == readme Stable Tag == Release-Zip Name
+
+### WordPress.org Listing-Artefakte (SVN assets)
+
+- Optional aber empfohlen: Banner `banner-772x250.png` + `banner-1544x500.png`
+- Optional aber empfohlen: Icons `icon-128x128.png` + `icon-256x256.png`
+- Optional: Screenshots `screenshot-1.png`, `screenshot-2.png`, ... passend zur Readme-Beschreibung
+- Lokale Vorbereitung im Repo unter `wordpress-org-assets/` möglich, aber nicht Teil des Plugin-ZIPs
+
+### Release-Entscheidung (Go/No-Go)
+
+1. Readme-Validator ohne Fehler bestanden
+2. Manuelle MVP-Abnahme vollständig bestanden
+3. Cron-Sync in Produktiv-ähnlicher Umgebung verifiziert
+4. Security-Selbstcheck ohne offene High-Risk-Befunde
+5. Release-Paket lokal installiert und Smoke-Test bestanden
+
+---
+
 ## Nächste Schritte
 
 ### MVP ist abgeschlossen
@@ -190,7 +224,9 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 ### Betrieb & Release
 - Cron-Funktion auf Produktivserver testen (siehe [CRON_TESTING.md](CRON_TESTING.md))
 - Manuelle Abnahme durchlaufen (siehe [MVP_ABNAHME_CHECKLISTE.md](MVP_ABNAHME_CHECKLISTE.md))
-- Freigabe an WordPress Plugin-Verzeichnis
+- Readme-Validator ausführen und Stable-Tag-Version abgleichen
+- Release-ZIP bauen und lokal per WordPress-Upload testen
+- Freigabe an WordPress Plugin-Verzeichnis (Einreichung)
 
 ### Phase 2: Geplante Features (nach MVP-Release)
 1. **Spielpläne-Block** (sik/schedules)
