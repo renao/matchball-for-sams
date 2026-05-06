@@ -13,6 +13,9 @@ Owner: Product Owner
 3. Content-Type: application/hal+json
 4. Paging: page und size, Standard size 20, Maximum size 100
 5. Optionaler Quellenfilter: association UUID pro Datenquelle im Admin hinterlegbar
+6. Offizielle Doku: https://wiki.sams-server.de/wiki/REST-API-Schnittstelle
+7. Zugriffsschlüssel: API-Key wird laut Anbieterdokumentation vom jeweiligen Verband vergeben
+8. Globales Rate-Limit laut Anbieter: 5 Anfragen pro Sekunde sowie tägliches Limit pro Schlüssel
 
 ## Endpoint-Mapping für MVP
 

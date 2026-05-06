@@ -21,9 +21,17 @@ Data is fetched from a SAMS API source and cached via WordPress transients. A 5-
 
 External service usage:
 
-* This plugin connects to a SAMS API endpoint configured by the site administrator.
+* This plugin connects to a SAMS REST API endpoint configured by the site administrator.
+* The official SAMS REST API documentation is published by the provider at: https://wiki.sams-server.de/wiki/REST-API-Schnittstelle
+* According to the provider documentation, API keys are issued by the relevant association support contact for intended API access.
 * Requests include an API key in the HTTP header X-Api-Key.
+* The provider documents a general rate limit of 5 requests per second and a daily limit per key. The plugin reduces request volume by using transients and a 5-minute sync interval.
 * No visitor personal data is transmitted by default.
+
+Service terms and privacy:
+
+* Use of the external SAMS service is subject to the policies and operating rules of the respective association or operator.
+* Site administrators are responsible for using valid API credentials and complying with the provider rules for the configured endpoint.
 
 == Installation ==
 
@@ -45,6 +53,10 @@ API keys are stored in WordPress options and encrypted at rest.
 = What happens if the API is unavailable? =
 
 The plugin shows cached data and a "last updated" hint instead of failing hard.
+
+= Where can I find the official API documentation? =
+
+The provider documentation is available at https://wiki.sams-server.de/wiki/REST-API-Schnittstelle .
 
 == Changelog ==
 
