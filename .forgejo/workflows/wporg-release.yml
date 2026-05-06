@@ -1,0 +1,36 @@
+name: WP.org Release Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-to-wporg-svn:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends bash zip unzip rsync subversion ca-certificates
+
+      - name: Validate required secrets
+        env:
+          WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+          WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
+        run: |
+          test -n "$WPORG_SVN_USERNAME"
+          test -n "$WPORG_SVN_PASSWORD"
+
+      - name: Deploy release to WordPress.org SVN
+        env:
+          WPORG_SVN_USERNAME: ${{ secrets.WPORG_SVN_USERNAME }}
+          WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
+          WPORG_SVN_NON_INTERACTIVE: "true"
+        run: |
+          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' sams-integration.php | tr -d '[:space:]')"
+          bash ./scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release ${version}"
