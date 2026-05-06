@@ -210,12 +210,13 @@ class SIK_Blocks {
             $timestamp = isset($row['date']) ? strtotime($row['date']) : false;
             $date_label = $timestamp ? esc_html(wp_date(get_option('date_format'), $timestamp)) : '';
             $time_label = isset($row['time']) && $row['time'] !== '' ? esc_html($row['time']) . ' Uhr' : ($timestamp ? esc_html(wp_date(get_option('time_format'), $timestamp)) . ' Uhr' : '');
-            $home = isset($row['team1Description']) ? esc_html($row['team1Description']) : '';
-            $away = isset($row['team2Description']) ? esc_html($row['team2Description']) : '';
+            $home_raw = isset($row['team1Description']) ? trim((string) $row['team1Description']) : '';
+            $away_raw = isset($row['team2Description']) ? trim((string) $row['team2Description']) : '';
+            $home = $home_raw !== '' ? esc_html($home_raw) : 'Unbekannt';
+            $away = $away_raw !== '' ? esc_html($away_raw) : 'Unbekannt';
 
-            $set_points  = isset($row['results']['setPoints'])  && $row['results']['setPoints']  !== '' ? esc_html($row['results']['setPoints'])  : '';
-            $ball_points = isset($row['results']['ballPoints']) && $row['results']['ballPoints'] !== '' ? esc_html($row['results']['ballPoints']) : '';
-            $has_result  = $set_points !== '' || $ball_points !== '';
+            $set_points  = isset($row['results']['setPoints']) && $row['results']['setPoints'] !== '' ? esc_html($row['results']['setPoints']) : '';
+            $has_result  = $set_points !== '';
             $venue_parts = array();
             if (isset($row['location']['name']) && $row['location']['name'] !== '') {
                 $venue_parts[] = esc_html($row['location']['name']);
@@ -233,8 +234,7 @@ class SIK_Blocks {
             echo '<div class="sik-match-card__matchup">';
             echo '<span class="sik-match-card__team sik-match-card__team--home">' . $home . '</span>';
             if ($has_result) {
-                $score = $set_points !== '' ? $set_points : $ball_points;
-                echo '<span class="sik-match-card__score">' . $score . '</span>';
+                echo '<span class="sik-match-card__score">' . $set_points . '</span>';
             } else {
                 echo '<span class="sik-match-card__vs">vs</span>';
             }
