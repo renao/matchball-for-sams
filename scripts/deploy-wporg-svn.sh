@@ -10,6 +10,9 @@ ASSETS_DIR="$ROOT_DIR/wordpress-org-assets"
 COMMIT_MESSAGE=""
 DO_COMMIT=false
 SYNC_ASSETS=true
+SVN_USERNAME="${WPORG_SVN_USERNAME:-}"
+SVN_PASSWORD="${WPORG_SVN_PASSWORD:-}"
+NON_INTERACTIVE="${WPORG_SVN_NON_INTERACTIVE:-false}"
 
 usage() {
   cat <<EOF
@@ -23,6 +26,9 @@ Options:
   --zip <path>              Release zip path (default: artifacts/releases/<slug>-<version>.zip)
   --assets-dir <path>       WordPress.org assets source dir (default: wordpress-org-assets)
   --no-assets               Do not sync assets directory
+  --username <name>         SVN username (or use WPORG_SVN_USERNAME)
+  --password <pass>         SVN password (or use WPORG_SVN_PASSWORD)
+  --non-interactive         Disable prompts for CI pipelines
   --commit                  Perform svn commit (default: dry-run only)
   --message <text>          SVN commit message (default: Release <version>)
   -h, --help                Show this help
@@ -34,6 +40,10 @@ Behavior:
   4) Syncs same release into tags/<version>/
   5) Optionally syncs WordPress.org assets into assets/
   6) Shows svn status and optionally commits
+
+Pipeline example:
+  WPORG_SVN_USERNAME=youruser WPORG_SVN_PASSWORD=yourpass \
+  ./scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release <version>"
 EOF
 }
 
@@ -74,6 +84,18 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-assets)
       SYNC_ASSETS=false
+      shift
+      ;;
+    --username)
+      SVN_USERNAME="$2"
+      shift 2
+      ;;
+    --password)
+      SVN_PASSWORD="$2"
+      shift 2
+      ;;
+    --non-interactive)
+      NON_INTERACTIVE=true
       shift
       ;;
     --commit)
@@ -126,6 +148,19 @@ if [[ ! -f "$RELEASE_ZIP" ]]; then
   exit 1
 fi
 
+SVN_ARGS=()
+if [[ -n "$SVN_USERNAME" ]]; then
+  SVN_ARGS+=(--username "$SVN_USERNAME")
+fi
+
+if [[ -n "$SVN_PASSWORD" ]]; then
+  SVN_ARGS+=(--password "$SVN_PASSWORD")
+fi
+
+if [[ "$NON_INTERACTIVE" == "true" ]]; then
+  SVN_ARGS+=(--non-interactive --trust-server-cert-failures=unknown-ca,cn-mismatch,expired,not-yet-valid,other)
+fi
+
 TMP_DIR="$(mktemp -d)"
 EXTRACT_DIR="$TMP_DIR/extracted"
 trap 'rm -rf "$TMP_DIR"' EXIT
@@ -141,11 +176,11 @@ fi
 
 if [[ -d "$SVN_WORK_DIR/.svn" ]]; then
   echo "Updating existing SVN working copy: $SVN_WORK_DIR"
-  svn update "$SVN_WORK_DIR"
+  svn "${SVN_ARGS[@]}" update "$SVN_WORK_DIR"
 else
   mkdir -p "$(dirname "$SVN_WORK_DIR")"
   echo "Checking out SVN repo: $SVN_URL"
-  svn checkout "$SVN_URL" "$SVN_WORK_DIR"
+  svn "${SVN_ARGS[@]}" checkout "$SVN_URL" "$SVN_WORK_DIR"
 fi
 
 mkdir -p "$SVN_WORK_DIR/trunk" "$SVN_WORK_DIR/tags" "$SVN_WORK_DIR/assets"
@@ -176,20 +211,20 @@ while IFS= read -r line; do
   path="${line:8}"
 
   if [[ "$status" == "?" ]]; then
-    svn add --parents "$path"
+    svn "${SVN_ARGS[@]}" add --parents "$path"
   elif [[ "$status" == "!" ]]; then
-    svn delete "$path"
+    svn "${SVN_ARGS[@]}" delete "$path"
   fi
-done < <(svn status)
+done < <(svn "${SVN_ARGS[@]}" status)
 
 echo
 echo "SVN status summary:"
-svn status
+svn "${SVN_ARGS[@]}" status
 
 if [[ "$DO_COMMIT" == true ]]; then
   echo
   echo "Committing to SVN"
-  svn commit -m "$COMMIT_MESSAGE"
+  svn "${SVN_ARGS[@]}" commit -m "$COMMIT_MESSAGE"
 else
   echo
   echo "Dry-run complete. No commit performed."

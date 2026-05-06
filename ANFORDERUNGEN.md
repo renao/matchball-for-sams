@@ -232,7 +232,14 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 5. Optional Screenshots ergänzen und mit `readme.txt` abgleichen
 6. `trunk/readme.txt` und Plugin-Hauptdatei final gegen Version prüfen
 7. Ersten stabilen Release zusätzlich unter `tags/3.0.0/` ablegen
-8. SVN-Commit mit klarer Nachricht durchführen
+8. SVN-Dry-Run über `./scripts/deploy-wporg-svn.sh` ausführen und `svn status` prüfen
+9. SVN-Commit über `./scripts/deploy-wporg-svn.sh --commit --message "Release 3.0.0"` durchführen
+
+#### CI/Pipeline (optional)
+
+1. SVN-Zugangsdaten als Secrets setzen: `WPORG_SVN_USERNAME`, `WPORG_SVN_PASSWORD`
+2. Nicht-interaktiven Lauf nutzen: `./scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release <version>"`
+3. Optional ohne Asset-Sync: `./scripts/deploy-wporg-svn.sh --non-interactive --no-assets --commit`
 
 #### Vor jedem Folge-Release
 
