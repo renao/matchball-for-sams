@@ -7,7 +7,7 @@ Manueller Test-Plan für Standings und Results Blöcke. Führt diese Tests durch
 ## Teil 1: Setup
 
 ### 1.1 Plugin aktivieren
-- [ ] Plugin im WordPress Admin aktivieren (`Plugins → sams-integration-ki`)
+- [ ] Plugin im WordPress Admin aktivieren (`Plugins → SAMS Integration`)
 - [ ] Admin-Notice über API-Key-Verschlüsselung sichtbar?
 
 ### 1.2 Datenquelle konfigurieren

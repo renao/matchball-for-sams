@@ -4,7 +4,7 @@ Das Plugin nutzt WordPress WP-Cron für automatische 5-Minuten-Synchronisierung.
 
 ## Voraussetzungen
 
-- WordPress mit aktiviertem Plugin (`sams-integration-ki`)
+- WordPress mit aktiviertem Plugin (`SAMS Integration`)
 - Mindestens eine aktive SAMS-Datenquelle in den Plugin-Settings
 - WP-CLI installiert (optional, aber empfohlen)
 

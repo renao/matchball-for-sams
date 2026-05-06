@@ -3,7 +3,7 @@
 # Setup-Script für WordPress Plugin Anforderungsrahmen
 set -e
 
-BASEDIR="/home/renao/devel/sams-integration-ki"
+BASEDIR="/home/renao/devel/sams-integration"
 
 echo "==========================================" 
 echo "Setup: Anforderungsrahmen-Struktur"

@@ -1,7 +1,7 @@
 services:
   db:
     image: mariadb:10.11
-    container_name: ${COMPOSE_PROJECT_NAME:-sams-integration-ki}_db
+    container_name: ${COMPOSE_PROJECT_NAME:-sams-integration}_db
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
@@ -14,7 +14,7 @@ services:
 
   wordpress:
     image: wordpress:6.5-php8.2-apache
-    container_name: ${COMPOSE_PROJECT_NAME:-sams-integration-ki}_wp
+    container_name: ${COMPOSE_PROJECT_NAME:-sams-integration}_wp
     depends_on:
       - db
     restart: unless-stopped
@@ -26,12 +26,12 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
       WORDPRESS_CONFIG_EXTRA: |
-        if (file_exists('/var/www/html/wp-content/plugins/sams-integration-ki/docker/wp-config-extra.php')) {
-            require_once '/var/www/html/wp-content/plugins/sams-integration-ki/docker/wp-config-extra.php';
+        if (file_exists('/var/www/html/wp-content/plugins/sams-integration/docker/wp-config-extra.php')) {
+            require_once '/var/www/html/wp-content/plugins/sams-integration/docker/wp-config-extra.php';
         }
     volumes:
       - wp_data:/var/www/html
-      - ./:/var/www/html/wp-content/plugins/sams-integration-ki
+      - ./:/var/www/html/wp-content/plugins/sams-integration
 
 volumes:
   db_data:

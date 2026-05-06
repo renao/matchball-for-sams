@@ -148,7 +148,7 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 ### Internationalisierung (i18n)
 
 **WordPress i18n (Textdomain + Übersetzungsdateien):**
-- Textdomain: `sams-integration-ki`
+- Textdomain: `sams-integration`
 - UI-Texte: Alle englisch + Deutsch im MVP
 - Datum/Zeit: Nach `wp_get_locale()` (automatisch)
 - Datenbezeichnungen: TBD nach API-Discovery
