@@ -1,0 +1,50 @@
+steps:
+  php_syntax:
+    image: php:8.2-cli
+    commands:
+      - find . -type f -name "*.php" -not -path "./artifacts/*" -print0 | xargs -0 -n1 php -l
+    when:
+      event:
+        - push
+        - pull_request
+        - tag
+
+  shell_lint:
+    image: koalaman/shellcheck-alpine:stable
+    commands:
+      - shellcheck scripts/*.sh
+    when:
+      event:
+        - push
+        - pull_request
+        - tag
+
+  release_consistency:
+    image: bash:5.2
+    commands:
+      - plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' sams-integration.php | tr -d '[:space:]')"
+      - readme_version="$(awk -F': ' 'tolower($1)=="stable tag" {print $2; exit}' readme.txt | tr -d '[:space:]')"
+      - test -n "$plugin_version"
+      - test -n "$readme_version"
+      - test "$plugin_version" = "$readme_version"
+      - echo "Version check passed: $plugin_version"
+    when:
+      event:
+        - push
+        - pull_request
+        - tag
+
+  build_release_zip:
+    image: debian:12-slim
+    commands:
+      - apt-get update
+      - apt-get install -y --no-install-recommends bash zip unzip rsync ca-certificates
+      - bash ./scripts/create-release-zip.sh
+      - version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' sams-integration.php | tr -d '[:space:]')"
+      - test -f "artifacts/releases/sams-integration-${version}.zip"
+      - ls -lh "artifacts/releases/sams-integration-${version}.zip"
+    when:
+      event:
+        - push
+        - pull_request
+        - tag
