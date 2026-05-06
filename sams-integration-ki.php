@@ -22,11 +22,23 @@ require_once SIK_PLUGIN_DIR . 'includes/class-sams-api-client.php';
 require_once SIK_PLUGIN_DIR . 'includes/class-sams-admin.php';
 require_once SIK_PLUGIN_DIR . 'includes/class-sams-rest.php';
 require_once SIK_PLUGIN_DIR . 'includes/class-sams-blocks.php';
+require_once SIK_PLUGIN_DIR . 'includes/class-sams-cron.php';
 require_once SIK_PLUGIN_DIR . 'includes/class-sams-plugin.php';
 
 function sik_bootstrap() {
     $plugin = new SIK_Plugin();
     $plugin->init();
 }
+
+function sik_activate() {
+    SIK_Cron::activate();
+}
+
+function sik_deactivate() {
+    SIK_Cron::deactivate();
+}
+
+register_activation_hook(SIK_PLUGIN_FILE, 'sik_activate');
+register_deactivation_hook(SIK_PLUGIN_FILE, 'sik_deactivate');
 
 add_action('plugins_loaded', 'sik_bootstrap');

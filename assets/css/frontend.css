@@ -168,6 +168,13 @@
     color: #d0d5dd;
 }
 
+.sik-updated-hint {
+    margin: 10px 0 0;
+    font-size: 0.78rem;
+    color: #667085;
+    text-align: right;
+}
+
 @media (max-width: 480px) {
     .sik-match-card__team {
         font-size: 0.9rem;

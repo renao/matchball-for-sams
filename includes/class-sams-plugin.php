@@ -20,17 +20,22 @@ class SIK_Plugin {
     /** @var SIK_Blocks */
     private $blocks;
 
+    /** @var SIK_Cron */
+    private $cron;
+
     public function __construct() {
         $this->sources = new SIK_Source_Repository();
         $this->api = new SIK_Api_Client($this->sources);
         $this->admin = new SIK_Admin($this->sources);
         $this->rest = new SIK_Rest($this->sources, $this->api);
         $this->blocks = new SIK_Blocks($this->sources, $this->api);
+        $this->cron = new SIK_Cron($this->sources, $this->api);
     }
 
     public function init() {
         $this->admin->register();
         $this->rest->register();
         $this->blocks->register();
+        $this->cron->register();
     }
 }

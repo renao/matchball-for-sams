@@ -141,7 +141,9 @@ class SIK_Blocks {
             echo '<td class="sik-standings__points">' . esc_html($points) . '</td>';
             echo '</tr>';
         }
-        echo '</tbody></table></div></div>';
+        echo '</tbody></table></div>';
+        echo $this->updated_hint($result);
+        echo '</div>';
         return ob_get_clean();
     }
 
@@ -243,8 +245,26 @@ class SIK_Blocks {
             }
             echo '</li>';
         }
-        echo '</ul></div>';
+        echo '</ul>';
+        echo $this->updated_hint($result);
+        echo '</div>';
         return ob_get_clean();
+    }
+
+    private function updated_hint($result) {
+        if (!is_array($result) || empty($result['ok'])) {
+            return '';
+        }
+
+        $age = 0;
+        if (isset($result['meta']['age']) && is_numeric($result['meta']['age'])) {
+            $age = max(0, (int) $result['meta']['age']);
+        }
+
+        $last_updated_utc = time() - $age;
+        $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' Uhr';
+
+        return '<p class="sik-updated-hint">Zuletzt aktualisiert: ' . esc_html($formatted) . '</p>';
     }
 
     private function resolve_source_id($attributes) {
