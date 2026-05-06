@@ -61,11 +61,11 @@ class SIK_Api_Client {
     public function request($source_id, $path, $query = array()) {
         $source = $this->sources->get_by_id($source_id);
         if (!$source || empty($source['is_active'])) {
-            return $this->error('inactive_source', 'Selected source is not active.');
+            return $this->error('inactive_source', __('Selected source is not active.', 'sams-integration'));
         }
 
         if (empty($source['base_url']) || empty($source['api_key'])) {
-            return $this->error('invalid_source_config', 'Source configuration is incomplete.');
+            return $this->error('invalid_source_config', __('Source configuration is incomplete.', 'sams-integration'));
         }
 
         $path = '/' . ltrim($path, '/');
@@ -107,7 +107,7 @@ class SIK_Api_Client {
         }
 
         $this->log_http_error($status_code, $path);
-        return $this->fallback_or_error($cache_key, 'http_' . $status_code, 'Remote API error.');
+        return $this->fallback_or_error($cache_key, 'http_' . $status_code, __('Remote API error.', 'sams-integration'));
     }
 
     private function fallback_or_error($cache_key, $code, $message) {

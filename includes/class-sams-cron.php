@@ -40,7 +40,7 @@ class SIK_Cron {
         if (!isset($schedules[self::SCHEDULE])) {
             $schedules[self::SCHEDULE] = array(
                 'interval' => 300,
-                'display' => 'Every 5 Minutes',
+                'display' => __('Every 5 Minutes', 'sams-integration'),
             );
         }
         return $schedules;
