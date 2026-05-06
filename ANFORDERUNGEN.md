@@ -1,7 +1,7 @@
-# ANFORDERUNGEN: WordPress Plugin Tabellen/Ergebnisse/Spielpläne
+# ANFORDERUNGEN: WordPress Plugin Tabellen/Ergebnisse (MVP)
 
-**Status:** Anforderungsphase abgeschlossen (05.05.2026)  
-**Bereit für:** Refinement-Zyklen mit KI-Agenten
+**Status:** MVP-Scope finalisiert (06.05.2026)  
+**Bereit für:** Release und Betrieb
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Produktziel MVP
 
-**Automatisierte, verlässliche Anzeige von Tabellen, Ergebnissen und Spielplänen aus externer API-Quelle.**
+**Automatisierte, verlässliche Anzeige von Tabellen und Ergebnissen aus externer API-Quelle.**
 
 Redakteure im WordPress-Backend konfigurieren Gutenberg-Blöcke mit Liga, Saison und Team. Daten werden automatisch alle 5 Minuten synchronisiert. Bei API-Fehlern wird der letzte gültige Stand mit Hinweisbanner angezeigt.
 
@@ -25,13 +25,13 @@ Sie sehen aktuelle, verifizierte Daten ohne technische Hürden.
 
 - ✓ Externer API-Abruf
 - ✓ 5-Minuten-Caching (WordPress Transients, TTL 5 Min)
-- ✓ Gutenberg-Block-Ausgabe (3 separate Blöcke)
+- ✓ Gutenberg-Block-Ausgabe (2 separate Blöcke: Standings, Results)
 - ✓ Mehrere Ligen und Saisons (pro Block konfigurierbar)
-- ✓ Fallback-Anzeige bei API-Fehlern (letzter Stand + Banner)
+- ✓ Fallback-Anzeige bei API-Fehlern (letzter Stand + Zuletzt-aktualisiert Hinweis)
 
 ### MVP-Scope Out
 
-- ✗ Eigene Spielplan-Generierung
+- ✗ Spielpläne (Schedules Block) – für Phase 2 geplant
 - ✗ CSV-Import/Export
 - ✗ Advanced-Analytics-Historie
 - ✗ Frontend-Live-Ticker
@@ -79,22 +79,16 @@ Block zeigt abgelaufene Spiele mit Endständen. Sortierung nach Spieltag/Datum (
 **AC (Übersicht):**
 - Datum/Paarung/Endstand konsistent zur API ✓
 - Sortierung nach Spieltag/Datum reproduzierbar ✓
-- Fehlende Werte als N/A dargestellt ✓
+- Fehlende Werte als "Unbekannt" dargestellt ✓
 - API-Fehler: Fallback auf letzten Stand ✓
 
-### Feature 3: Spielpläne
-**Status:** Spec in Bearbeitung  
-**Priorität:** P1  
+### Feature 3: Spielpläne (Phase 2)
+**Status:** Out-of-MVP-Scope, für Phase 2 geplant  
+**Priorität:** P2  
 **Datei:** `docs/04_ANFORDERUNGEN_SPIELPLAENE.md`
 
 **Kurzbeschreibung:**  
-Block zeigt kommende Spiele chronologisch. Datum/Zeit nach WordPress-Lokalisierung.
-
-**AC (Übersicht):**
-- Kommende Spiele chronologisch ✓
-- Filter Liga/Saison/Team deterministisch ✓
-- Datum/Zeit nach WordPress-Lokalisierung ✓
-- API-Fehler: letzter Plan mit Banner ✓
+Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 
 ---
 
@@ -102,10 +96,9 @@ Block zeigt kommende Spiele chronologisch. Datum/Zeit nach WordPress-Lokalisieru
 
 ### Gutenberg-Integration
 
-**3 separate Blöcke (nicht ein universeller Block):**
-- Block 1: Tabellen
-- Block 2: Ergebnisse
-- Block 3: Spielpläne
+**2 separate Blöcke (nicht ein universeller Block):**
+- Block 1: Tabellen (Standings)
+- Block 2: Ergebnisse (Results)
 
 **Block-Attribute (konfigurierbar pro Instanz):**
 - Liga (Pflicht)
@@ -135,7 +128,7 @@ Block zeigt kommende Spiele chronologisch. Datum/Zeit nach WordPress-Lokalisieru
 
 **Bei API-Fehler:**
 1. Letzter gültiger Stand aus Transient wird gezeigt
-2. Hinweisbanner: „Daten von [Zeit] – Live-Update fehlgeschlagen"
+2. Subtiler Hinweis: „Zuletzt aktualisiert: [Zeit]" unter Block
 3. Fallback-Reaktionszeit: ≤ 5 Sekunden
 4. Stale-Grenze: max. 24 Stunden, danach degradierter Hinweiszustand
 
@@ -185,41 +178,27 @@ Block zeigt kommende Spiele chronologisch. Datum/Zeit nach WordPress-Lokalisieru
 
 ---
 
-## Nächste Schritte (Roadmap)
+## Nächste Schritte
 
-### Phase: Feature-Deep-Dives (parallel oder sequenziell)
+### MVP ist abgeschlossen
+- ✅ Standings Block implementiert und getestet
+- ✅ Results Block implementiert und getestet
+- ✅ 5-Minuten-Cron-Sync aktiv
+- ✅ API-Key-Verschlüsselung implementiert
+- ✅ Abnahme-Checkliste bereit
 
-1. **Tabellen-Deep-Dive** (90-120 Min)
-   - Konkrete Feldliste + API-Endpunkt klären
-   - Sortier-Regeln finalisieren
-   - Freigabe & Validator-Report
+### Betrieb & Release
+- Cron-Funktion auf Produktivserver testen (siehe [CRON_TESTING.md](CRON_TESTING.md))
+- Manuelle Abnahme durchlaufen (siehe [MVP_ABNAHME_CHECKLISTE.md](MVP_ABNAHME_CHECKLISTE.md))
+- Freigabe an WordPress Plugin-Verzeichnis
 
-2. **Ergebnisse-Deep-Dive** (90-120 Min)
-   - Analog zu Tabellen
-
-3. **Spielpläne-Deep-Dive** (90-120 Min)
-   - Analog zu Tabellen
-
-### Phase: Dependency-Mapping (nach allen Deep-Dives)
-
-- API-Endpunkte konkret dokumentieren
-- Rate-Limits & Retry-Strategie finalisieren
-- `docs/06_INTEGRATIONS_MAP.md` befüllen
-
-### Phase: Freigabe & Übergabe
-
-- Product Owner-Freigabe für jedes Feature
-- Übergabe an Implementierungs-Team
-- Kickoff: 10-Minuten-Readiness-Check
+### Phase 2: Geplante Features (nach MVP-Release)
+1. **Spielpläne-Block** (sik/schedules)
+2. **i18n/Internationalisierung** (Deutsch/Englisch)
+3. **Performance-Optimierungen** (bei Bedarf)
+4. **Advanced Testing** (Unit/Integration Tests)
 
 ---
 
-## Kontakte & Eskalation
-
-- **Product Owner:** Projektverantwortlicher
-- **Escalation:** Bei Gate-Fehlern nach 2 Rework-Loops
-
----
-
-**Zuletzt aktualisiert:** 05.05.2026, 09:00 UTC  
-**Nächste Revalidierung:** Bei Scope-, API-, Security-, AC-Änderung oder nach 14-Tage-Freigabe-Ablauf
+**Zuletzt aktualisiert:** 06.05.2026, 17:00 UTC  
+**MVP-Status:** ✅ Ready for Release
