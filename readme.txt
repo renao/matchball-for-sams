@@ -4,7 +4,7 @@ Tags: standings, results, sports, api, gutenberg
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,10 @@ Service terms and privacy:
 
 == Frequently Asked Questions ==
 
+= Where do I obtain an API key? =
+
+API keys are issued by the relevant regional association or operator of the configured SAMS endpoint. The official provider documentation states that access keys are granted by the association support contact.
+
 = Does the plugin need cron? =
 
 Yes. WP-Cron is used for regular data refresh every 5 minutes.
@@ -60,7 +64,7 @@ The provider documentation is available at https://wiki.sams-server.de/wiki/REST
 
 == Changelog ==
 
-= 0.1.0 =
+= 3.0.0 =
 * Initial public release with Standings and Results blocks
 * 5-minute sync with WP-Cron
 * Encrypted API key storage
@@ -68,5 +72,5 @@ The provider documentation is available at https://wiki.sams-server.de/wiki/REST
 
 == Upgrade Notice ==
 
-= 0.1.0 =
-Initial release.
+= 3.0.0 =
+Major MVP release line for the current plugin generation.

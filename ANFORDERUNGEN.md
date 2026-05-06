@@ -210,6 +210,38 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 4. Security-Selbstcheck ohne offene High-Risk-Befunde
 5. Release-Paket lokal installiert und Smoke-Test bestanden
 
+### WordPress.org Einreichungs-Checkliste
+
+#### Vor der ersten Einreichung
+
+1. Plugin-Version in `sams-integration.php` prüfen (`Version: 3.0.0`)
+2. `Stable tag` in `readme.txt` auf dieselbe Version prüfen
+3. `Contributors` in `readme.txt` mit echtem WordPress.org-Username prüfen
+4. `readme.txt` durch den offiziellen Readme-Validator laufen lassen
+5. Release-ZIP mit `./scripts/create-release-zip.sh` neu erzeugen
+6. ZIP lokal in einer sauberen WordPress-Instanz installieren und aktivieren
+7. Standings-Block und Results-Block einmal vollständig durchtesten
+8. Admin-Seite für Quellen speichern, API-Key-Handling und Cron-Verhalten prüfen
+
+#### Nach Plugin-Freigabe durch WordPress.org
+
+1. Von WordPress.org zugewiesenen Plugin-Slug dokumentieren
+2. SVN-Repository auschecken (`trunk`, `assets`, `tags`)
+3. Inhalt des Release-ZIPs nach `trunk/` kopieren
+4. WordPress.org-Assets aus `wordpress-org-assets/` nach `assets/` kopieren
+5. Optional Screenshots ergänzen und mit `readme.txt` abgleichen
+6. `trunk/readme.txt` und Plugin-Hauptdatei final gegen Version prüfen
+7. Ersten stabilen Release zusätzlich unter `tags/3.0.0/` ablegen
+8. SVN-Commit mit klarer Nachricht durchführen
+
+#### Vor jedem Folge-Release
+
+1. Version in Plugin-Header erhöhen
+2. `Stable tag` in `readme.txt` erhöhen
+3. `== Changelog ==` und `== Upgrade Notice ==` aktualisieren
+4. Release-ZIP neu bauen und lokal installieren
+5. Änderungen in `trunk/` und neuem `tags/<version>/` veröffentlichen
+
 ---
 
 ## Nächste Schritte

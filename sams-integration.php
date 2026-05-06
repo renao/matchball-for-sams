@@ -3,7 +3,7 @@
  * Plugin Name: SAMS Integration
  * Plugin URI: https://codeberg.org/renao/sams-integration
  * Description: Gutenberg blocks for standings and results via SAMS API.
- * Version: 0.1.0
+ * Version: 3.0.0
  * Author: SAMS Integration Team
  * Author URI: https://codeberg.org/renao
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SIK_PLUGIN_VERSION', '0.1.0');
+define('SIK_PLUGIN_VERSION', '3.0.0');
 define('SIK_PLUGIN_FILE', __FILE__);
 define('SIK_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SIK_PLUGIN_URL', plugin_dir_url(__FILE__));
