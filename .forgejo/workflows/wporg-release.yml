@@ -15,8 +15,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends bash zip unzip rsync subversion ca-certificates
+          apt-get update
+          apt-get install -y --no-install-recommends bash zip unzip rsync subversion ca-certificates
 
       - name: Validate required secrets
         env:
