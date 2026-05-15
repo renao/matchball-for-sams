@@ -40,10 +40,3 @@ jobs:
           version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' sams-integration.php | tr -d '[:space:]')"
           test -f "artifacts/releases/sams-integration-${version}.zip"
           ls -lh "artifacts/releases/sams-integration-${version}.zip"
-
-      - name: Upload release artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sams-integration-release-zip
-          path: artifacts/releases/sams-integration-*.zip
-          if-no-files-found: error
