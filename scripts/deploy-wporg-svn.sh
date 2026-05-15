@@ -158,7 +158,7 @@ if [[ -n "$SVN_PASSWORD" ]]; then
 fi
 
 if [[ "$NON_INTERACTIVE" == "true" ]]; then
-  SVN_ARGS+=(--non-interactive --trust-server-cert-failures=unknown-ca,cn-mismatch,expired,not-yet-valid,other)
+  SVN_ARGS+=(--non-interactive '--trust-server-cert-failures=unknown-ca,cn-mismatch,expired,not-yet-valid,other')
 fi
 
 TMP_DIR="$(mktemp -d)"
