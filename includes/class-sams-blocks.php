@@ -80,6 +80,7 @@ class SIK_Blocks {
         return array(
             'sourceId' => array('type' => 'string', 'default' => ''),
             'seasonUuid' => array('type' => 'string', 'default' => ''),
+            'associationUuid' => array('type' => 'string', 'default' => ''),
             'leagueUuid' => array('type' => 'string', 'default' => ''),
             'teamUuid' => array('type' => 'string', 'default' => ''),
         );

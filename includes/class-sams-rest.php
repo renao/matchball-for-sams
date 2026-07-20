@@ -41,7 +41,15 @@ class SIK_Rest {
             'args' => array(
                 'source' => array('required' => true),
                 'season' => array('required' => true),
+                'association' => array('required' => false),
             ),
+        ));
+
+        register_rest_route('sik/v1', '/associations', array(
+            'methods' => 'GET',
+            'permission_callback' => array($this, 'can_edit_posts'),
+            'callback' => array($this, 'get_associations'),
+            'args' => array('source' => array('required' => true)),
         ));
 
         register_rest_route('sik/v1', '/teams', array(
@@ -91,12 +99,31 @@ class SIK_Rest {
         $source_id = sanitize_key($request['source']);
         $season = sanitize_text_field($request['season']);
         $source = $this->sources->get_by_id($source_id);
-        $association = $source && !empty($source['association_uuid']) ? $source['association_uuid'] : '';
+
+        if (!empty($request['association'])) {
+            $association = sanitize_text_field($request['association']);
+        } else {
+            $association = $source && !empty($source['association_uuid']) ? $source['association_uuid'] : '';
+        }
 
         $response = $this->normalize_collection(
             $this->api->get_leagues($source_id, $season, $association),
             'content',
             array('uuid', 'name', 'shortName', 'seasonUuid', 'associationUuid')
+        );
+        $this->add_cache_headers($response, 86400);
+        return $response;
+    }
+
+    public function get_associations($request) {
+        $source_id = sanitize_key($request['source']);
+        $source = $this->sources->get_by_id($source_id);
+        $parent = $source && !empty($source['association_uuid']) ? $source['association_uuid'] : '';
+
+        $response = $this->normalize_collection(
+            $this->api->get_associations($source_id, $parent),
+            'content',
+            array('uuid', 'name', 'shortname', 'level')
         );
         $this->add_cache_headers($response, 86400);
         return $response;

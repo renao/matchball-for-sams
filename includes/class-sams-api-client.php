@@ -21,6 +21,14 @@ class SIK_Api_Client {
         return $this->request($source_id, '/seasons');
     }
 
+    public function get_associations($source_id, $parent_uuid = '') {
+        $query = array('size' => 200);
+        if ($parent_uuid !== '') {
+            $query['association'] = $parent_uuid;
+        }
+        return $this->request($source_id, '/associations', $query);
+    }
+
     public function get_leagues($source_id, $season_uuid, $association_uuid = '') {
         $query = array(
             'season' => $season_uuid,

@@ -100,12 +100,14 @@
 
             var baseSourceOptions = [{ label: __('Select source', 'sams-integration'), value: '' }];
             var baseSeasonOptions = [{ label: __('Select season', 'sams-integration'), value: '' }];
+            var baseAssocOptions = [{ label: __('All state associations', 'sams-integration'), value: '' }];
             var baseLeagueOptions = [{ label: __('Select league', 'sams-integration'), value: '' }];
             var baseTeamOptions = [{ label: __('Optional team', 'sams-integration'), value: '' }];
             var loadingOption = [{ label: __('Loading...', 'sams-integration'), value: '__loading__' }];
 
             var _useState = useState(baseSourceOptions), sourceOptions = _useState[0], setSourceOptions = _useState[1];
             var _useState2 = useState(attrs.sourceId ? loadingOption : baseSeasonOptions), seasonOptions = _useState2[0], setSeasonOptions = _useState2[1];
+            var _useState5 = useState(attrs.sourceId ? loadingOption : baseAssocOptions), assocOptions = _useState5[0], setAssocOptions = _useState5[1];
             var _useState3 = useState(attrs.seasonUuid ? loadingOption : baseLeagueOptions), leagueOptions = _useState3[0], setLeagueOptions = _useState3[1];
             var _useState4 = useState(attrs.leagueUuid ? loadingOption : baseTeamOptions), teamOptions = _useState4[0], setTeamOptions = _useState4[1];
 
@@ -139,6 +141,7 @@
                 var active = true;
                 if (!attrs.sourceId) {
                     setSeasonOptions(baseSeasonOptions);
+                    setAssocOptions(baseAssocOptions);
                     setLeagueOptions(baseLeagueOptions);
                     setTeamOptions(baseTeamOptions);
                     return function () { active = false; };
@@ -158,6 +161,31 @@
                         }
                     });
 
+                setAssocOptions(loadingOption);
+                fetchApi('associations', { source: attrs.sourceId })
+                    .then(function (res) {
+                        if (!active) {
+                            return;
+                        }
+                        var items = res.items || [];
+                        if (items.length === 0) {
+                            setAssocOptions(baseAssocOptions);
+                            return;
+                        }
+                        var mapped = items.map(function (item) {
+                            return { label: item.name || item.uuid, value: item.uuid };
+                        });
+                        mapped.sort(function (a, b) {
+                            return a.label.localeCompare(b.label, 'de', { sensitivity: 'base' });
+                        });
+                        setAssocOptions(baseAssocOptions.concat(mapped));
+                    })
+                    .catch(function () {
+                        if (active) {
+                            setAssocOptions(baseAssocOptions);
+                        }
+                    });
+
                 return function () {
                     active = false;
                 };
@@ -172,7 +200,11 @@
                 }
 
                 setLeagueOptions(loadingOption);
-                fetchApi('leagues', { source: attrs.sourceId, season: attrs.seasonUuid })
+                var leagueParams = { source: attrs.sourceId, season: attrs.seasonUuid };
+                if (attrs.associationUuid) {
+                    leagueParams.association = attrs.associationUuid;
+                }
+                fetchApi('leagues', leagueParams)
                     .then(function (res) {
                         if (!active) {
                             return;
@@ -188,7 +220,7 @@
                 return function () {
                     active = false;
                 };
-            }, [attrs.sourceId, attrs.seasonUuid]);
+            }, [attrs.sourceId, attrs.seasonUuid, attrs.associationUuid]);
 
             useEffect(function () {
                 var active = true;
@@ -231,7 +263,7 @@
                     attrs.sourceId || '',
                     sourceOptions,
                     function (value) {
-                        setAttrs({ sourceId: value, seasonUuid: '', leagueUuid: '', teamUuid: '' });
+                        setAttrs({ sourceId: value, seasonUuid: '', associationUuid: '', leagueUuid: '', teamUuid: '' });
                     }
                 ),
                 createSelectField(
@@ -240,6 +272,14 @@
                     seasonOptions,
                     function (value) {
                         setAttrs({ seasonUuid: value, leagueUuid: '', teamUuid: '' });
+                    }
+                ),
+                createSelectField(
+                    __('State association (optional)', 'sams-integration'),
+                    attrs.associationUuid || '',
+                    assocOptions,
+                    function (value) {
+                        setAttrs({ associationUuid: value, leagueUuid: '', teamUuid: '' });
                     }
                 ),
                 createSelectField(
@@ -274,6 +314,7 @@
             var configItems = [
                 __('Source:', 'sams-integration') + ' ' + findOptionLabel(sourceOptions, attrs.sourceId, __('Not selected', 'sams-integration')),
                 __('Season:', 'sams-integration') + ' ' + findOptionLabel(seasonOptions, attrs.seasonUuid, __('Not selected', 'sams-integration')),
+                __('Association:', 'sams-integration') + ' ' + findOptionLabel(assocOptions, attrs.associationUuid, __('All', 'sams-integration')),
                 __('League:', 'sams-integration') + ' ' + findOptionLabel(leagueOptions, attrs.leagueUuid, __('Not selected', 'sams-integration')),
                 __('Team:', 'sams-integration') + ' ' + findOptionLabel(teamOptions, attrs.teamUuid, __('All teams', 'sams-integration')),
             ];
@@ -310,6 +351,7 @@
             attributes: Object.assign({
                 sourceId: { type: 'string', default: '' },
                 seasonUuid: { type: 'string', default: '' },
+                associationUuid: { type: 'string', default: '' },
                 leagueUuid: { type: 'string', default: '' },
                 teamUuid: { type: 'string', default: '' },
             }, extraAttributes || {}),
