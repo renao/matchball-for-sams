@@ -22,19 +22,17 @@ SIK_API_KEY=YOUR_PRODUCTION_KEY
 docker compose up -d
 ```
 
-## 3) Install WordPress
+WordPress wird automatisch installiert und das Plugin aktiviert. Der `wpcli`-Container führt beim ersten Start `wp core install` aus (mit den Zugangsdaten aus `.env`) und aktiviert das Plugin. Der Fortschritt ist in den Logs sichtbar:
 
-Open:
+```bash
+docker compose logs -f wpcli
+```
 
-- http://localhost:8080
+## 3) Login
 
-Complete the setup wizard.
+Öffne http://localhost:8080/wp-admin und melde dich mit den in `.env` konfigurierten Zugangsdaten an (Standard: `admin` / `admin`).
 
-## 4) Activate plugin
-
-Go to `Plugins` and activate `SAMS Integration KI`.
-
-## 5) Configure source
+## 4) Configure source
 
 Go to `Settings -> SAMS Sources`.
 

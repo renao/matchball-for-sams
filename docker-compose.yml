@@ -32,6 +32,64 @@ services:
     volumes:
       - wp_data:/var/www/html
       - ./:/var/www/html/wp-content/plugins/sams-integration
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /var/www/html/wp-includes/version.php"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 20s
+
+  wpcli:
+    image: wordpress:cli-php8.2
+    container_name: ${COMPOSE_PROJECT_NAME:-sams-integration}_wpcli
+    depends_on:
+      wordpress:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
+      WP_HOME: ${WP_HOME:-http://localhost:8080}
+      WP_TITLE: ${WP_TITLE:-SAMS Integration Dev}
+      WP_ADMIN_USER: ${WP_ADMIN_USER:-admin}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD:-admin}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL:-admin@example.local}
+      SIK_SOURCE_ID: ${SIK_SOURCE_ID:-sams-v2}
+      SIK_SEASON_UUID: ${SIK_SEASON_UUID:-}
+      SIK_LEAGUE_UUID: ${SIK_LEAGUE_UUID:-}
+      SIK_TEAM_UUID: ${SIK_TEAM_UUID:-}
+    volumes:
+      - wp_data:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/sams-integration
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        if wp core is-installed 2>/dev/null; then
+          echo "WordPress already installed, skipping setup."
+        else
+          wp core install \
+            --url="$$WP_HOME" \
+            --title="$$WP_TITLE" \
+            --admin_user="$$WP_ADMIN_USER" \
+            --admin_password="$$WP_ADMIN_PASSWORD" \
+            --admin_email="$$WP_ADMIN_EMAIL" \
+            --skip-email
+        fi
+        wp plugin activate sams-integration
+        if wp post list --post_type=page --post_status=any --name=sams-demo --format=ids 2>/dev/null | grep -q .; then
+          echo "Demo page already exists, skipping."
+        else
+          DEMO_CONTENT="<!-- wp:heading --><h2 class=\"wp-block-heading\">Tabelle</h2><!-- /wp:heading --><!-- wp:sik/standings {\"sourceId\":\"$$SIK_SOURCE_ID\",\"seasonUuid\":\"$$SIK_SEASON_UUID\",\"leagueUuid\":\"$$SIK_LEAGUE_UUID\",\"teamUuid\":\"$$SIK_TEAM_UUID\"} /--><!-- wp:heading --><h2 class=\"wp-block-heading\">Ergebnisse / Spielplan</h2><!-- /wp:heading --><!-- wp:sik/results {\"sourceId\":\"$$SIK_SOURCE_ID\",\"seasonUuid\":\"$$SIK_SEASON_UUID\",\"leagueUuid\":\"$$SIK_LEAGUE_UUID\",\"teamUuid\":\"$$SIK_TEAM_UUID\",\"includeFuture\":true} /-->"
+          wp post create \
+            --post_type=page \
+            --post_title="SAMS Demo" \
+            --post_name=sams-demo \
+            --post_status=publish \
+            --post_content="$$DEMO_CONTENT"
+          echo "Demo-Seite erstellt: $$WP_HOME/sams-demo/"
+        fi
 
 volumes:
   db_data:
