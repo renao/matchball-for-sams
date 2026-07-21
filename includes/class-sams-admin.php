@@ -125,7 +125,9 @@ class SIK_Admin {
 
         echo '<table class="widefat striped">';
         echo '<thead><tr>';
-    echo '<th>' . esc_html__('ID', 'sams-integration') . '</th><th>' . esc_html__('Name', 'sams-integration') . '</th><th>' . esc_html__('Base URL', 'sams-integration') . '</th><th>' . esc_html__('API Key', 'sams-integration') . '</th><th>' . esc_html__('Association UUID', 'sams-integration') . '</th><th>' . esc_html__('Active', 'sams-integration') . '</th><th>' . esc_html__('Default', 'sams-integration') . '</th>';
+    echo '<th>' . esc_html__('ID', 'sams-integration') . '</th><th>' . esc_html__('Name', 'sams-integration') . '</th><th>' . esc_html__('Base URL', 'sams-integration') . '</th><th>' . esc_html__('API Key', 'sams-integration') . '</th>';
+    echo '<th>' . esc_html__('Top-level association UUID', 'sams-integration') . '<br><small style="font-weight:normal">' . esc_html__('Scopes this source: limits cron pre-fetch, match results filter, and the association picker in blocks', 'sams-integration') . '</small></th>';
+    echo '<th>' . esc_html__('Active', 'sams-integration') . '</th><th>' . esc_html__('Default', 'sams-integration') . '</th>';
         echo '</tr></thead><tbody>';
 
         foreach ($sources as $index => $source) {
@@ -140,7 +142,10 @@ class SIK_Admin {
                 echo '<p><small>' . esc_html__('Using server-side key override.', 'sams-integration') . '</small></p>';
             }
             echo '</td>';
-            echo '<td><input type="text" size="24" name="' . esc_attr($prefix . '[association_uuid]') . '" value="' . esc_attr($source['association_uuid']) . '" /></td>';
+            echo '<td>';
+            echo '<input type="text" size="24" name="' . esc_attr($prefix . '[association_uuid]') . '" value="' . esc_attr($source['association_uuid']) . '" aria-describedby="assoc-help-' . esc_attr((string) $index) . '" />';
+            echo '<p class="description" id="assoc-help-' . esc_attr((string) $index) . '" style="margin-top:4px">' . esc_html__('UUID of the parent/top-level association from SAMS. Leave empty if the API key already limits the scope. This is not the same as the per-block association filter used by editors.', 'sams-integration') . '</p>';
+            echo '</td>';
             echo '<td><input type="checkbox" name="' . esc_attr($prefix . '[is_active]') . '" value="1" ' . checked(!empty($source['is_active']), true, false) . ' /></td>';
             echo '<td><input type="radio" name="default_source" value="' . esc_attr($source['id']) . '" ' . checked(!empty($source['is_default']), true, false) . ' /></td>';
             echo '</tr>';

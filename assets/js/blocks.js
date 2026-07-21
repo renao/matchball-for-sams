@@ -248,13 +248,17 @@
                 };
             }, [attrs.sourceId, attrs.leagueUuid]);
 
-            function createSelectField(label, value, options, onChange) {
-                return el(SelectControl, {
+            function createSelectField(label, value, options, onChange, help) {
+                var props = {
                     label: label,
                     value: value || '',
                     options: options,
                     onChange: onChange,
-                });
+                };
+                if (help) {
+                    props.help = help;
+                }
+                return el(SelectControl, props);
             }
 
             var controls = [
@@ -280,7 +284,8 @@
                     assocOptions,
                     function (value) {
                         setAttrs({ associationUuid: value, leagueUuid: '', teamUuid: '' });
-                    }
+                    },
+                    __('Filters the league list to a single state association (Landesverband). The available options are determined by the top-level association configured on the data source.', 'sams-integration')
                 ),
                 createSelectField(
                     __('League', 'sams-integration'),
