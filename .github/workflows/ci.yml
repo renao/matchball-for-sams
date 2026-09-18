@@ -7,15 +7,15 @@ on:
 
 jobs:
   quality-and-build:
-    runs-on: forgejo-docker
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y --no-install-recommends php-cli shellcheck bash zip unzip rsync ca-certificates
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends php-cli shellcheck bash zip unzip rsync ca-certificates
 
       - name: PHP syntax check
         run: |
@@ -27,7 +27,7 @@ jobs:
 
       - name: Version consistency check
         run: |
-          plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' sams-integration.php | tr -d '[:space:]')"
+          plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
           readme_version="$(awk -F': ' 'tolower($1)=="stable tag" {print $2; exit}' readme.txt | tr -d '[:space:]')"
           test -n "$plugin_version"
           test -n "$readme_version"
@@ -37,6 +37,6 @@ jobs:
       - name: Build release zip
         run: |
           bash ./scripts/create-release-zip.sh
-          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' sams-integration.php | tr -d '[:space:]')"
-          test -f "artifacts/releases/sams-integration-${version}.zip"
-          ls -lh "artifacts/releases/sams-integration-${version}.zip"
+          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
+          test -f "artifacts/releases/easy-sams-${version}.zip"
+          ls -lh "artifacts/releases/easy-sams-${version}.zip"

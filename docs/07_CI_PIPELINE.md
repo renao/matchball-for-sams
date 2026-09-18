@@ -1,127 +1,92 @@
-# CI Pipeline (Codeberg)
+# CI Pipeline (GitHub Actions)
 
-Es gibt zwei moegliche CI-Systeme auf Codeberg:
+This project uses **GitHub Actions** for continuous integration and release automation.
 
-- Forgejo Actions (Workflows in `.forgejo/workflows/*.yml`)
-- Woodpecker CI (Dateien `.woodpecker*.yml`)
+## Workflow files
 
-Wenn bei euch kein Woodpecker-Projekt aktiviert ist, starten `.woodpecker*.yml` Dateien nicht. In diesem Fall sind Forgejo-Workflows der richtige Weg.
+- `.github/workflows/ci.yml` — Quality checks and release artifact build
+- `.github/workflows/wporg-release.yml` — Manual deployment to WordPress.org SVN
 
-## Dateien
+## Triggers
 
-- Forgejo Actions:
-	- `.forgejo/workflows/ci.yml`
-	- `.forgejo/workflows/wporg-release.yml`
-- Woodpecker (optional/alternativ):
-	- `.woodpecker.yml`
-	- `.woodpecker-release.yml`
+The CI workflow runs on:
 
-## Trigger
+- Push to any branch
+- Pull requests
+- Manual start (`workflow_dispatch`)
 
-Die Forgejo-CI laeuft bei:
+The release workflow runs on:
 
-- Push
-- Pull Request
-- Manueller Start (`workflow_dispatch`)
+- Manual start (`workflow_dispatch`) only
+- Only on the `main` branch
 
-Die Forgejo-Release-Pipeline laeuft bei:
+## Runners
 
-- Manuellem Start (`workflow_dispatch`)
-- nur fuer Branch `main`
+All jobs use GitHub-hosted runners:
 
-## Runner-Label
+- `ubuntu-latest`
 
-Die Forgejo-Workflows verwenden ein eindeutiges Label:
+No self-hosted runner is required.
 
-- `forgejo-docker`
+## CI jobs
 
-Dieses Label muss am Runner konfiguriert sein, sonst bleiben Jobs in der Queue.
+### 1. PHP syntax check
 
-Die Forgejo-Release-Pipeline laeuft bei:
+Runs `php -l` on every `*.php` file except files under `artifacts/`.
 
-- Manuellem Start (`workflow_dispatch`)
-- nur fuer Branch `main`
+### 2. Shell script lint
 
-## Jobs
+Runs `shellcheck` on all scripts in `scripts/`.
 
-1. `php_syntax`
-- Prueft alle PHP-Dateien mit `php -l`.
+### 3. Version consistency check
 
-2. `shell_lint`
-- Prueft alle Skripte in `scripts/` mit `shellcheck`.
+Compares the `Version` header in `easy-sams.php` with the `Stable tag` in `readme.txt`. Both must be equal and non-empty.
 
-3. `release_consistency`
-- Vergleicht Plugin-Version aus `easy-sams.php` mit `Stable tag` aus `readme.txt`.
+### 4. Build release zip
 
-4. `build_release_zip`
-- Baut das Release-ZIP ueber `scripts/create-release-zip.sh`.
-- Verifiziert, dass `artifacts/releases/sams-integration-<version>.zip` existiert.
+Runs `scripts/create-release-zip.sh` and verifies that `artifacts/releases/easy-sams-<version>.zip` exists.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-5. `deploy-to-wporg-svn` (Forgejo, Datei `.forgejo/workflows/wporg-release.yml`)
-- Startet manuell (`workflow_dispatch`) auf `main`.
-=======
-5. `wporg_svn_release` (separate Datei `.woodpecker-release.yml`)
-- Startet nur manuell als Deployment (`target=wporg-release`) auf `main`.
->>>>>>> 83c7127 (CI: add manual Codeberg deployment pipeline for WP.org SVN)
-=======
-5. `deploy-to-wporg-svn` (Forgejo, Datei `.forgejo/workflows/wporg-release.yml`)
-- Startet manuell (`workflow_dispatch`) auf `main`.
->>>>>>> a3ddad6 (CI: add Forgejo workflow support for Codeberg actions)
-- Fuehrt `scripts/deploy-wporg-svn.sh --non-interactive --commit` aus.
-- Verwendet Secrets fuer SVN-Authentifizierung.
+## Release job
 
-## Benoetigte Secrets
+`deploy-to-wporg-svn` in `.github/workflows/wporg-release.yml`:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-Fuer den Forgejo-Release-Deploy-Job:
+- Checks out the repository
+- Installs bash, zip, unzip, rsync, and subversion
+- Validates that `WPORG_SVN_USERNAME` and `WPORG_SVN_PASSWORD` secrets are set
+- Runs `scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release <version>"`
+
+## Required secrets
+
+Configure the following secrets in the GitHub repository (recommended: scoped to a `production` environment with protection rules):
 
 - `WPORG_SVN_USERNAME`
 - `WPORG_SVN_PASSWORD`
 
-Hinweis: Die Schreibweise ist in Forgejo/Gitea ueblicherweise uppercase.
+Add them via **Settings → Secrets and variables → Actions** (or in the `production` environment).
 
-## Manueller Release-Start (Forgejo Actions)
+## Manual release start
 
-1. In Codeberg den Workflow `WP.org Release Deploy` oeffnen.
-2. `Run workflow` auf Branch `main` starten.
-3. Job-Log pruefen.
-=======
-Fuer den Release-Deploy-Job:
-=======
-Fuer den Forgejo-Release-Deploy-Job:
->>>>>>> a3ddad6 (CI: add Forgejo workflow support for Codeberg actions)
+1. Go to the **Actions** tab in the GitHub repository.
+2. Select **WP.org Release Deploy**.
+3. Click **Run workflow**, choose branch `main`, and start the workflow.
+4. Review the job log.
 
-- `WPORG_SVN_USERNAME`
-- `WPORG_SVN_PASSWORD`
+## Local CI simulation
 
-Hinweis: Die Schreibweise ist in Forgejo/Gitea ueblicherweise uppercase.
+You can run the same checks locally before pushing:
 
-## Manueller Release-Start (Forgejo Actions)
+```bash
+# PHP syntax
+find . -type f -name "*.php" -not -path "./artifacts/*" -print0 | xargs -0 -n1 php -l
 
-<<<<<<< HEAD
-1. In Woodpecker ein Deployment fuer Branch `main` starten.
-2. Als Target `wporg-release` waehlen.
-3. Pipeline ausfuehren und Job-Log pruefen.
->>>>>>> 83c7127 (CI: add manual Codeberg deployment pipeline for WP.org SVN)
-=======
-1. In Codeberg den Workflow `WP.org Release Deploy` oeffnen.
-2. `Run workflow` auf Branch `main` starten.
-3. Job-Log pruefen.
->>>>>>> a3ddad6 (CI: add Forgejo workflow support for Codeberg actions)
+# Shell lint
+shellcheck scripts/*.sh
 
-## Runner-Hinweise
+# Version consistency
+plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
+readme_version="$(awk -F': ' 'tolower($1)=="stable tag" {print $2; exit}' readme.txt | tr -d '[:space:]')"
+test "$plugin_version" = "$readme_version" && echo "Version check passed: $plugin_version"
 
-Empfehlung fuer self-hosted Runner:
-
-- Docker-faehiger Linux-Runner
-- Internetzugriff fuer Container-Images
-- Keine Secrets fuer die Basis-Pipeline noetig
-
-## Naechste Ausbaustufen
-
-1. Optionaler PHPCS-Job (WordPress Coding Standards) nach Einfuehrung von Composer-Konfiguration.
-2. Optionaler Docker-Smoke-Test gegen WordPress.
-3. Optionaler Step zur Signatur/Checksum-Generierung fuer Release-Artefakte.
+# Build release zip
+bash ./scripts/create-release-zip.sh
+```

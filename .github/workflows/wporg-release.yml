@@ -5,7 +5,7 @@ on:
 
 jobs:
   deploy-to-wporg-svn:
-    runs-on: forgejo-docker
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment:
       name: production
@@ -15,8 +15,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y --no-install-recommends bash zip unzip rsync subversion ca-certificates
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends bash zip unzip rsync subversion ca-certificates
 
       - name: Validate required secrets
         env:
@@ -32,5 +32,5 @@ jobs:
           WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
           WPORG_SVN_NON_INTERACTIVE: "true"
         run: |
-          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' sams-integration.php | tr -d '[:space:]')"
+          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
           bash ./scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release ${version}"
