@@ -51,7 +51,7 @@ Die Forgejo-Release-Pipeline laeuft bei:
 - Prueft alle Skripte in `scripts/` mit `shellcheck`.
 
 3. `release_consistency`
-- Vergleicht Plugin-Version aus `sams-integration.php` mit `Stable tag` aus `readme.txt`.
+- Vergleicht Plugin-Version aus `easy-sams.php` mit `Stable tag` aus `readme.txt`.
 
 4. `build_release_zip`
 - Baut das Release-ZIP ueber `scripts/create-release-zip.sh`.

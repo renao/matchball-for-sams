@@ -4,11 +4,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class SIK_Rest {
-    /** @var SIK_Source_Repository */
+class ESAMS_Rest {
+    /** @var ESAMS_Source_Repository */
     private $sources;
 
-    /** @var SIK_Api_Client */
+    /** @var ESAMS_Api_Client */
     private $api;
 
     public function __construct($sources, $api) {
@@ -21,20 +21,20 @@ class SIK_Rest {
     }
 
     public function register_routes() {
-        register_rest_route('sik/v1', '/sources', array(
+        register_rest_route('esams/v1', '/sources', array(
             'methods' => 'GET',
             'permission_callback' => array($this, 'can_edit_posts'),
             'callback' => array($this, 'get_sources'),
         ));
 
-        register_rest_route('sik/v1', '/seasons', array(
+        register_rest_route('esams/v1', '/seasons', array(
             'methods' => 'GET',
             'permission_callback' => array($this, 'can_edit_posts'),
             'callback' => array($this, 'get_seasons'),
             'args' => array('source' => array('required' => true)),
         ));
 
-        register_rest_route('sik/v1', '/leagues', array(
+        register_rest_route('esams/v1', '/leagues', array(
             'methods' => 'GET',
             'permission_callback' => array($this, 'can_edit_posts'),
             'callback' => array($this, 'get_leagues'),
@@ -45,14 +45,14 @@ class SIK_Rest {
             ),
         ));
 
-        register_rest_route('sik/v1', '/associations', array(
+        register_rest_route('esams/v1', '/associations', array(
             'methods' => 'GET',
             'permission_callback' => array($this, 'can_edit_posts'),
             'callback' => array($this, 'get_associations'),
             'args' => array('source' => array('required' => true)),
         ));
 
-        register_rest_route('sik/v1', '/teams', array(
+        register_rest_route('esams/v1', '/teams', array(
             'methods' => 'GET',
             'permission_callback' => array($this, 'can_edit_posts'),
             'callback' => array($this, 'get_teams'),

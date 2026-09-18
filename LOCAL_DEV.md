@@ -11,9 +11,9 @@ cp .env.example .env
 Set your productive API key in `.env` (do not commit this file):
 
 ```env
-SIK_API_KEY=YOUR_PRODUCTION_KEY
+ESAMS_API_KEY=YOUR_PRODUCTION_KEY
 # or source-specific
-# SIK_API_KEY_SAMS_V2=YOUR_PRODUCTION_KEY
+# ESAMS_API_KEY_SAMS_V2=YOUR_PRODUCTION_KEY
 ```
 
 ## 2) Start WordPress

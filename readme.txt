@@ -1,4 +1,4 @@
-=== SAMS Integration ===
+=== Easy SAMS ===
 Contributors: renao
 Tags: standings, results, sports, api, gutenberg
 Requires at least: 6.0
@@ -8,11 +8,11 @@ Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Gutenberg blocks for standings and results via SAMS API with 5-minute sync and fallback cache.
+Gutenberg blocks for standings and results via SAMS API with 5-minute sync and fallback cache. Successor of the SAMS Integration plugin.
 
 == Description ==
 
-SAMS Integration provides two Gutenberg blocks for sports websites:
+Easy SAMS provides two Gutenberg blocks for sports websites:
 
 * Standings block (league table)
 * Results block (finished matches)
@@ -36,7 +36,7 @@ Service terms and privacy:
 == Installation ==
 
 1. Upload the plugin folder to /wp-content/plugins/ or install the ZIP via Plugins > Add New > Upload Plugin.
-2. Activate SAMS Integration in the WordPress admin.
+2. Activate Easy SAMS in the WordPress admin.
 3. Open SAMS Sources in admin and add at least one source (base URL and API key).
 4. Insert a Standings or Results block in Gutenberg and configure source, season, and league.
 

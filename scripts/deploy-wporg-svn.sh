@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_SLUG="sams-integration"
+PLUGIN_SLUG="easy-sams"
 SVN_URL=""
 SVN_WORK_DIR="$ROOT_DIR/artifacts/wporg-svn"
 RELEASE_ZIP=""
@@ -20,7 +20,7 @@ Usage:
   ./scripts/deploy-wporg-svn.sh [options]
 
 Options:
-  --slug <slug>             WordPress.org plugin slug (default: sams-integration)
+  --slug <slug>             WordPress.org plugin slug (default: easy-sams)
   --svn-url <url>           Full SVN URL (default: https://plugins.svn.wordpress.org/<slug>)
   --work-dir <path>         Local SVN working copy path (default: artifacts/wporg-svn/<slug>)
   --zip <path>              Release zip path (default: artifacts/releases/<slug>-<version>.zip)
@@ -54,9 +54,9 @@ require_cmd() {
   fi
 }
 
-VERSION_FROM_PLUGIN="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' "$ROOT_DIR/sams-integration.php" | tr -d '[:space:]')"
+VERSION_FROM_PLUGIN="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' "$ROOT_DIR/easy-sams.php" | tr -d '[:space:]')"
 if [[ -z "$VERSION_FROM_PLUGIN" ]]; then
-  echo "Could not read plugin version from sams-integration.php"
+  echo "Could not read plugin version from easy-sams.php"
   exit 1
 fi
 

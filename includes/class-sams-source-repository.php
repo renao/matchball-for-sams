@@ -4,9 +4,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class SIK_Source_Repository {
-    private const OPTION_KEY = 'sik_sources';
-    private const API_KEY_PREFIX = 'sikenc:v1';
+class ESAMS_Source_Repository {
+    private const OPTION_KEY = 'esams_sources';
+    private const API_KEY_PREFIX = 'esamsenc:v1';
 
     public function get_all() {
         $sources = get_option(self::OPTION_KEY, array());
@@ -256,11 +256,11 @@ class SIK_Source_Repository {
     private function crypto_key() {
         $material = '';
 
-        $env_key = getenv('SIK_ENCRYPTION_KEY');
+        $env_key = getenv('ESAMS_ENCRYPTION_KEY');
         if (is_string($env_key) && trim($env_key) !== '') {
             $material = $env_key;
-        } elseif (defined('SIK_ENCRYPTION_KEY') && trim((string) constant('SIK_ENCRYPTION_KEY')) !== '') {
-            $material = (string) constant('SIK_ENCRYPTION_KEY');
+        } elseif (defined('ESAMS_ENCRYPTION_KEY') && trim((string) constant('ESAMS_ENCRYPTION_KEY')) !== '') {
+            $material = (string) constant('ESAMS_ENCRYPTION_KEY');
         } elseif (function_exists('wp_salt')) {
             $material = wp_salt('secure_auth') . '|' . wp_salt('auth');
         } elseif (defined('SECURE_AUTH_KEY') || defined('AUTH_KEY')) {
@@ -306,19 +306,19 @@ class SIK_Source_Repository {
             return true;
         }
 
-        if (defined('SIK_API_KEYS') && is_array(constant('SIK_API_KEYS'))) {
-            $map = constant('SIK_API_KEYS');
+        if (defined('ESAMS_API_KEYS') && is_array(constant('ESAMS_API_KEYS'))) {
+            $map = constant('ESAMS_API_KEYS');
             if (isset($map[$source_id]) && trim((string) $map[$source_id]) !== '') {
                 return true;
             }
         }
 
-        $env_global = getenv('SIK_API_KEY');
+        $env_global = getenv('ESAMS_API_KEY');
         if (is_string($env_global) && trim($env_global) !== '') {
             return true;
         }
 
-        if (defined('SIK_API_KEY') && trim((string) constant('SIK_API_KEY')) !== '') {
+        if (defined('ESAMS_API_KEY') && trim((string) constant('ESAMS_API_KEY')) !== '') {
             return true;
         }
 
@@ -339,31 +339,31 @@ class SIK_Source_Repository {
                 return sanitize_text_field((string) constant($const_specific));
             }
 
-            if (defined('SIK_API_KEYS') && is_array(constant('SIK_API_KEYS'))) {
-                $map = constant('SIK_API_KEYS');
+            if (defined('ESAMS_API_KEYS') && is_array(constant('ESAMS_API_KEYS'))) {
+                $map = constant('ESAMS_API_KEYS');
                 if (isset($map[$source_id]) && trim((string) $map[$source_id]) !== '') {
                     return sanitize_text_field((string) $map[$source_id]);
                 }
             }
         }
 
-        $env_global = getenv('SIK_API_KEY');
+        $env_global = getenv('ESAMS_API_KEY');
         if (is_string($env_global) && trim($env_global) !== '') {
             return sanitize_text_field($env_global);
         }
 
-        if (defined('SIK_API_KEY') && trim((string) constant('SIK_API_KEY')) !== '') {
-            return sanitize_text_field((string) constant('SIK_API_KEY'));
+        if (defined('ESAMS_API_KEY') && trim((string) constant('ESAMS_API_KEY')) !== '') {
+            return sanitize_text_field((string) constant('ESAMS_API_KEY'));
         }
 
         return $db_api_key;
     }
 
     private function specific_env_name($source_id) {
-        return 'SIK_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
+        return 'ESAMS_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
     }
 
     private function specific_const_name($source_id) {
-        return 'SIK_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
+        return 'ESAMS_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
     }
 }

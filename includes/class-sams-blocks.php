@@ -4,11 +4,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class SIK_Blocks {
-    /** @var SIK_Source_Repository */
+class ESAMS_Blocks {
+    /** @var ESAMS_Source_Repository */
     private $sources;
 
-    /** @var SIK_Api_Client */
+    /** @var ESAMS_Api_Client */
     private $api;
 
     public function __construct($sources, $api) {
@@ -23,13 +23,13 @@ class SIK_Blocks {
     }
 
     public function register_blocks() {
-        register_block_type('sik/standings', array(
+        register_block_type('esams/standings', array(
             'api_version' => 2,
             'render_callback' => array($this, 'render_standings'),
             'attributes' => $this->base_attributes(),
         ));
 
-        register_block_type('sik/results', array(
+        register_block_type('esams/results', array(
             'api_version' => 2,
             'render_callback' => array($this, 'render_results'),
             'attributes' => array_merge($this->base_attributes(), array(
@@ -40,37 +40,37 @@ class SIK_Blocks {
     }
 
     public function enqueue_editor_assets() {
-        $script_path = SIK_PLUGIN_DIR . 'assets/js/blocks.js';
-        $script_version = file_exists($script_path) ? filemtime($script_path) : SIK_PLUGIN_VERSION;
+        $script_path = ESAMS_PLUGIN_DIR . 'assets/js/blocks.js';
+        $script_version = file_exists($script_path) ? filemtime($script_path) : ESAMS_PLUGIN_VERSION;
 
         // Enqueue editor styles for SAMS blocks
-        $style_path = SIK_PLUGIN_DIR . 'assets/css/editor.css';
-        $style_version = file_exists($style_path) ? filemtime($style_path) : SIK_PLUGIN_VERSION;
-        wp_enqueue_style('sik-editor', SIK_PLUGIN_URL . 'assets/css/editor.css', array(), $style_version);
+        $style_path = ESAMS_PLUGIN_DIR . 'assets/css/editor.css';
+        $style_version = file_exists($style_path) ? filemtime($style_path) : ESAMS_PLUGIN_VERSION;
+        wp_enqueue_style('esams-editor', ESAMS_PLUGIN_URL . 'assets/css/editor.css', array(), $style_version);
 
         wp_enqueue_script(
-            'sik-blocks',
-            SIK_PLUGIN_URL . 'assets/js/blocks.js',
+            'esams-blocks',
+            ESAMS_PLUGIN_URL . 'assets/js/blocks.js',
             array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-block-editor', 'wp-api-fetch', 'wp-i18n'),
             $script_version,
             true
         );
 
-        wp_set_script_translations('sik-blocks', 'sams-integration');
+        wp_set_script_translations('esams-blocks', 'easy-sams');
 
-        wp_localize_script('sik-blocks', 'sikConfig', array(
-            'root' => esc_url_raw(rest_url('sik/v1/')),
+        wp_localize_script('esams-blocks', 'esamsConfig', array(
+            'root' => esc_url_raw(rest_url('esams/v1/')),
             'nonce' => wp_create_nonce('wp_rest'),
         ));
     }
 
     public function enqueue_frontend_assets() {
-        $style_path = SIK_PLUGIN_DIR . 'assets/css/frontend.css';
-        $style_version = file_exists($style_path) ? filemtime($style_path) : SIK_PLUGIN_VERSION;
+        $style_path = ESAMS_PLUGIN_DIR . 'assets/css/frontend.css';
+        $style_version = file_exists($style_path) ? filemtime($style_path) : ESAMS_PLUGIN_VERSION;
 
         wp_enqueue_style(
-            'sik-frontend',
-            SIK_PLUGIN_URL . 'assets/css/frontend.css',
+            'esams-frontend',
+            ESAMS_PLUGIN_URL . 'assets/css/frontend.css',
             array(),
             $style_version
         );
@@ -92,25 +92,25 @@ class SIK_Blocks {
         $team_uuid = isset($attributes['teamUuid']) ? sanitize_text_field($attributes['teamUuid']) : '';
 
         if ($source_id === '' || $league_uuid === '') {
-            return $this->notice(__('Please configure source, season, and league.', 'sams-integration'));
+            return $this->notice(__('Please configure source, season, and league.', 'easy-sams'));
         }
 
         $result = $this->api->get_rankings($source_id, $league_uuid);
         if (empty($result['ok'])) {
-            return $this->notice(__('Standings unavailable.', 'sams-integration'));
+            return $this->notice(__('Standings unavailable.', 'easy-sams'));
         }
 
         $rows = isset($result['data']['content']) && is_array($result['data']['content']) ? $result['data']['content'] : array();
         if (empty($rows)) {
-            return $this->notice(__('No standings data available for this selection.', 'sams-integration'));
+            return $this->notice(__('No standings data available for this selection.', 'easy-sams'));
         }
 
         ob_start();
-        echo '<div class="sik-block sik-standings">';
-        echo '<div class="sik-table-scroll">';
-        echo '<table class="sik-table sik-standings__table">';
-        echo '<caption class="screen-reader-text">' . esc_html__('Standings', 'sams-integration') . '</caption>';
-        echo '<thead><tr><th scope="col">' . esc_html__('Rank', 'sams-integration') . '</th><th scope="col">' . esc_html__('Team', 'sams-integration') . '</th><th scope="col">' . esc_html__('Played', 'sams-integration') . '</th><th scope="col">' . esc_html__('Balls', 'sams-integration') . '</th><th scope="col">' . esc_html__('Points', 'sams-integration') . '</th></tr></thead><tbody>';
+        echo '<div class="esams-block esams-standings">';
+        echo '<div class="esams-table-scroll">';
+        echo '<table class="esams-table esams-standings__table">';
+        echo '<caption class="screen-reader-text">' . esc_html__('Standings', 'easy-sams') . '</caption>';
+        echo '<thead><tr><th scope="col">' . esc_html__('Rank', 'easy-sams') . '</th><th scope="col">' . esc_html__('Team', 'easy-sams') . '</th><th scope="col">' . esc_html__('Played', 'easy-sams') . '</th><th scope="col">' . esc_html__('Balls', 'easy-sams') . '</th><th scope="col">' . esc_html__('Points', 'easy-sams') . '</th></tr></thead><tbody>';
         foreach ($rows as $row) {
             $rank = isset($row['rank']) ? $row['rank'] : '';
             $team_name = isset($row['teamName']) ? $row['teamName'] : '';
@@ -133,15 +133,15 @@ class SIK_Blocks {
             $is_selected_team = $team_uuid !== '' && $row_team_uuid === $team_uuid;
 
             echo '<tr' . ($is_selected_team ? ' class="is-selected-team"' : '') . '>';
-            echo '<td class="sik-standings__rank">' . esc_html($rank) . '</td>';
-            echo '<td class="sik-standings__team">' . esc_html($team_name);
+            echo '<td class="esams-standings__rank">' . esc_html($rank) . '</td>';
+            echo '<td class="esams-standings__team">' . esc_html($team_name);
             if ($is_selected_team) {
-                echo ' <span class="screen-reader-text">' . esc_html__('(selected team)', 'sams-integration') . '</span>';
+                echo ' <span class="screen-reader-text">' . esc_html__('(selected team)', 'easy-sams') . '</span>';
             }
             echo '</td>';
-            echo '<td class="sik-standings__played">' . esc_html($matches_played) . '</td>';
-            echo '<td class="sik-standings__balls">' . esc_html($balls_display) . '</td>';
-            echo '<td class="sik-standings__points">' . esc_html($points) . '</td>';
+            echo '<td class="esams-standings__played">' . esc_html($matches_played) . '</td>';
+            echo '<td class="esams-standings__balls">' . esc_html($balls_display) . '</td>';
+            echo '<td class="esams-standings__points">' . esc_html($points) . '</td>';
             echo '</tr>';
         }
         echo '</tbody></table></div>';
@@ -157,7 +157,7 @@ class SIK_Blocks {
         $team_uuid = isset($attributes['teamUuid']) ? sanitize_text_field($attributes['teamUuid']) : '';
 
         if ($source_id === '' || $season_uuid === '' || $league_uuid === '') {
-            return $this->notice(__('Please configure source, season, and league.', 'sams-integration'));
+            return $this->notice(__('Please configure source, season, and league.', 'easy-sams'));
         }
 
         $source = $this->sources->get_by_id($source_id);
@@ -174,12 +174,12 @@ class SIK_Blocks {
 
         $result = $this->api->get_matches($source_id, $filters);
         if (empty($result['ok'])) {
-            return $this->notice(__('Results unavailable.', 'sams-integration'));
+            return $this->notice(__('Results unavailable.', 'easy-sams'));
         }
 
         $rows = isset($result['data']['content']) && is_array($result['data']['content']) ? $result['data']['content'] : array();
         if (empty($rows)) {
-            return $this->notice(__('No results available for this selection.', 'sams-integration'));
+            return $this->notice(__('No results available for this selection.', 'easy-sams'));
         }
 
         $now = current_time('timestamp', true);
@@ -207,17 +207,17 @@ class SIK_Blocks {
         }
 
         ob_start();
-        echo '<div class="sik-block sik-results">';
-        echo '<ul class="sik-match-list">';
+        echo '<div class="esams-block esams-results">';
+        echo '<ul class="esams-match-list">';
         foreach ($filtered as $row) {
             $timestamp = isset($row['date']) ? strtotime($row['date']) : false;
             $date_label = $timestamp ? esc_html(wp_date(get_option('date_format'), $timestamp)) : '';
-            $time_suffix = ' ' . esc_html__('Uhr', 'sams-integration');
+            $time_suffix = ' ' . esc_html__('Uhr', 'easy-sams');
             $time_label = isset($row['time']) && $row['time'] !== '' ? esc_html($row['time']) . $time_suffix : ($timestamp ? esc_html(wp_date(get_option('time_format'), $timestamp)) . $time_suffix : '');
             $home_raw = isset($row['team1Description']) ? trim((string) $row['team1Description']) : '';
             $away_raw = isset($row['team2Description']) ? trim((string) $row['team2Description']) : '';
-            $home = $home_raw !== '' ? esc_html($home_raw) : esc_html__('Unknown', 'sams-integration');
-            $away = $away_raw !== '' ? esc_html($away_raw) : esc_html__('Unknown', 'sams-integration');
+            $home = $home_raw !== '' ? esc_html($home_raw) : esc_html__('Unknown', 'easy-sams');
+            $away = $away_raw !== '' ? esc_html($away_raw) : esc_html__('Unknown', 'easy-sams');
 
             $set_points  = isset($row['results']['setPoints']) && $row['results']['setPoints'] !== '' ? esc_html($row['results']['setPoints']) : '';
             $has_result  = $set_points !== '';
@@ -234,18 +234,18 @@ class SIK_Blocks {
 
             $meta_parts = array_filter(array($date_label, $time_label, $venue));
 
-            echo '<li class="sik-match-card">';
-            echo '<div class="sik-match-card__matchup">';
-            echo '<span class="sik-match-card__team sik-match-card__team--home">' . $home . '</span>';
+            echo '<li class="esams-match-card">';
+            echo '<div class="esams-match-card__matchup">';
+            echo '<span class="esams-match-card__team esams-match-card__team--home">' . $home . '</span>';
             if ($has_result) {
-                echo '<span class="sik-match-card__score">' . $set_points . '</span>';
+                echo '<span class="esams-match-card__score">' . $set_points . '</span>';
             } else {
-                echo '<span class="sik-match-card__vs">' . esc_html__('vs', 'sams-integration') . '</span>';
+                echo '<span class="esams-match-card__vs">' . esc_html__('vs', 'easy-sams') . '</span>';
             }
-            echo '<span class="sik-match-card__team sik-match-card__team--away">' . $away . '</span>';
+            echo '<span class="esams-match-card__team esams-match-card__team--away">' . $away . '</span>';
             echo '</div>';
             if (!empty($meta_parts)) {
-                echo '<div class="sik-match-card__meta">' . implode('<span class="sik-match-card__sep" aria-hidden="true"></span>', $meta_parts) . '</div>';
+                echo '<div class="esams-match-card__meta">' . implode('<span class="esams-match-card__sep" aria-hidden="true"></span>', $meta_parts) . '</div>';
             }
             echo '</li>';
         }
@@ -266,9 +266,9 @@ class SIK_Blocks {
         }
 
         $last_updated_utc = time() - $age;
-        $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'sams-integration');
+        $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'easy-sams');
 
-        return '<p class="sik-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'sams-integration'), esc_html($formatted)) . '</p>';
+        return '<p class="esams-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'easy-sams'), esc_html($formatted)) . '</p>';
     }
 
     private function resolve_source_id($attributes) {
@@ -280,6 +280,6 @@ class SIK_Blocks {
     }
 
     private function notice($message) {
-        return '<div class="sik-notice">' . esc_html($message) . '</div>';
+        return '<div class="esams-notice">' . esc_html($message) . '</div>';
     }
 }

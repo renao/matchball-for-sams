@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class SIK_Cron {
-    private const HOOK = 'sik_sync_cron';
-    private const SCHEDULE = 'sik_every_five_minutes';
+class ESAMS_Cron {
+    private const HOOK = 'esams_sync_cron';
+    private const SCHEDULE = 'esams_every_five_minutes';
 
-    /** @var SIK_Source_Repository */
+    /** @var ESAMS_Source_Repository */
     private $sources;
 
-    /** @var SIK_Api_Client */
+    /** @var ESAMS_Api_Client */
     private $api;
 
     public function __construct($sources, $api) {
@@ -40,7 +40,7 @@ class SIK_Cron {
         if (!isset($schedules[self::SCHEDULE])) {
             $schedules[self::SCHEDULE] = array(
                 'interval' => 300,
-                'display' => __('Every 5 Minutes', 'sams-integration'),
+                'display' => __('Every 5 Minutes', 'easy-sams'),
             );
         }
         return $schedules;
@@ -126,6 +126,6 @@ class SIK_Cron {
         if (is_array($result) && !empty($result['error']['code'])) {
             $code = (string) $result['error']['code'];
         }
-        error_log(sprintf('[SIK] Cron sync issue source=%s stage=%s code=%s', $source_id, $stage, $code));
+        error_log(sprintf('[ESAMS] Cron sync issue source=%s stage=%s code=%s', $source_id, $stage, $code));
     }
 }

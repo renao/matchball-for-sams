@@ -10,7 +10,7 @@
 
     function findOptionLabel(options, value, fallback) {
         if (!value) {
-            return fallback || __('Not selected', 'sams-integration');
+            return fallback || __('Not selected', 'easy-sams');
         }
         var list = Array.isArray(options) ? options : [];
         for (var i = 0; i < list.length; i++) {
@@ -22,7 +22,7 @@
     }
 
     function mapOptions(items, labelKey, firstLabel) {
-        var list = [{ label: firstLabel || __('Select...', 'sams-integration'), value: '' }];
+        var list = [{ label: firstLabel || __('Select...', 'easy-sams'), value: '' }];
         var mapped = (items || []).map(function (item) {
             return {
                 label: item[labelKey] || item.name || item.uuid,
@@ -37,7 +37,7 @@
     }
 
     function mapSeasonOptions(items, firstLabel) {
-        var list = [{ label: firstLabel || __('Select...', 'sams-integration'), value: '' }];
+        var list = [{ label: firstLabel || __('Select...', 'easy-sams'), value: '' }];
         var mapped = (items || []).map(function (item) {
             return {
                 label: item.name,
@@ -56,7 +56,7 @@
     var _apiPending = {}; // cacheKey → in-flight Promise
 
     function fetchApi(endpoint, params) {
-        var url = new URL(sikConfig.root + endpoint, window.location.origin);
+        var url = new URL(esamsConfig.root + endpoint, window.location.origin);
         if (params && typeof params === 'object') {
             Object.keys(params).forEach(function (key) {
                 var value = params[key];
@@ -78,7 +78,7 @@
 
         var promise = wp.apiFetch({
             url: cacheKey,
-            headers: { 'X-WP-Nonce': sikConfig.nonce },
+            headers: { 'X-WP-Nonce': esamsConfig.nonce },
         }).then(function (data) {
             _apiCache[cacheKey] = data;
             delete _apiPending[cacheKey];
@@ -96,14 +96,14 @@
         return function (props) {
             var attrs = props.attributes;
             var setAttrs = props.setAttributes;
-            var blockProps = useBlockProps({ className: 'sik-editor-block' });
+            var blockProps = useBlockProps({ className: 'esams-editor-block' });
 
-            var baseSourceOptions = [{ label: __('Select source', 'sams-integration'), value: '' }];
-            var baseSeasonOptions = [{ label: __('Select season', 'sams-integration'), value: '' }];
-            var baseAssocOptions = [{ label: __('All state associations', 'sams-integration'), value: '' }];
-            var baseLeagueOptions = [{ label: __('Select league', 'sams-integration'), value: '' }];
-            var baseTeamOptions = [{ label: __('Optional team', 'sams-integration'), value: '' }];
-            var loadingOption = [{ label: __('Loading...', 'sams-integration'), value: '__loading__' }];
+            var baseSourceOptions = [{ label: __('Select source', 'easy-sams'), value: '' }];
+            var baseSeasonOptions = [{ label: __('Select season', 'easy-sams'), value: '' }];
+            var baseAssocOptions = [{ label: __('All state associations', 'easy-sams'), value: '' }];
+            var baseLeagueOptions = [{ label: __('Select league', 'easy-sams'), value: '' }];
+            var baseTeamOptions = [{ label: __('Optional team', 'easy-sams'), value: '' }];
+            var loadingOption = [{ label: __('Loading...', 'easy-sams'), value: '__loading__' }];
 
             var _useState = useState(baseSourceOptions), sourceOptions = _useState[0], setSourceOptions = _useState[1];
             var _useState2 = useState(attrs.sourceId ? loadingOption : baseSeasonOptions), seasonOptions = _useState2[0], setSeasonOptions = _useState2[1];
@@ -121,14 +121,14 @@
                         var items = (res.items || []).map(function (item) {
                             return { id: item.id, name: item.name };
                         });
-                        setSourceOptions(mapOptions(items, 'name', __('Select source', 'sams-integration')));
+                        setSourceOptions(mapOptions(items, 'name', __('Select source', 'easy-sams')));
                         if (!attrs.sourceId && res.default_source) {
                             setAttrs({ sourceId: res.default_source });
                         }
                     })
                     .catch(function () {
                         if (active) {
-                            setSourceOptions([{ label: __('No sources available', 'sams-integration'), value: '' }]);
+                            setSourceOptions([{ label: __('No sources available', 'easy-sams'), value: '' }]);
                         }
                     });
 
@@ -153,7 +153,7 @@
                         if (!active) {
                             return;
                         }
-                        setSeasonOptions(mapSeasonOptions(res.items || [], __('Select season', 'sams-integration')));
+                        setSeasonOptions(mapSeasonOptions(res.items || [], __('Select season', 'easy-sams')));
                     })
                     .catch(function () {
                         if (active) {
@@ -209,7 +209,7 @@
                         if (!active) {
                             return;
                         }
-                        setLeagueOptions(mapOptions(res.items || [], 'name', __('Select league', 'sams-integration')));
+                        setLeagueOptions(mapOptions(res.items || [], 'name', __('Select league', 'easy-sams')));
                     })
                     .catch(function () {
                         if (active) {
@@ -235,7 +235,7 @@
                         if (!active) {
                             return;
                         }
-                        setTeamOptions(mapOptions(res.items || [], 'name', __('Optional team', 'sams-integration')));
+                        setTeamOptions(mapOptions(res.items || [], 'name', __('Optional team', 'easy-sams')));
                     })
                     .catch(function () {
                         if (active) {
@@ -263,7 +263,7 @@
 
             var controls = [
                 createSelectField(
-                    __('Data source', 'sams-integration'),
+                    __('Data source', 'easy-sams'),
                     attrs.sourceId || '',
                     sourceOptions,
                     function (value) {
@@ -271,7 +271,7 @@
                     }
                 ),
                 createSelectField(
-                    __('Season', 'sams-integration'),
+                    __('Season', 'easy-sams'),
                     attrs.seasonUuid || '',
                     seasonOptions,
                     function (value) {
@@ -279,16 +279,16 @@
                     }
                 ),
                 createSelectField(
-                    __('State association (optional)', 'sams-integration'),
+                    __('State association (optional)', 'easy-sams'),
                     attrs.associationUuid || '',
                     assocOptions,
                     function (value) {
                         setAttrs({ associationUuid: value, leagueUuid: '', teamUuid: '' });
                     },
-                    __('Filters the league list to a single state association (Landesverband). The available options are determined by the top-level association configured on the data source.', 'sams-integration')
+                    __('Filters the league list to a single state association (Landesverband). The available options are determined by the top-level association configured on the data source.', 'easy-sams')
                 ),
                 createSelectField(
-                    __('League', 'sams-integration'),
+                    __('League', 'easy-sams'),
                     attrs.leagueUuid || '',
                     leagueOptions,
                     function (value) {
@@ -296,7 +296,7 @@
                     }
                 ),
                 createSelectField(
-                    __('Team (optional)', 'sams-integration'),
+                    __('Team (optional)', 'easy-sams'),
                     attrs.teamUuid || '',
                     teamOptions,
                     function (value) {
@@ -307,7 +307,7 @@
 
             if (kind === 'results') {
                 controls.push(el(wp.components.ToggleControl, {
-                    label: __('Include future matches', 'sams-integration'),
+                    label: __('Include future matches', 'easy-sams'),
                     checked: !!attrs.includeFuture,
                     onChange: function (value) {
                         setAttrs({ includeFuture: !!value });
@@ -315,17 +315,17 @@
                 }));
             }
 
-            var blockTypeLabel = kind === 'results' ? __('SAMS Results', 'sams-integration') : __('SAMS Standings', 'sams-integration');
+            var blockTypeLabel = kind === 'results' ? __('Easy SAMS Results', 'easy-sams') : __('Easy SAMS Standings', 'easy-sams');
             var configItems = [
-                __('Source:', 'sams-integration') + ' ' + findOptionLabel(sourceOptions, attrs.sourceId, __('Not selected', 'sams-integration')),
-                __('Season:', 'sams-integration') + ' ' + findOptionLabel(seasonOptions, attrs.seasonUuid, __('Not selected', 'sams-integration')),
-                __('Association:', 'sams-integration') + ' ' + findOptionLabel(assocOptions, attrs.associationUuid, __('All', 'sams-integration')),
-                __('League:', 'sams-integration') + ' ' + findOptionLabel(leagueOptions, attrs.leagueUuid, __('Not selected', 'sams-integration')),
-                __('Team:', 'sams-integration') + ' ' + findOptionLabel(teamOptions, attrs.teamUuid, __('All teams', 'sams-integration')),
+                __('Source:', 'easy-sams') + ' ' + findOptionLabel(sourceOptions, attrs.sourceId, __('Not selected', 'easy-sams')),
+                __('Season:', 'easy-sams') + ' ' + findOptionLabel(seasonOptions, attrs.seasonUuid, __('Not selected', 'easy-sams')),
+                __('Association:', 'easy-sams') + ' ' + findOptionLabel(assocOptions, attrs.associationUuid, __('All', 'easy-sams')),
+                __('League:', 'easy-sams') + ' ' + findOptionLabel(leagueOptions, attrs.leagueUuid, __('Not selected', 'easy-sams')),
+                __('Team:', 'easy-sams') + ' ' + findOptionLabel(teamOptions, attrs.teamUuid, __('All teams', 'easy-sams')),
             ];
 
             if (kind === 'results') {
-                configItems.push(__('Include future matches:', 'sams-integration') + ' ' + (attrs.includeFuture ? __('Yes', 'sams-integration') : __('No', 'sams-integration')));
+                configItems.push(__('Include future matches:', 'easy-sams') + ' ' + (attrs.includeFuture ? __('Yes', 'easy-sams') : __('No', 'easy-sams')));
             }
 
             var previewLines = configItems.map(function (line, index) {
@@ -338,11 +338,11 @@
                 el(
                     InspectorControls,
                     null,
-                    el(PanelBody, { title: __('SAMS settings', 'sams-integration'), initialOpen: true }, controls)
+                    el(PanelBody, { title: __('SAMS settings', 'easy-sams'), initialOpen: true }, controls)
                 ),
-                el('div', { className: 'sik-editor-preview' },
-                    el('strong', { className: 'sik-editor-preview__title' }, blockTypeLabel),
-                    el('ul', { className: 'sik-editor-preview__list' }, previewLines)
+                el('div', { className: 'esams-editor-preview' },
+                    el('strong', { className: 'esams-editor-preview__title' }, blockTypeLabel),
+                    el('ul', { className: 'esams-editor-preview__list' }, previewLines)
                 )
             );
         };
@@ -367,8 +367,8 @@
         });
     }
 
-    register('sik/standings', __('SAMS Standings', 'sams-integration'), 'list-view', 'standings');
-    register('sik/results', __('SAMS Results', 'sams-integration'), 'chart-bar', 'results', {
+    register('esams/standings', __('Easy SAMS Standings', 'easy-sams'), 'list-view', 'standings');
+    register('esams/results', __('Easy SAMS Results', 'easy-sams'), 'chart-bar', 'results', {
         includeFuture: { type: 'boolean', default: false },
     });
 })(window.wp);
