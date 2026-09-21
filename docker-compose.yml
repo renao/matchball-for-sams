@@ -25,6 +25,12 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
+      ESAMS_API_KEY: ${ESAMS_API_KEY:-}
+      ESAMS_API_KEY_SAMS_V2: ${ESAMS_API_KEY_SAMS_V2:-}
+      ESAMS_SOURCE_ID: ${ESAMS_SOURCE_ID:-sams-v2}
+      ESAMS_SEASON_UUID: ${ESAMS_SEASON_UUID:-}
+      ESAMS_LEAGUE_UUID: ${ESAMS_LEAGUE_UUID:-}
+      ESAMS_TEAM_UUID: ${ESAMS_TEAM_UUID:-}
       WORDPRESS_CONFIG_EXTRA: |
         if (file_exists('/var/www/html/wp-content/plugins/easy-sams/docker/wp-config-extra.php')) {
             require_once '/var/www/html/wp-content/plugins/easy-sams/docker/wp-config-extra.php';
@@ -55,6 +61,8 @@ services:
       WP_ADMIN_USER: ${WP_ADMIN_USER:-admin}
       WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD:-admin}
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL:-admin@example.local}
+      ESAMS_API_KEY: ${ESAMS_API_KEY:-}
+      ESAMS_API_KEY_SAMS_V2: ${ESAMS_API_KEY_SAMS_V2:-}
       ESAMS_SOURCE_ID: ${ESAMS_SOURCE_ID:-sams-v2}
       ESAMS_SEASON_UUID: ${ESAMS_SEASON_UUID:-}
       ESAMS_LEAGUE_UUID: ${ESAMS_LEAGUE_UUID:-}
