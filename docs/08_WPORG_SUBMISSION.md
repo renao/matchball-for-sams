@@ -47,6 +47,10 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 - [ ] Blocks `esams/standings` and `esams/results` can be inserted in the editor
 - [ ] Admin page `Settings → SAMS Sources` is reachable
 
+### 4. Local development follow-ups
+
+- [ ] `docker-compose.yml`: auto-create a default SAMS source during `wpcli` setup when none exists. Currently the demo page is created, but the source must be configured manually before blocks render data.
+
 ### 4. WordPress.org assets
 
 - [ ] Run `bash scripts/create-wporg-assets.sh` to generate banner and icon images
