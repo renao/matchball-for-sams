@@ -10,6 +10,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Gutenberg blocks for standings and results via SAMS API with 5-minute sync and fallback cache. Successor of the SAMS Integration plugin.
 
+Source code: https://github.com/renao/easy-sams
+
 == Description ==
 
 Easy SAMS provides two Gutenberg blocks for sports websites:
