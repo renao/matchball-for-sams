@@ -1,3 +1,9 @@
 .env
 artifacts/releases/
 *.zip
+
+# Test logs and backups
+logs/
+*.backup
+docker-compose.override.yml
+.env.local
