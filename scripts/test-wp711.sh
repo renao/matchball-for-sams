@@ -5,11 +5,9 @@ set -euo pipefail
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SCRIPTS_DIR="$ROOT_DIR/scripts"
 LOG_DIR="$ROOT_DIR/logs"
 TEST_DATE="$(date +%Y%m%d_%H%M%S)"
 LOG_FILE="$LOG_DIR/test_wp711_$TEST_DATE.log"
@@ -27,6 +25,7 @@ echo ""
 if [ -f "$ROOT_DIR/.env" ]; then
     echo -e "${YELLOW}✓ Lade Umgebungsvariablen aus .env${NC}"
     set -a
+    # shellcheck disable=SC1091
     source "$ROOT_DIR/.env"
     set +a
 fi
@@ -40,12 +39,13 @@ docker compose up -d --build
 # Warten bis WordPress und Setup fertig sind
 echo -e "${YELLOW}⏳ Warte auf WordPress Setup (ca. 60s)...${NC}"
 for i in {1..60}; do
-    if docker compose exec wpcli wp plugin is-active easy-sams 2>/dev/null; then
+    if docker compose exec wpcli wp core is-installed >/dev/null 2>&1 \
+       && docker compose exec wpcli wp plugin is-active easy-sams >/dev/null 2>&1; then
         echo -e "${GREEN}✓ WordPress ist bereit und Plugin aktiviert!${NC}"
         break
     fi
     sleep 1
-    if [ $i -eq 60 ]; then
+    if [ "$i" -eq 60 ]; then
         echo -e "${RED}✗ Timeout: WordPress/Plugin Setup fehlgeschlagen${NC}"
         echo "   Versuche manuell: docker compose logs wpcli"
         exit 1
@@ -83,8 +83,6 @@ fi
 
 # Schritt 5: Plugin Funktionalität testen
 echo -e "${YELLOW}🧪 Teste Plugin Funktionalität...${NC}"
-TEST_LOG="$LOG_DIR/functional_test_$TEST_DATE.log"
-
 # REST API testen
 echo -e "   - Teste REST API Endpunkte..."
 if docker compose exec wpcli wp rest route list 2>/dev/null | grep esams > /dev/null; then

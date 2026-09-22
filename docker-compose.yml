@@ -52,6 +52,7 @@ services:
   wpcli:
     image: wordpress:cli-php8.3
     container_name: ${COMPOSE_PROJECT_NAME:-easy-sams}_wpcli
+    user: "33:33"
     depends_on:
       wordpress:
         condition: service_healthy
@@ -75,38 +76,13 @@ services:
     volumes:
       - wp_data:/var/www/html
       - ./:/var/www/html/wp-content/plugins/easy-sams
-    entrypoint: sh
-    command:
-      - -c
-      - |
-        if wp core is-installed 2>/dev/null; then
-          echo "WordPress already installed, skipping setup."
-        else
-          wp core install \
-            --url="$$WP_HOME" \
-            --title="$$WP_TITLE" \
-            --admin_user="$$WP_ADMIN_USER" \
-            --admin_password="$$WP_ADMIN_PASSWORD" \
-            --admin_email="$$WP_ADMIN_EMAIL" \
-            --skip-email
-        fi
-        wp plugin activate easy-sams
-        # Plugin Check installieren
-        if [ "$$PLUGIN_CHECK_SKIP_INSTALL" != "1" ]; then
-          wp plugin install wordpress/plugin-check --activate
-        fi
-        if wp post list --post_type=page --post_status=any --name=easy-sams-demo --format=ids 2>/dev/null | grep -q .; then
-          echo "Demo page already exists, skipping."
-        else
-          DEMO_CONTENT="<!-- wp:heading --><h2 class=\"wp-block-heading\">Tabelle</h2><!-- /wp:heading --><!-- wp:esams/standings {\"sourceId\":\"$$ESAMS_SOURCE_ID\",\"seasonUuid\":\"$$ESAMS_SEASON_UUID\",\"leagueUuid\":\"$$ESAMS_LEAGUE_UUID\",\"teamUuid\":\"$$ESAMS_TEAM_UUID\"} /--><!-- wp:heading --><h2 class=\"wp-block-heading\">Ergebnisse / Spielplan</h2><!-- /wp:heading --><!-- wp:esams/results {\"sourceId\":\"$$ESAMS_SOURCE_ID\",\"seasonUuid\":\"$$ESAMS_SEASON_UUID\",\"leagueUuid\":\"$$ESAMS_LEAGUE_UUID\",\"teamUuid\":\"$$ESAMS_TEAM_UUID\",\"includeFuture\":true} /-->"
-          wp post create \
-            --post_type=page \
-            --post_title="Easy SAMS Demo" \
-            --post_name=easy-sams-demo \
-            --post_status=publish \
-            --post_content="$$DEMO_CONTENT"
-          echo "Demo-Seite erstellt: $$WP_HOME/easy-sams-demo/"
-        fi
+    healthcheck:
+      test: ["CMD-SHELL", "wp core is-installed && wp plugin is-active easy-sams"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
+    entrypoint: ["/bin/sh", "/var/www/html/wp-content/plugins/easy-sams/docker/wp-setup.sh"]
 
 volumes:
   db_data:

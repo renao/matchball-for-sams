@@ -3,8 +3,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+RED='\033[0;31m'
 GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo "🚀 Starte Testumgebung für Easy SAMS mit WordPress 7.1.1..."
@@ -23,12 +23,18 @@ for i in {1..60}; do
         break
     fi
     sleep 1
-    if [ $i -eq 60 ]; then
+    if [ "$i" -eq 60 ]; then
         echo -e "${RED}✗ Timeout: WordPress konnte nicht gestartet werden${NC}"
         echo "   Versuche manuell: docker compose logs wpcli"
         exit 1
     fi
 done
+
+# Sicherstellen, dass der wpcli-Healthcheck erfolgreich ist
+if ! docker compose exec wpcli wp core is-installed >/dev/null 2>&1; then
+    echo -e "${RED}✗ WordPress-Installation nicht erreichbar${NC}"
+    exit 1
+fi
 
 # URL anzeigen
 echo ""
