@@ -4,8 +4,8 @@ if (!defined('ABSPATH')) {
     return;
 }
 
-$debug = getenv('WP_DEBUG');
-if ($debug === '1' || strtolower((string) $debug) === 'true') {
+$esams_debug = getenv('WP_DEBUG');
+if ($esams_debug === '1' || strtolower((string) $esams_debug) === 'true') {
     if (!defined('WP_DEBUG')) {
         define('WP_DEBUG', true);
     }
@@ -17,22 +17,22 @@ if ($debug === '1' || strtolower((string) $debug) === 'true') {
     }
 }
 
-$global_api_key = getenv('ESAMS_API_KEY');
-if (!defined('ESAMS_API_KEY') && is_string($global_api_key) && trim($global_api_key) !== '') {
-    define('ESAMS_API_KEY', trim($global_api_key));
+$esams_global_api_key = getenv('ESAMS_API_KEY');
+if (!defined('ESAMS_API_KEY') && is_string($esams_global_api_key) && trim($esams_global_api_key) !== '') {
+    define('ESAMS_API_KEY', trim($esams_global_api_key));
 }
 
-$source_id = getenv('ESAMS_SOURCE_ID');
-$source_specific_key = '';
-if (is_string($source_id) && trim($source_id) !== '') {
-    $sanitized_source_id = strtoupper(str_replace('-', '_', preg_replace('/[^a-zA-Z0-9_-]/', '', trim($source_id))));
-    $env_name = 'ESAMS_API_KEY_' . $sanitized_source_id;
-    $source_specific_key = getenv($env_name);
+$esams_source_id = getenv('ESAMS_SOURCE_ID');
+$esams_source_specific_key = '';
+if (is_string($esams_source_id) && trim($esams_source_id) !== '') {
+    $esams_sanitized_source_id = strtoupper(str_replace('-', '_', preg_replace('/[^a-zA-Z0-9_-]/', '', trim($esams_source_id))));
+    $esams_env_name = 'ESAMS_API_KEY_' . $esams_sanitized_source_id;
+    $esams_source_specific_key = getenv($esams_env_name);
 
-    if (is_string($source_specific_key) && trim($source_specific_key) !== '') {
-        $const_name = 'ESAMS_API_KEY_' . $sanitized_source_id;
-        if (!defined($const_name)) {
-            define($const_name, trim($source_specific_key));
+    if (is_string($esams_source_specific_key) && trim($esams_source_specific_key) !== '') {
+        $esams_const_name = 'ESAMS_API_KEY_' . $esams_sanitized_source_id;
+        if (!defined($esams_const_name)) {
+            define($esams_const_name, trim($esams_source_specific_key));
         }
     }
 }
