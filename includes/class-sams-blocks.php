@@ -145,7 +145,7 @@ class ESAMS_Blocks {
             echo '</tr>';
         }
         echo '</tbody></table></div>';
-        echo $this->updated_hint($result);
+        $this->render_updated_hint($result);
         echo '</div>';
         return ob_get_clean();
     }
@@ -250,14 +250,14 @@ class ESAMS_Blocks {
             echo '</li>';
         }
         echo '</ul>';
-        echo $this->updated_hint($result);
+        $this->render_updated_hint($result);
         echo '</div>';
         return ob_get_clean();
     }
 
-    private function updated_hint($result) {
+    private function render_updated_hint($result) {
         if (!is_array($result) || empty($result['ok'])) {
-            return '';
+            return;
         }
 
         $age = 0;
@@ -269,7 +269,7 @@ class ESAMS_Blocks {
         $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'easy-sams');
 
         // translators: %s = formatted date and time (e.g. "22. September 2026, 11:21 Uhr")
-        return '<p class="esams-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'easy-sams'), esc_html($formatted)) . '</p>';
+        echo '<p class="esams-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'easy-sams'), esc_html($formatted)) . '</p>';
     }
 
     private function resolve_source_id($attributes) {

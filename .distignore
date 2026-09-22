@@ -1,21 +1,54 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git and GitHub
 .git/
 .gitignore
-.instructions.md
+.github/
+
+# Environment files
+.env*
+!.env.example
+
+# Dist and Docker
 .distignore
-.env
-.env.example
-2.1.json
 docker/
-docker-compose.yml
-docs/
-ANFORDERUNGEN.md
+docker-compose*.yml
+
+# Development and build artifacts
+2.1.json
 wordpress-org-assets/
 interactive-workflows/
 prompts/
 agents/
 artifacts/
-scripts/
-setup-sams.sh
+
+# Documentation (development only)
+ANFORDERUNGEN.md
+CRON_TESTING.md
 LOCAL_DEV.md
 MVP_ABNAHME_CHECKLISTE.md
-CRON_TESTING.md
+PRIVACY.md
+plan-githubMigrationPlan.prompt.md
+
+# Scripts and setup
+scripts/
+setup-sams.sh
+
+# Backup files
+*.backup
+
+# Language files (template only, translations will be added by WP.org)
+languages/.pot
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
