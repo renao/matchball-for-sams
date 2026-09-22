@@ -34,7 +34,7 @@ class ESAMS_Admin {
 
         check_admin_referer('esams_save_sources');
 
-        $sources = isset($_POST['sources']) ? wp_unslash($_POST['sources']) : array();
+        $sources = isset($_POST['sources']) && is_array($_POST['sources']) ? (array) wp_unslash($_POST['sources']) : array();
         $default = isset($_POST['default_source']) ? sanitize_key(wp_unslash($_POST['default_source'])) : '';
 
         $prepared = array();

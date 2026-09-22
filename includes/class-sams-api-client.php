@@ -328,6 +328,8 @@ class ESAMS_Api_Client {
     }
 
     private function log_http_error($status_code, $path) {
-        error_log(sprintf('[ESAMS] API error status=%d path=%s', (int) $status_code, $path));
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log(sprintf('[ESAMS] API error status=%d path=%s', (int) $status_code, $path));
+        }
     }
 }

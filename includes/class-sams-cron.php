@@ -122,6 +122,9 @@ class ESAMS_Cron {
     }
 
     private function log_sync_issue($source_id, $stage, $result) {
+        if (!defined('WP_DEBUG') || !WP_DEBUG) {
+            return;
+        }
         $code = 'unknown';
         if (is_array($result) && !empty($result['error']['code'])) {
             $code = (string) $result['error']['code'];
