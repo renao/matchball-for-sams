@@ -34,13 +34,13 @@ fi
 # Schritt 1: Docker Umgebungen starten
 echo -e "${YELLOW}🐳 Starte Docker Container...${NC}"
 cd "$ROOT_DIR"
-docker-compose down 2>/dev/null || true
-docker-compose up -d --build
+docker compose down 2>/dev/null || true
+docker compose up -d --build
 
 # Warten bis WordPress bereit ist
 echo -e "${YELLOW}⏳ Warte auf WordPress (ca. 30s)...${NC}"
 for i in {1..30}; do
-    if docker-compose exec wordpress wp core is-installed 2>/dev/null; then
+    if docker compose exec wordpress wp core is-installed 2>/dev/null; then
         echo -e "${GREEN}✓ WordPress ist bereit!${NC}"
         break
     fi
@@ -53,12 +53,12 @@ done
 
 # Schritt 2: Plugin aktivieren
 echo -e "${YELLOW}🔌 Aktiviere Easy SAMS Plugin...${NC}"
-docker-compose exec wordpress wp plugin activate easy-sams --quiet
+docker compose exec wordpress wp plugin activate easy-sams --quiet
 echo -e "${GREEN}✓ Plugin aktiviert${NC}"
 
 # Schritt 3: WordPress Version prüfen
 echo -e "${YELLOW}📋 Prüfe WordPress Version...${NC}"
-WP_VERSION=$(docker-compose exec wordpress wp core version)
+WP_VERSION=$(docker compose exec wordpress wp core version)
 echo -e "   Installierte Version: ${GREEN}$WP_VERSION${NC}"
 if [[ "$WP_VERSION" == "7.1.1" ]]; then
     echo -e "${GREEN}✓ Richtige WordPress Version!${NC}"
@@ -69,7 +69,7 @@ fi
 # Schritt 4: Plugin Check ausführen
 echo -e "${YELLOW}🔍 Führe plugin-check aus...${NC}"
 PLUGIN_CHECK_LOG="$LOG_DIR/plugin_check_$TEST_DATE.log"
-docker-compose exec wordpress php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
+docker compose exec wordpress php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
     /var/www/html/wp-content/plugins/easy-sams \
     --no-interaction \
     --severity=warning 2>&1 | tee "$PLUGIN_CHECK_LOG"
@@ -77,7 +77,7 @@ docker-compose exec wordpress php /var/www/html/wp-content/plugins/plugin-check/
 # Schritt 5: PHP Fehler prüfen
 echo -e "${YELLOW}🐞 Prüfe PHP Fehler...${NC}"
 ERROR_LOG="$LOG_DIR/php_errors_$TEST_DATE.log"
-docker-compose exec wordpress cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -i "easy-sams\|esams" > "$ERROR_LOG" || true
+docker compose exec wordpress cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -i "easy-sams\|esams" > "$ERROR_LOG" || true
 if [ -s "$ERROR_LOG" ]; then
     echo -e "${RED}✗ PHP Fehler gefunden:${NC}"
     cat "$ERROR_LOG"
@@ -91,7 +91,7 @@ TEST_LOG="$LOG_DIR/functional_test_$TEST_DATE.log"
 
 # REST API testen
 echo -e "   - Teste REST API Endpunkte..."
-if docker-compose exec wordpress wp rest route list 2>/dev/null | grep esams > /dev/null; then
+if docker compose exec wordpress wp rest route list 2>/dev/null | grep esams > /dev/null; then
     echo -e "${GREEN}✓ REST API Endpunkte registriert${NC}"
 else
     echo -e "${RED}✗ REST API Endpunkte nicht gefunden${NC}"
@@ -99,7 +99,7 @@ fi
 
 # Admin Menü testen
 echo -e "   - Teste Admin Menü..."
-if docker-compose exec wordpress wp menu list 2>/dev/null | grep -i "sams" > /dev/null; then
+if docker compose exec wordpress wp menu list 2>/dev/null | grep -i "sams" > /dev/null; then
     echo -e "${GREEN}✓ Admin Menü vorhanden${NC}"
 else
     echo -e "${RED}✗ Admin Menü nicht gefunden${NC}"
@@ -107,7 +107,7 @@ fi
 
 # Plugin Version prüfen
 echo -e "   - Teste Plugin Version..."
-PLUGIN_VERSION=$(docker-compose exec wordpress wp plugin get easy-sams --field=version 2>/dev/null || echo "")
+PLUGIN_VERSION=$(docker compose exec wordpress wp plugin get easy-sams --field=version 2>/dev/null || echo "")
 if [ -n "$PLUGIN_VERSION" ]; then
     echo -e "   Plugin Version: ${GREEN}$PLUGIN_VERSION${NC}"
 else
@@ -116,7 +116,7 @@ fi
 
 # Schritt 7: Docker Logs speichern
 echo -e "${YELLOW}📝 Speichere Docker Logs...${NC}"
-docker-compose logs > "$LOG_DIR/docker_$TEST_DATE.log" 2>&1 || true
+docker compose logs > "$LOG_DIR/docker_$TEST_DATE.log" 2>&1 || true
 
 # Schritt 8: Zusammenfassung
 echo ""

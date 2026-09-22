@@ -12,13 +12,13 @@ echo ""
 
 # Docker Container starten
 cd "$ROOT_DIR"
-docker-compose down 2>/dev/null || true
-docker-compose up -d
+docker compose down 2>/dev/null || true
+docker compose up -d
 
 # Warten bis WordPress bereit ist
 echo "⏳ Warte auf WordPress..."
 for i in {1..60}; do
-    if docker-compose exec wordpress wp core is-installed 2>/dev/null; then
+    if docker compose exec wordpress wp core is-installed 2>/dev/null; then
         echo -e "${GREEN}✓ WordPress ist bereit!${NC}"
         break
     fi
@@ -31,7 +31,7 @@ done
 
 # Plugin aktivieren
 echo "🔌 Aktiviere Easy SAMS..."
-docker-compose exec wordpress wp plugin activate easy-sams
+docker compose exec wordpress wp plugin activate easy-sams
 
 # URL anzeigen
 echo ""

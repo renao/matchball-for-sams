@@ -16,7 +16,7 @@ echo "🔍 Führe plugin-check für Easy SAMS aus..."
 echo "   Log: $LOG_FILE"
 echo ""
 
-docker-compose exec wordpress php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
+docker compose exec wordpress php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
     /var/www/html/wp-content/plugins/easy-sams \
     --no-interaction \
     --severity=warning \
