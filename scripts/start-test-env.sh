@@ -15,23 +15,20 @@ cd "$ROOT_DIR"
 docker compose down 2>/dev/null || true
 docker compose up -d
 
-# Warten bis WordPress bereit ist
-echo "⏳ Warte auf WordPress..."
+# Warten bis WordPress und Setup fertig sind
+echo "⏳ Warte auf WordPress Setup..."
 for i in {1..60}; do
-    if docker compose exec wpcli wp core is-installed 2>/dev/null; then
-        echo -e "${GREEN}✓ WordPress ist bereit!${NC}"
+    if docker compose exec wpcli wp plugin is-active easy-sams 2>/dev/null; then
+        echo -e "${GREEN}✓ WordPress ist bereit und Plugin aktiviert!${NC}"
         break
     fi
     sleep 1
     if [ $i -eq 60 ]; then
         echo -e "${RED}✗ Timeout: WordPress konnte nicht gestartet werden${NC}"
+        echo "   Versuche manuell: docker compose logs wpcli"
         exit 1
     fi
 done
-
-# Plugin aktivieren
-echo "🔌 Aktiviere Easy SAMS..."
-docker compose exec wpcli wp plugin activate easy-sams
 
 # URL anzeigen
 echo ""

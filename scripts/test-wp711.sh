@@ -37,26 +37,22 @@ cd "$ROOT_DIR"
 docker compose down 2>/dev/null || true
 docker compose up -d --build
 
-# Warten bis WordPress bereit ist
-echo -e "${YELLOW}⏳ Warte auf WordPress (ca. 30s)...${NC}"
-for i in {1..30}; do
-    if docker compose exec wpcli wp core is-installed 2>/dev/null; then
-        echo -e "${GREEN}✓ WordPress ist bereit!${NC}"
+# Warten bis WordPress und Setup fertig sind
+echo -e "${YELLOW}⏳ Warte auf WordPress Setup (ca. 60s)...${NC}"
+for i in {1..60}; do
+    if docker compose exec wpcli wp plugin is-active easy-sams 2>/dev/null; then
+        echo -e "${GREEN}✓ WordPress ist bereit und Plugin aktiviert!${NC}"
         break
     fi
     sleep 1
-    if [ $i -eq 30 ]; then
-        echo -e "${RED}✗ WordPress konnte nicht gestartet werden${NC}"
+    if [ $i -eq 60 ]; then
+        echo -e "${RED}✗ Timeout: WordPress/Plugin Setup fehlgeschlagen${NC}"
+        echo "   Versuche manuell: docker compose logs wpcli"
         exit 1
     fi
 done
 
-# Schritt 2: Plugin aktivieren
-echo -e "${YELLOW}🔌 Aktiviere Easy SAMS Plugin...${NC}"
-docker compose exec wpcli wp plugin activate easy-sams --quiet
-echo -e "${GREEN}✓ Plugin aktiviert${NC}"
-
-# Schritt 3: WordPress Version prüfen
+# Schritt 2: WordPress Version prüfen
 echo -e "${YELLOW}📋 Prüfe WordPress Version...${NC}"
 WP_VERSION=$(docker compose exec wpcli wp core version)
 echo -e "   Installierte Version: ${GREEN}$WP_VERSION${NC}"
@@ -66,7 +62,7 @@ else
     echo -e "${RED}✗ Falsche WordPress Version: $WP_VERSION (erwartet 7.1.1)${NC}"
 fi
 
-# Schritt 4: Plugin Check ausführen
+# Schritt 3: Plugin Check ausführen
 echo -e "${YELLOW}🔍 Führe plugin-check aus...${NC}"
 PLUGIN_CHECK_LOG="$LOG_DIR/plugin_check_$TEST_DATE.log"
 docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
@@ -74,7 +70,7 @@ docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plug
     --no-interaction \
     --severity=warning 2>&1 | tee "$PLUGIN_CHECK_LOG"
 
-# Schritt 5: PHP Fehler prüfen
+# Schritt 4: PHP Fehler prüfen
 echo -e "${YELLOW}🐞 Prüfe PHP Fehler...${NC}"
 ERROR_LOG="$LOG_DIR/php_errors_$TEST_DATE.log"
 docker compose exec wpcli cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -i "easy-sams\|esams" > "$ERROR_LOG" || true
@@ -85,7 +81,7 @@ else
     echo -e "${GREEN}✓ Keine PHP Fehler gefunden${NC}"
 fi
 
-# Schritt 6: Plugin Funktionalität testen
+# Schritt 5: Plugin Funktionalität testen
 echo -e "${YELLOW}🧪 Teste Plugin Funktionalität...${NC}"
 TEST_LOG="$LOG_DIR/functional_test_$TEST_DATE.log"
 
@@ -114,11 +110,11 @@ else
     echo -e "${RED}✗ Plugin Version konnte nicht gelesen werden${NC}"
 fi
 
-# Schritt 7: Docker Logs speichern
+# Schritt 6: Docker Logs speichern
 echo -e "${YELLOW}📝 Speichere Docker Logs...${NC}"
 docker compose logs > "$LOG_DIR/docker_$TEST_DATE.log" 2>&1 || true
 
-# Schritt 8: Zusammenfassung
+# Schritt 7: Zusammenfassung
 echo ""
 echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN} Test Zusammenfassung${NC}"
