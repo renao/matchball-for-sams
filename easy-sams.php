@@ -36,10 +36,6 @@ function esams_bootstrap() {
     $plugin->init();
 }
 
-function esams_load_textdomain() {
-    load_plugin_textdomain('easy-sams', false, dirname(plugin_basename(ESAMS_PLUGIN_FILE)) . '/languages');
-}
-
 function esams_activate() {
     ESAMS_Cron::activate();
 }
@@ -51,5 +47,4 @@ function esams_deactivate() {
 register_activation_hook(ESAMS_PLUGIN_FILE, 'esams_activate');
 register_deactivation_hook(ESAMS_PLUGIN_FILE, 'esams_deactivate');
 
-add_action('plugins_loaded', 'esams_load_textdomain');
 add_action('plugins_loaded', 'esams_bootstrap', 20);

@@ -2,7 +2,7 @@
 Contributors: renao
 Tags: standings, results, sports, api, gutenberg
 Requires at least: 6.0
-Tested up to: 6.5
+Tested up to: 7.1.1
 Requires PHP: 7.4
 Stable tag: 3.0.0
 License: GPLv2 or later

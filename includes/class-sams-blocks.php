@@ -236,16 +236,16 @@ class ESAMS_Blocks {
 
             echo '<li class="esams-match-card">';
             echo '<div class="esams-match-card__matchup">';
-            echo '<span class="esams-match-card__team esams-match-card__team--home">' . $home . '</span>';
+            echo '<span class="esams-match-card__team esams-match-card__team--home">' . esc_html($home) . '</span>';
             if ($has_result) {
-                echo '<span class="esams-match-card__score">' . $set_points . '</span>';
+                echo '<span class="esams-match-card__score">' . esc_html($set_points) . '</span>';
             } else {
                 echo '<span class="esams-match-card__vs">' . esc_html__('vs', 'easy-sams') . '</span>';
             }
-            echo '<span class="esams-match-card__team esams-match-card__team--away">' . $away . '</span>';
+            echo '<span class="esams-match-card__team esams-match-card__team--away">' . esc_html($away) . '</span>';
             echo '</div>';
             if (!empty($meta_parts)) {
-                echo '<div class="esams-match-card__meta">' . implode('<span class="esams-match-card__sep" aria-hidden="true"></span>', $meta_parts) . '</div>';
+                echo '<div class="esams-match-card__meta">' . esc_html(implode('<span class="esams-match-card__sep" aria-hidden="true"></span>', $meta_parts)) . '</div>';
             }
             echo '</li>';
         }
@@ -268,6 +268,7 @@ class ESAMS_Blocks {
         $last_updated_utc = time() - $age;
         $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'easy-sams');
 
+        // translators: %s = formatted date and time (e.g. "22. September 2026, 11:21 Uhr")
         return '<p class="esams-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'easy-sams'), esc_html($formatted)) . '</p>';
     }
 
