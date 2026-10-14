@@ -135,7 +135,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    "Public", Name `matchball`.
 2. Lokal: `git remote add github <neue-url>` und `git push --mirror github` (alle Branches + Tags + volle Historie).
    Hinweis: `github.com/renao/sams-integration` ist bereits durch das alte Repo belegt
-   (siehe Code-Fakten) — daher als neues Repo `github.com/renao/matchball` verwenden.
+   (siehe Code-Fakten) — daher als neues Repo `github.com/renao/matchball-for-sams` verwenden.
 3. Default-Branch auf GitHub auf `main` setzen, Branch-Protection-Rule für `main` aktivieren
    (Voraussetzung für sichere Secrets/Environments in Phase B).
 4. Optional (Empfehlung, nicht bestätigt): Codeberg-Repo nicht löschen, sondern
@@ -167,7 +167,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 ## Phase C — Referenz- & Metadaten-Updates
 *can run parallel with Phase B; baut auf Phase A0 auf (Datei heißt dann `matchball.php`)*
 1. `matchball.php`: `Plugin URI` und `Author URI` von `codeberg.org/...` auf neue
-   GitHub-URLs ändern (`https://github.com/renao/matchball`).
+   GitHub-URLs ändern (`https://github.com/renao/matchball-for-sams`).
 2. `readme.txt`: bestehenden "External service usage"/"Service terms and privacy"-Abschnitt
    unverändert lassen (bereits WP.org-konform); optional eine "Source Code"-Zeile mit
    GitHub-Link ergänzen.

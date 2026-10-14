@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Matchball - Standings & Tables for SAMS
- * Plugin URI: https://github.com/renao/matchball
+ * Plugin URI: https://github.com/renao/matchball-for-sams
  * Description: Gutenberg blocks for standings and results via SAMS API.
  * Version: 3.0.0
  * Author: Matchball SAMS
