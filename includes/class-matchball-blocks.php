@@ -246,7 +246,7 @@ class MATCHBALL_Blocks {
             echo '</div>';
             if (!empty($meta_parts)) {
                 $separator = '<span class="matchball-match-card__sep" aria-hidden="true"></span>';
-                // $meta_parts are individually escaped above; do not escape the separator markup.
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $separator is static markup; every item in $meta_parts is individually escaped above.
                 echo '<div class="matchball-match-card__meta">' . implode($separator, $meta_parts) . '</div>';
             }
             echo '</li>';

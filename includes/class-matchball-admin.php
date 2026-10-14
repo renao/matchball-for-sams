@@ -34,7 +34,7 @@ class MATCHBALL_Admin {
 
         check_admin_referer('matchball_save_sources');
 
-        $sources = isset($_POST['sources']) && is_array($_POST['sources']) ? (array) wp_unslash($_POST['sources']) : array();
+        $sources = isset($_POST['sources']) && is_array($_POST['sources']) ? map_deep(wp_unslash($_POST['sources']), 'sanitize_text_field') : array();
         $default = isset($_POST['default_source']) ? sanitize_key(wp_unslash($_POST['default_source'])) : '';
 
         $prepared = array();
@@ -105,6 +105,7 @@ class MATCHBALL_Admin {
         echo '<p><strong>' . esc_html__('Security:', 'matchball-for-sams') . '</strong> ' . esc_html__('API keys are encrypted automatically and stored securely in the database. They are never shown in the admin UI.', 'matchball-for-sams') . '</p>';
         echo '</div>';
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only success flag after POST-redirect-GET; no data is processed
         if (isset($_GET['updated'])) {
             echo '<div class="notice notice-success"><p>' . esc_html__('Sources saved.', 'matchball-for-sams') . '</p></div>';
         }
