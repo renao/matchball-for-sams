@@ -7,7 +7,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-echo "🚀 Starte Testumgebung für Matchball - Standings & Tables for SAMS mit WordPress 7.1.1..."
+echo "🚀 Starte Testumgebung für Matchball - Standings & Tables for SAMS mit WordPress 7.1.3..."
 echo ""
 
 # Docker Container starten

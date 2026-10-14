@@ -15,11 +15,9 @@ echo "🔍 Führe plugin-check für Matchball - Standings & Tables for SAMS aus.
 echo "   Log: $LOG_FILE"
 echo ""
 
-docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
-    /var/www/html/wp-content/plugins/matchball-for-sams \
-    --no-interaction \
+docker compose exec wpcli wp plugin check matchball-for-sams \
     --severity=warning \
-    --format=json 2>&1 | tee "$LOG_FILE"
+    --format=json 2>&1 | tee "$LOG_FILE" || true
 
 echo ""
 echo -e "${GREEN}✓ plugin-check abgeschlossen!${NC}"

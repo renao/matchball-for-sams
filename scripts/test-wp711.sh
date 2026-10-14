@@ -17,7 +17,7 @@ mkdir -p "$LOG_DIR"
 
 # Header
 echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN} Matchball - Standings & Tables for SAMS - WordPress 7.1.1 Test Suite${NC}"
+echo -e "${GREEN} Matchball - Standings & Tables for SAMS - WordPress 7.1.3 Test Suite${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 
@@ -56,19 +56,17 @@ done
 echo -e "${YELLOW}📋 Prüfe WordPress Version...${NC}"
 WP_VERSION=$(docker compose exec wpcli wp core version)
 echo -e "   Installierte Version: ${GREEN}$WP_VERSION${NC}"
-if [[ "$WP_VERSION" == "7.1.1" ]]; then
+if [[ "$WP_VERSION" == "7.1.3" ]]; then
     echo -e "${GREEN}✓ Richtige WordPress Version!${NC}"
 else
-    echo -e "${RED}✗ Falsche WordPress Version: $WP_VERSION (erwartet 7.1.1)${NC}"
+    echo -e "${RED}✗ Falsche WordPress Version: $WP_VERSION (erwartet 7.1.3)${NC}"
 fi
 
 # Schritt 3: Plugin Check ausführen
 echo -e "${YELLOW}🔍 Führe plugin-check aus...${NC}"
 PLUGIN_CHECK_LOG="$LOG_DIR/plugin_check_$TEST_DATE.log"
-docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
-    /var/www/html/wp-content/plugins/matchball-for-sams \
-    --no-interaction \
-    --severity=warning 2>&1 | tee "$PLUGIN_CHECK_LOG"
+docker compose exec wpcli wp plugin check matchball-for-sams \
+    --severity=warning 2>&1 | tee "$PLUGIN_CHECK_LOG" || true
 
 # Schritt 4: PHP Fehler prüfen
 echo -e "${YELLOW}🐞 Prüfe PHP Fehler...${NC}"
@@ -83,20 +81,21 @@ fi
 
 # Schritt 5: Plugin Funktionalität testen
 echo -e "${YELLOW}🧪 Teste Plugin Funktionalität...${NC}"
-# REST API testen
+# REST API testen (via HTTP, da wp rest in aktuellen WP-CLI-Versionen nicht mehr enthalten ist)
 echo -e "   - Teste REST API Endpunkte..."
-if docker compose exec wpcli wp rest route list 2>/dev/null | grep matchball > /dev/null; then
+if curl -sS -m 10 "http://localhost:${WP_PORT:-8080}/?rest_route=/matchball/v1" 2>/dev/null | grep -q 'matchball'; then
     echo -e "${GREEN}✓ REST API Endpunkte registriert${NC}"
 else
     echo -e "${RED}✗ REST API Endpunkte nicht gefunden${NC}"
 fi
 
-# Admin Menü testen
-echo -e "   - Teste Admin Menü..."
-if docker compose exec wpcli wp menu list 2>/dev/null | grep -i "sams" > /dev/null; then
-    echo -e "${GREEN}✓ Admin Menü vorhanden${NC}"
+# Block-Registrierung testen
+echo -e "   - Teste Block-Registrierung..."
+REGISTERED_BLOCKS=$(docker compose exec wpcli wp eval 'echo implode(",", array_keys(WP_Block_Type_Registry::get_instance()->get_all_registered()));' 2>/dev/null || echo "")
+if echo "$REGISTERED_BLOCKS" | grep -q 'matchball/standings' && echo "$REGISTERED_BLOCKS" | grep -q 'matchball/results'; then
+    echo -e "${GREEN}✓ Blöcke matchball/standings und matchball/results registriert${NC}"
 else
-    echo -e "${RED}✗ Admin Menü nicht gefunden${NC}"
+    echo -e "${RED}✗ Blöcke nicht registriert${NC}"
 fi
 
 # Plugin Version prüfen
