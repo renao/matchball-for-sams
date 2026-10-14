@@ -27,7 +27,7 @@ jobs:
 
       - name: Version consistency check
         run: |
-          plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
+          plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' matchball.php | tr -d '[:space:]')"
           readme_version="$(awk -F': ' 'tolower($1)=="stable tag" {print $2; exit}' readme.txt | tr -d '[:space:]')"
           test -n "$plugin_version"
           test -n "$readme_version"
@@ -37,6 +37,6 @@ jobs:
       - name: Build release zip
         run: |
           bash ./scripts/create-release-zip.sh
-          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
-          test -f "artifacts/releases/easy-sams-${version}.zip"
-          ls -lh "artifacts/releases/easy-sams-${version}.zip"
+          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' matchball.php | tr -d '[:space:]')"
+          test -f "artifacts/releases/matchball-${version}.zip"
+          ls -lh "artifacts/releases/matchball-${version}.zip"

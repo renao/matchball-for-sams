@@ -32,5 +32,5 @@ jobs:
           WPORG_SVN_PASSWORD: ${{ secrets.WPORG_SVN_PASSWORD }}
           WPORG_SVN_NON_INTERACTIVE: "true"
         run: |
-          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
+          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' matchball.php | tr -d '[:space:]')"
           bash ./scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release ${version}"

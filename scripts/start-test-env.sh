@@ -7,7 +7,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-echo "🚀 Starte Testumgebung für Easy SAMS mit WordPress 7.1.1..."
+echo "🚀 Starte Testumgebung für Matchball - Standings & Tables for SAMS mit WordPress 7.1.1..."
 echo ""
 
 # Docker Container starten
@@ -18,7 +18,7 @@ docker compose up -d
 # Warten bis WordPress und Setup fertig sind
 echo "⏳ Warte auf WordPress Setup..."
 for i in {1..60}; do
-    if docker compose exec wpcli wp plugin is-active easy-sams 2>/dev/null; then
+    if docker compose exec wpcli wp plugin is-active matchball 2>/dev/null; then
         echo -e "${GREEN}✓ WordPress ist bereit und Plugin aktiviert!${NC}"
         break
     fi

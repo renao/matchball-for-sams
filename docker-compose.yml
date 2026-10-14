@@ -1,7 +1,7 @@
 services:
   db:
     image: mariadb:10.11
-    container_name: ${COMPOSE_PROJECT_NAME:-easy-sams}_db
+    container_name: ${COMPOSE_PROJECT_NAME:-matchball}_db
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
@@ -14,7 +14,7 @@ services:
 
   wordpress:
     image: wordpress:7.1.1-php8.3-apache
-    container_name: ${COMPOSE_PROJECT_NAME:-easy-sams}_wp
+    container_name: ${COMPOSE_PROJECT_NAME:-matchball}_wp
     depends_on:
       - db
     restart: unless-stopped
@@ -25,23 +25,23 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
-      ESAMS_API_KEY: ${ESAMS_API_KEY:-}
-      ESAMS_API_KEY_SAMS_V2: ${ESAMS_API_KEY_SAMS_V2:-}
-      ESAMS_SOURCE_ID: ${ESAMS_SOURCE_ID:-sams-v2}
-      ESAMS_SEASON_UUID: ${ESAMS_SEASON_UUID:-}
-      ESAMS_LEAGUE_UUID: ${ESAMS_LEAGUE_UUID:-}
-      ESAMS_TEAM_UUID: ${ESAMS_TEAM_UUID:-}
+      MATCHBALL_API_KEY: ${MATCHBALL_API_KEY:-}
+      MATCHBALL_API_KEY_SAMS_V2: ${MATCHBALL_API_KEY_SAMS_V2:-}
+      MATCHBALL_SOURCE_ID: ${MATCHBALL_SOURCE_ID:-sams-v2}
+      MATCHBALL_SEASON_UUID: ${MATCHBALL_SEASON_UUID:-}
+      MATCHBALL_LEAGUE_UUID: ${MATCHBALL_LEAGUE_UUID:-}
+      MATCHBALL_TEAM_UUID: ${MATCHBALL_TEAM_UUID:-}
       WP_DEBUG: ${WP_DEBUG:-1}
       WP_DEBUG_LOG: ${WP_DEBUG_LOG:-1}
       WP_DEBUG_DISPLAY: ${WP_DEBUG_DISPLAY:-0}
       PLUGIN_CHECK_SKIP_INSTALL: ${PLUGIN_CHECK_SKIP_INSTALL:-0}
       WORDPRESS_CONFIG_EXTRA: |
-        if (file_exists('/var/www/html/wp-content/plugins/easy-sams/docker/wp-config-extra.php')) {
-            require_once '/var/www/html/wp-content/plugins/easy-sams/docker/wp-config-extra.php';
+        if (file_exists('/var/www/html/wp-content/plugins/matchball/docker/wp-config-extra.php')) {
+            require_once '/var/www/html/wp-content/plugins/matchball/docker/wp-config-extra.php';
         }
     volumes:
       - wp_data:/var/www/html
-      - ./:/var/www/html/wp-content/plugins/easy-sams
+      - ./:/var/www/html/wp-content/plugins/matchball
     healthcheck:
       test: ["CMD-SHELL", "test -f /var/www/html/wp-includes/version.php"]
       interval: 5s
@@ -51,7 +51,7 @@ services:
 
   wpcli:
     image: wordpress:cli-php8.3
-    container_name: ${COMPOSE_PROJECT_NAME:-easy-sams}_wpcli
+    container_name: ${COMPOSE_PROJECT_NAME:-matchball}_wpcli
     user: "33:33"
     depends_on:
       wordpress:
@@ -62,27 +62,27 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
       WP_HOME: ${WP_HOME:-http://localhost:8080}
-      WP_TITLE: ${WP_TITLE:-Easy SAMS Dev}
+      WP_TITLE: ${WP_TITLE:-Matchball - Standings & Tables for SAMS Dev}
       WP_ADMIN_USER: ${WP_ADMIN_USER:-test}
       WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD:-test}
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL:-admin@example.local}
-      ESAMS_API_KEY: ${ESAMS_API_KEY:-}
-      ESAMS_API_KEY_SAMS_V2: ${ESAMS_API_KEY_SAMS_V2:-}
-      ESAMS_SOURCE_ID: ${ESAMS_SOURCE_ID:-sams-v2}
-      ESAMS_SEASON_UUID: ${ESAMS_SEASON_UUID:-}
-      ESAMS_LEAGUE_UUID: ${ESAMS_LEAGUE_UUID:-}
-      ESAMS_TEAM_UUID: ${ESAMS_TEAM_UUID:-}
+      MATCHBALL_API_KEY: ${MATCHBALL_API_KEY:-}
+      MATCHBALL_API_KEY_SAMS_V2: ${MATCHBALL_API_KEY_SAMS_V2:-}
+      MATCHBALL_SOURCE_ID: ${MATCHBALL_SOURCE_ID:-sams-v2}
+      MATCHBALL_SEASON_UUID: ${MATCHBALL_SEASON_UUID:-}
+      MATCHBALL_LEAGUE_UUID: ${MATCHBALL_LEAGUE_UUID:-}
+      MATCHBALL_TEAM_UUID: ${MATCHBALL_TEAM_UUID:-}
       PLUGIN_CHECK_SKIP_INSTALL: ${PLUGIN_CHECK_SKIP_INSTALL:-0}
     volumes:
       - wp_data:/var/www/html
-      - ./:/var/www/html/wp-content/plugins/easy-sams
+      - ./:/var/www/html/wp-content/plugins/matchball
     healthcheck:
-      test: ["CMD-SHELL", "wp core is-installed && wp plugin is-active easy-sams"]
+      test: ["CMD-SHELL", "wp core is-installed && wp plugin is-active matchball"]
       interval: 5s
       timeout: 10s
       retries: 30
       start_period: 30s
-    entrypoint: ["/bin/sh", "/var/www/html/wp-content/plugins/easy-sams/docker/wp-setup.sh"]
+    entrypoint: ["/bin/sh", "/var/www/html/wp-content/plugins/matchball/docker/wp-setup.sh"]
 
 volumes:
   db_data:

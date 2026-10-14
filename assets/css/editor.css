@@ -1,10 +1,10 @@
-/* Easy SAMS Plugin - Editor Styles */
+/* Matchball - Standings & Tables for SAMS Plugin - Editor Styles */
 
-.esams-editor-block {
+.matchball-editor-block {
     padding: 20px;
 }
 
-.esams-editor-preview {
+.matchball-editor-preview {
     margin-top: 8px;
     border: 1px solid #d8dde3;
     border-radius: 6px;
@@ -12,27 +12,27 @@
     padding: 12px;
 }
 
-.esams-editor-preview__title {
+.matchball-editor-preview__title {
     display: block;
     margin-bottom: 6px;
     color: #1d2327;
 }
 
-.esams-editor-preview__list {
+.matchball-editor-preview__list {
     margin: 0;
     padding-left: 18px;
 }
 
-.esams-editor-preview__list li {
+.matchball-editor-preview__list li {
     margin: 2px 0;
     color: #50575e;
 }
 
-.esams-select-field {
+.matchball-select-field {
     margin-bottom: 15px;
 }
 
-.esams-select-field label {
+.matchball-select-field label {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
@@ -40,7 +40,7 @@
     font-size: 13px;
 }
 
-.esams-select-dropdown {
+.matchball-select-dropdown {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
@@ -49,7 +49,7 @@
     background-color: #fff;
 }
 
-.esams-select-dropdown:focus {
+.matchball-select-dropdown:focus {
     outline: none;
     border-color: #0073aa;
     box-shadow: 0 0 0 1px #0073aa;

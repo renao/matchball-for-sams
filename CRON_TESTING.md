@@ -4,7 +4,7 @@ Das Plugin nutzt WordPress WP-Cron für automatische 5-Minuten-Synchronisierung.
 
 ## Voraussetzungen
 
-- WordPress mit aktiviertem Plugin (`Easy SAMS`)
+- WordPress mit aktiviertem Plugin (`Matchball - Standings & Tables for SAMS`)
 - Mindestens eine aktive SAMS-Datenquelle in den Plugin-Settings
 - WP-CLI installiert (optional, aber empfohlen)
 
@@ -14,7 +14,7 @@ Das Plugin nutzt WordPress WP-Cron für automatische 5-Minuten-Synchronisierung.
 
 ### Cron manuell auslösen
 ```bash
-wp cron test --hook=esams_sync_cron
+wp cron test --hook=matchball_sync_cron
 ```
 
 Das führt den Sync-Job sofort aus und zeigt Fehler an, falls vorhanden.
@@ -24,14 +24,14 @@ Das führt den Sync-Job sofort aus und zeigt Fehler an, falls vorhanden.
 wp cron test --list
 ```
 
-Dies zeigt alle geplanten Events. Ihr solltet ein Event mit Hook `esams_sync_cron` und Interval `esams_every_five_minutes` sehen.
+Dies zeigt alle geplanten Events. Ihr solltet ein Event mit Hook `matchball_sync_cron` und Interval `matchball_every_five_minutes` sehen.
 
 ### Nächster Lauf anzeigen
 ```bash
 wp cron event list
 ```
 
-Sucht nach `esams_sync_cron` und prüft die Spalte `Next Run`.
+Sucht nach `matchball_sync_cron` und prüft die Spalte `Next Run`.
 
 ---
 
@@ -48,7 +48,7 @@ Sucht nach `esams_sync_cron` und prüft die Spalte `Next Run`.
 
 2. Das Plugin schreibt Cron-Fehler in `/wp-content/debug.log`:
    ```
-   [ESAMS] Cron sync issue source=sams-v2 stage=seasons code=...
+   [Matchball] Cron sync issue source=sams-v2 stage=seasons code=...
    ```
 
 3. Nach mehreren Seiten-Anfragen sollte der Cron automatisch laufen (WP-Cron triggert bei Page-Requests).
@@ -73,7 +73,7 @@ Dies triggert sofort einen Cron-Run.
 4. Wartet ~1-2 Minuten.
 5. Prüft `/wp-content/debug.log` auf Cron-Ausführung:
    ```
-   [ESAMS] Cron sync issue source=...
+   [Matchball] Cron sync issue source=...
    [INFO] ...
    ```
 
@@ -92,13 +92,13 @@ Dies triggert sofort einen Cron-Run.
 ### Normaler Log-Output (bei WP_DEBUG_LOG)
 
 ```
-[06-May-2026 15:00:23] Cron job esams_sync_cron started.
-[06-May-2026 15:00:30] Cron job esams_sync_cron completed.
+[06-May-2026 15:00:23] Cron job matchball_sync_cron started.
+[06-May-2026 15:00:30] Cron job matchball_sync_cron completed.
 ```
 
 Bei Fehlern:
 ```
-[06-May-2026 15:05:00] [ESAMS] Cron sync issue source=sams-v2 stage=leagues code=network_error
+[06-May-2026 15:05:00] [Matchball] Cron sync issue source=sams-v2 stage=leagues code=network_error
 ```
 
 ---
@@ -108,7 +108,7 @@ Bei Fehlern:
 | Problem | Lösung |
 |---------|--------|
 | **Cron triggert nicht** | WP-Cron braucht HTTP-Traffic; `curl https://site/wp-cron.php` manuell aufrufen oder `define('DISABLE_WP_CRON', false);` prüfen |
-| **`Unable to find event esams_sync_cron`** | Plugin nicht aktiviert oder `register_activation_hook` fehlgeschlagen; Plugin deaktivieren/reaktivieren |
+| **`Unable to find event matchball_sync_cron`** | Plugin nicht aktiviert oder `register_activation_hook` fehlgeschlagen; Plugin deaktivieren/reaktivieren |
 | **API-Fehler in Logs** | Prüft API-Key und Basis-URL in Settings; testen mit `curl -H "X-Api-Key: ..." https://api.example.com/... ` |
 | **Cache wird nicht aktualisiert** | Transienten sind für 5 Minuten gültig; prüft mit `wp transient list` oder Debug-Log auf Cron-Runs |
 
@@ -121,13 +121,13 @@ Vor der Freigabe führt aus:
 1. **Cron läuft alle 5 Minuten:**
    ```bash
    # Mehrfach aufrufen, 5 Min Abstand prüfen
-   wp cron test --hook=esams_sync_cron
-   wp transient list | grep esams_
+   wp cron test --hook=matchball_sync_cron
+   wp transient list | grep matchball_
    ```
 
 2. **Keine Error-Logs nach normalem Lauf:**
    ```bash
-   tail -f /wp-content/debug.log | grep ESAMS
+   tail -f /wp-content/debug.log | grep Matchball
    ```
 
 3. **Daten aktuell im Frontend:**

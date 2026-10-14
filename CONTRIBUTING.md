@@ -1,6 +1,6 @@
-# Contributing to Easy SAMS
+# Contributing to Matchball - Standings & Tables for SAMS
 
-Thank you for your interest in contributing to Easy SAMS. This document explains how to get started and what we expect from contributions.
+Thank you for your interest in contributing to Matchball - Standings & Tables for SAMS. This document explains how to get started and what we expect from contributions.
 
 ## How to contribute
 
@@ -31,14 +31,14 @@ For small bug fixes or documentation improvements, a lightweight PR process is s
 ## Code standards
 
 - **PHP**: Target PHP 7.4 compatibility. Avoid short array syntax? No — short arrays (`[]`) are fine. Use strict comparisons where reasonable.
-- **WordPress**: Follow WordPress coding standards for hooks, capabilities, and internationalization. Use the `easy-sams` textdomain for all translatable strings.
-- **Prefixing**: All global identifiers (classes, constants, functions, hooks, option names, transients) must use the `esams_` / `ESAMS_` prefix to avoid collisions with other plugins.
+- **WordPress**: Follow WordPress coding standards for hooks, capabilities, and internationalization. Use the `matchball` textdomain for all translatable strings.
+- **Prefixing**: All global identifiers (classes, constants, functions, hooks, option names, transients) must use the `matchball_` / `MATCHBALL_` prefix to avoid collisions with other plugins.
 - **REST routes**: Require the `edit_posts` capability or stricter. Do not expose administrative data to anonymous users.
-- **API keys**: Never log, display, or serialize API keys unencrypted. Use the existing encryption helpers in `ESAMS_Source_Repository`.
+- **API keys**: Never log, display, or serialize API keys unencrypted. Use the existing encryption helpers in `MATCHBALL_Source_Repository`.
 
 ## License
 
-Easy SAMS is licensed under the **GNU General Public License v2 or later** (GPLv2+), consistent with WordPress.org distribution requirements.
+Matchball - Standings & Tables for SAMS is licensed under the **GNU General Public License v2 or later** (GPLv2+), consistent with WordPress.org distribution requirements.
 
 By contributing code, documentation, or other material to this repository, you confirm that:
 

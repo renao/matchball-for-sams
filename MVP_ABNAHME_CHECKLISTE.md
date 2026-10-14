@@ -7,7 +7,7 @@ Manueller Test-Plan für Standings und Results Blöcke. Führt diese Tests durch
 ## Teil 1: Setup
 
 ### 1.1 Plugin aktivieren
-- [ ] Plugin im WordPress Admin aktivieren (`Plugins → Easy SAMS`)
+- [ ] Plugin im WordPress Admin aktivieren (`Plugins → Matchball - Standings & Tables for SAMS`)
 - [ ] Admin-Notice über API-Key-Verschlüsselung sichtbar?
 
 ### 1.2 Datenquelle konfigurieren
@@ -92,11 +92,11 @@ Manueller Test-Plan für Standings und Results Blöcke. Führt diese Tests durch
 ## Teil 5: Cron-Synchronisierung
 
 ### 5.1 Cron-Event registriert?
-- [ ] WP-CLI: `wp cron event list | grep esams_sync_cron`
-- [ ] Event wird angezeigt mit Hook `esams_sync_cron` und Interval `esams_every_five_minutes`?
+- [ ] WP-CLI: `wp cron event list | grep matchball_sync_cron`
+- [ ] Event wird angezeigt mit Hook `matchball_sync_cron` und Interval `matchball_every_five_minutes`?
 
 ### 5.2 Manuell ausführen
-- [ ] WP-CLI: `wp cron test --hook=esams_sync_cron`
+- [ ] WP-CLI: `wp cron test --hook=matchball_sync_cron`
 - [ ] Kein Fehler?
 - [ ] Logs zeigen erfolgreiche Ausführung oder nur bei Problemen?
 
@@ -115,9 +115,9 @@ Manueller Test-Plan für Standings und Results Blöcke. Führt diese Tests durch
 - [ ] API-Key neuer eintragen
 - [ ] Database prüfen (z.B. mit phpMyAdmin oder WP-CLI):
    ```bash
-   wp option get esams_sources --format=json | grep api_key
+   wp option get matchball_sources --format=json | grep api_key
    ```
-- [ ] Key beginnt mit `esamsenc:v1:` (verschlüsselt)?
+- [ ] Key beginnt mit `matchballenc:v1:` (verschlüsselt)?
 
 ### 6.2 Key wird bei Admin-Edit maskiert
 - [ ] Zu `Settings → SAMS Sources` zurück

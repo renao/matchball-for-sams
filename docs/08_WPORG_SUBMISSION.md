@@ -1,6 +1,6 @@
-# WordPress.org Submission Guide for Easy SAMS
+# WordPress.org Submission Guide for Matchball - Standings & Tables for SAMS
 
-This document collects the steps and checks required to submit **Easy SAMS** as a new plugin to the WordPress.org plugin directory.
+This document collects the steps and checks required to submit **Matchball - Standings & Tables for SAMS** as a new plugin to the WordPress.org plugin directory.
 
 > Note: This is a **new plugin submission**. The predecessor plugin **SAMS Integration** remains live separately and will not be migrated. It will receive deprecation notices and remain available until around mid-2027.
 
@@ -12,19 +12,19 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 
 ### 1. Legal and metadata consistency
 
-- [ ] Plugin header in `easy-sams.php` is complete and accurate
-  - `Plugin Name: Easy SAMS`
+- [ ] Plugin header in `matchball.php` is complete and accurate
+  - `Plugin Name: Matchball - Standings & Tables for SAMS`
   - `Version: 3.0.0`
   - `Requires at least: 6.0`
   - `Requires PHP: 7.4`
   - `License: GPL v2 or later`
-  - `Text Domain: easy-sams`
+  - `Text Domain: matchball`
 - [ ] `readme.txt` uses WordPress.org format and matches the plugin header
-  - `=== Easy SAMS ===`
+  - `=== Matchball - Standings & Tables for SAMS ===`
   - `Stable tag: 3.0.0`
   - `Contributors: renao`
   - `License: GPLv2 or later`
-- [ ] `Stable tag` in `readme.txt` matches `Version` in `easy-sams.php`
+- [ ] `Stable tag` in `readme.txt` matches `Version` in `matchball.php`
 - [ ] `LICENSE` file exists and contains GPLv2 or later text
 - [ ] `PRIVACY.md`, `SECURITY.md`, and `CONTRIBUTING.md` exist in the repo root
 - [ ] `readme.txt` contains the required external service disclosure sections
@@ -33,18 +33,18 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 
 - [ ] All PHP files pass `php -l`
 - [ ] `shellcheck scripts/*.sh` passes
-- [ ] All global identifiers use the `esams_` / `ESAMS_` prefix
+- [ ] All global identifiers use the `matchball_` / `MATCHBALL_` prefix
 - [ ] No `codeberg`, `forgejo`, `woodpecker`, or old `sik_` / `SIK_` identifiers remain
 - [ ] No unresolved merge conflict markers (`<<<<<<<`) anywhere
 
 ### 3. Build and smoke test
 
-- [ ] `bash scripts/create-release-zip.sh` produces `artifacts/releases/easy-sams-3.0.0.zip`
+- [ ] `bash scripts/create-release-zip.sh` produces `artifacts/releases/matchball-3.0.0.zip`
 - [ ] The release ZIP installs and activates on a clean WordPress installation
-- [ ] The plugin activates under slug `easy-sams`
-- [ ] The cron hook `esams_sync_cron` is scheduled with interval `esams_every_five_minutes`
-- [ ] REST namespace `esams/v1` is registered
-- [ ] Blocks `esams/standings` and `esams/results` can be inserted in the editor
+- [ ] The plugin activates under slug `matchball`
+- [ ] The cron hook `matchball_sync_cron` is scheduled with interval `matchball_every_five_minutes`
+- [ ] REST namespace `matchball/v1` is registered
+- [ ] Blocks `matchball/standings` and `matchball/results` can be inserted in the editor
 - [ ] Admin page `Settings → SAMS Sources` is reachable
 
 ### 4. Local development follow-ups
@@ -74,10 +74,10 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 1. Go to the WordPress.org plugin submission page:
    https://wordpress.org/plugins/developers/add/
 
-2. Upload the release ZIP (`artifacts/releases/easy-sams-3.0.0.zip`).
+2. Upload the release ZIP (`artifacts/releases/matchball-3.0.0.zip`).
 
 3. Fill in the submission form:
-   - Plugin name: `Easy SAMS`
+   - Plugin name: `Matchball - Standings & Tables for SAMS`
    - Description: brief summary referencing SAMS API, standings, results, and the successor relationship
    - Confirm that the plugin complies with the plugin directory guidelines
 
@@ -90,7 +90,7 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 ## After approval
 
 1. WordPress.org will provide an SVN repository at:
-   `https://plugins.svn.wordpress.org/easy-sams/`
+   `https://plugins.svn.wordpress.org/matchball/`
 
 2. Use the release workflow or `scripts/deploy-wporg-svn.sh` to deploy:
    ```bash
@@ -111,8 +111,8 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 
 The old plugin is maintained in a separate repository. The deprecation steps for the old plugin are:
 
-1. Add a deprecation notice to the top of its `readme.txt` description, linking to Easy SAMS.
-2. Add a dismissible admin notice in the old plugin code pointing users to Easy SAMS.
+1. Add a deprecation notice to the top of its `readme.txt` description, linking to Matchball - Standings & Tables for SAMS.
+2. Add a dismissible admin notice in the old plugin code pointing users to Matchball - Standings & Tables for SAMS.
 3. Bump `Tested up to` one last time and release a maintenance version.
 4. Around mid-2027, request closure via `plugins@wordpress.org`.
 

@@ -1,4 +1,4 @@
-.esams-block {
+.matchball-block {
     border: 1px solid #d8dde3;
     border-radius: 8px;
     padding: 16px;
@@ -7,20 +7,20 @@
     box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
 }
 
-.esams-table-scroll {
+.matchball-table-scroll {
     overflow-x: auto;
 }
 
-.esams-block table {
+.matchball-block table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.esams-table {
+.matchball-table {
     min-width: 360px;
 }
 
-.esams-block thead th {
+.matchball-block thead th {
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -29,72 +29,72 @@
     background: #f8fafc;
 }
 
-.esams-block th,
-.esams-block td {
+.matchball-block th,
+.matchball-block td {
     text-align: left;
     padding: 10px 12px;
     border-bottom: 1px solid #eef1f4;
 }
 
-.esams-block tbody tr:nth-child(even) {
+.matchball-block tbody tr:nth-child(even) {
     background: #f8fafc;
 }
 
-.esams-standings__table tbody tr.is-selected-team {
+.matchball-standings__table tbody tr.is-selected-team {
     background: #e8f1ff;
 }
 
-.esams-standings__table tbody tr.is-selected-team td {
+.matchball-standings__table tbody tr.is-selected-team td {
     border-top: 1px solid #b8d0ff;
     border-bottom: 1px solid #b8d0ff;
 }
 
-.esams-standings__table tbody tr.is-selected-team + tr td {
+.matchball-standings__table tbody tr.is-selected-team + tr td {
     border-top-color: transparent;
 }
 
-.esams-standings__rank,
-.esams-standings__played,
-.esams-standings__balls,
-.esams-standings__points {
+.matchball-standings__rank,
+.matchball-standings__played,
+.matchball-standings__balls,
+.matchball-standings__points {
     width: 1%;
     white-space: nowrap;
 }
 
-.esams-standings__points {
+.matchball-standings__points {
     font-weight: 700;
     text-align: right;
 }
 
-.esams-standings__team {
+.matchball-standings__team {
     font-weight: 600;
     color: #101828;
 }
 
-.esams-block ul {
+.matchball-block ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.esams-block li {
+.matchball-block li {
     padding: 8px 0;
     border-bottom: 1px solid #eef1f4;
 }
 
-.esams-block li:last-child,
-.esams-block tr:last-child td {
+.matchball-block li:last-child,
+.matchball-block tr:last-child td {
     border-bottom: 0;
 }
 
 /* Match cards (Results) */
-.esams-match-list {
+.matchball-match-list {
     display: flex;
     flex-direction: column;
     gap: 0;
 }
 
-.esams-match-card {
+.matchball-match-card {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -102,34 +102,34 @@
     border-bottom: 1px solid #eef1f4;
 }
 
-.esams-match-card:last-child {
+.matchball-match-card:last-child {
     border-bottom: 0;
     padding-bottom: 0;
 }
 
 /* Teams + score: 3-column grid so scores always align */
-.esams-match-card__matchup {
+.matchball-match-card__matchup {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 8px;
 }
 
-.esams-match-card__team {
+.matchball-match-card__team {
     font-weight: 600;
     color: #101828;
     word-break: break-word;
 }
 
-.esams-match-card__team--home {
+.matchball-match-card__team--home {
     text-align: right;
 }
 
-.esams-match-card__team--away {
+.matchball-match-card__team--away {
     text-align: left;
 }
 
-.esams-match-card__score {
+.matchball-match-card__score {
     background: #f0f6fc;
     border: 1px solid #b8d0ff;
     border-radius: 4px;
@@ -142,7 +142,7 @@
     text-align: center;
 }
 
-.esams-match-card__vs {
+.matchball-match-card__vs {
     font-size: 0.75rem;
     color: #98a2b3;
     font-weight: 600;
@@ -152,7 +152,7 @@
 }
 
 /* Meta row: date · time · venue */
-.esams-match-card__meta {
+.matchball-match-card__meta {
     font-size: 0.78rem;
     color: #667085;
     display: flex;
@@ -163,12 +163,12 @@
     line-height: 1.4;
 }
 
-.esams-match-card__sep::before {
+.matchball-match-card__sep::before {
     content: '·';
     color: #d0d5dd;
 }
 
-.esams-updated-hint {
+.matchball-updated-hint {
     margin: 10px 0 0;
     font-size: 0.78rem;
     color: #667085;
@@ -176,12 +176,12 @@
 }
 
 @media (max-width: 480px) {
-    .esams-match-card__team {
+    .matchball-match-card__team {
         font-size: 0.9rem;
     }
 }
 
-.esams-notice {
+.matchball-notice {
     border-left: 4px solid #2271b1;
     background: #f0f6fc;
     padding: 10px;
@@ -189,12 +189,12 @@
 }
 
 @media (max-width: 640px) {
-    .esams-block {
+    .matchball-block {
         padding: 12px;
     }
 
-    .esams-block th,
-    .esams-block td {
+    .matchball-block th,
+    .matchball-block td {
         padding: 9px 10px;
     }
 }

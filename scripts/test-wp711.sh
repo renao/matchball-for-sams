@@ -17,7 +17,7 @@ mkdir -p "$LOG_DIR"
 
 # Header
 echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN} Easy SAMS - WordPress 7.1.1 Test Suite${NC}"
+echo -e "${GREEN} Matchball - Standings & Tables for SAMS - WordPress 7.1.1 Test Suite${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 
@@ -40,7 +40,7 @@ docker compose up -d --build
 echo -e "${YELLOW}⏳ Warte auf WordPress Setup (ca. 60s)...${NC}"
 for i in {1..60}; do
     if docker compose exec wpcli wp core is-installed >/dev/null 2>&1 \
-       && docker compose exec wpcli wp plugin is-active easy-sams >/dev/null 2>&1; then
+       && docker compose exec wpcli wp plugin is-active matchball >/dev/null 2>&1; then
         echo -e "${GREEN}✓ WordPress ist bereit und Plugin aktiviert!${NC}"
         break
     fi
@@ -66,14 +66,14 @@ fi
 echo -e "${YELLOW}🔍 Führe plugin-check aus...${NC}"
 PLUGIN_CHECK_LOG="$LOG_DIR/plugin_check_$TEST_DATE.log"
 docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
-    /var/www/html/wp-content/plugins/easy-sams \
+    /var/www/html/wp-content/plugins/matchball \
     --no-interaction \
     --severity=warning 2>&1 | tee "$PLUGIN_CHECK_LOG"
 
 # Schritt 4: PHP Fehler prüfen
 echo -e "${YELLOW}🐞 Prüfe PHP Fehler...${NC}"
 ERROR_LOG="$LOG_DIR/php_errors_$TEST_DATE.log"
-docker compose exec wpcli cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -i "easy-sams\|esams" > "$ERROR_LOG" || true
+docker compose exec wpcli cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -i "matchball\|matchball" > "$ERROR_LOG" || true
 if [ -s "$ERROR_LOG" ]; then
     echo -e "${RED}✗ PHP Fehler gefunden:${NC}"
     cat "$ERROR_LOG"
@@ -85,7 +85,7 @@ fi
 echo -e "${YELLOW}🧪 Teste Plugin Funktionalität...${NC}"
 # REST API testen
 echo -e "   - Teste REST API Endpunkte..."
-if docker compose exec wpcli wp rest route list 2>/dev/null | grep esams > /dev/null; then
+if docker compose exec wpcli wp rest route list 2>/dev/null | grep matchball > /dev/null; then
     echo -e "${GREEN}✓ REST API Endpunkte registriert${NC}"
 else
     echo -e "${RED}✗ REST API Endpunkte nicht gefunden${NC}"
@@ -101,7 +101,7 @@ fi
 
 # Plugin Version prüfen
 echo -e "   - Teste Plugin Version..."
-PLUGIN_VERSION=$(docker compose exec wpcli wp plugin get easy-sams --field=version 2>/dev/null || echo "")
+PLUGIN_VERSION=$(docker compose exec wpcli wp plugin get matchball --field=version 2>/dev/null || echo "")
 if [ -n "$PLUGIN_VERSION" ]; then
     echo -e "   Plugin Version: ${GREEN}$PLUGIN_VERSION${NC}"
 else

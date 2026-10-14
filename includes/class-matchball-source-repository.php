@@ -4,9 +4,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class ESAMS_Source_Repository {
-    private const OPTION_KEY = 'esams_sources';
-    private const API_KEY_PREFIX = 'esamsenc:v1';
+class MATCHBALL_Source_Repository {
+    private const OPTION_KEY = 'matchball_sources';
+    private const API_KEY_PREFIX = 'matchballenc:v1';
 
     public function get_all() {
         $sources = get_option(self::OPTION_KEY, array());
@@ -256,11 +256,11 @@ class ESAMS_Source_Repository {
     private function crypto_key() {
         $material = '';
 
-        $env_key = getenv('ESAMS_ENCRYPTION_KEY');
+        $env_key = getenv('MATCHBALL_ENCRYPTION_KEY');
         if (is_string($env_key) && trim($env_key) !== '') {
             $material = $env_key;
-        } elseif (defined('ESAMS_ENCRYPTION_KEY') && trim((string) constant('ESAMS_ENCRYPTION_KEY')) !== '') {
-            $material = (string) constant('ESAMS_ENCRYPTION_KEY');
+        } elseif (defined('MATCHBALL_ENCRYPTION_KEY') && trim((string) constant('MATCHBALL_ENCRYPTION_KEY')) !== '') {
+            $material = (string) constant('MATCHBALL_ENCRYPTION_KEY');
         } elseif (function_exists('wp_salt')) {
             $material = wp_salt('secure_auth') . '|' . wp_salt('auth');
         } elseif (defined('SECURE_AUTH_KEY') || defined('AUTH_KEY')) {
@@ -306,19 +306,19 @@ class ESAMS_Source_Repository {
             return true;
         }
 
-        if (defined('ESAMS_API_KEYS') && is_array(constant('ESAMS_API_KEYS'))) {
-            $map = constant('ESAMS_API_KEYS');
+        if (defined('MATCHBALL_API_KEYS') && is_array(constant('MATCHBALL_API_KEYS'))) {
+            $map = constant('MATCHBALL_API_KEYS');
             if (isset($map[$source_id]) && trim((string) $map[$source_id]) !== '') {
                 return true;
             }
         }
 
-        $env_global = getenv('ESAMS_API_KEY');
+        $env_global = getenv('MATCHBALL_API_KEY');
         if (is_string($env_global) && trim($env_global) !== '') {
             return true;
         }
 
-        if (defined('ESAMS_API_KEY') && trim((string) constant('ESAMS_API_KEY')) !== '') {
+        if (defined('MATCHBALL_API_KEY') && trim((string) constant('MATCHBALL_API_KEY')) !== '') {
             return true;
         }
 
@@ -339,31 +339,31 @@ class ESAMS_Source_Repository {
                 return sanitize_text_field((string) constant($const_specific));
             }
 
-            if (defined('ESAMS_API_KEYS') && is_array(constant('ESAMS_API_KEYS'))) {
-                $map = constant('ESAMS_API_KEYS');
+            if (defined('MATCHBALL_API_KEYS') && is_array(constant('MATCHBALL_API_KEYS'))) {
+                $map = constant('MATCHBALL_API_KEYS');
                 if (isset($map[$source_id]) && trim((string) $map[$source_id]) !== '') {
                     return sanitize_text_field((string) $map[$source_id]);
                 }
             }
         }
 
-        $env_global = getenv('ESAMS_API_KEY');
+        $env_global = getenv('MATCHBALL_API_KEY');
         if (is_string($env_global) && trim($env_global) !== '') {
             return sanitize_text_field($env_global);
         }
 
-        if (defined('ESAMS_API_KEY') && trim((string) constant('ESAMS_API_KEY')) !== '') {
-            return sanitize_text_field((string) constant('ESAMS_API_KEY'));
+        if (defined('MATCHBALL_API_KEY') && trim((string) constant('MATCHBALL_API_KEY')) !== '') {
+            return sanitize_text_field((string) constant('MATCHBALL_API_KEY'));
         }
 
         return $db_api_key;
     }
 
     private function specific_env_name($source_id) {
-        return 'ESAMS_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
+        return 'MATCHBALL_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
     }
 
     private function specific_const_name($source_id) {
-        return 'ESAMS_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
+        return 'MATCHBALL_API_KEY_' . strtoupper(str_replace('-', '_', $source_id));
     }
 }

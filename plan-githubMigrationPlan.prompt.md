@@ -1,7 +1,7 @@
-# Plan: Umzug Codeberg -> GitHub, Umbenennung zu "Easy SAMS" + Rechtliche Absicherung
+# Plan: Umzug Codeberg -> GitHub, Umbenennung zu "Matchball - Standings & Tables for SAMS" + Rechtliche Absicherung
 
-TL;DR: Plugin wird zu **"Easy SAMS"** umbenannt (Slug/Textdomain `easy-sams`, interner
-Präfix `esams`), bevor das Repo per `git push --mirror` komplett zu GitHub umzieht — so
+TL;DR: Plugin wird zu **"Matchball - Standings & Tables for SAMS"** umbenannt (Slug/Textdomain `matchball`, interner
+Präfix `matchball`), bevor das Repo per `git push --mirror` komplett zu GitHub umzieht — so
 startet das neue Repo direkt sauber unter dem neuen Namen. Da GitHub Actions
 syntaktisch fast identisch zu Forgejo Actions ist, werden die bestehenden Workflow-Dateien
 nur von `.forgejo/workflows/` nach `.github/workflows/` verschoben und Runner-Label/
@@ -9,7 +9,7 @@ Bootstrap-Befehle angepasst (kein Neuschreiben in einer Fremdsyntax wie bei GitL
 Woodpecker-Dateien entfernen, alle Codeberg-Referenzen in Code/Docs aktualisieren, den
 kaputten `docs/07_CI_PIPELINE.md` (unresolved merge conflict) bereinigen und neu für
 GitHub Actions schreiben, und drei neue Compliance-Dateien (PRIVACY.md, SECURITY.md,
-CONTRIBUTING.md) ergänzen. "Easy SAMS" wird als **neues Plugin** bei WordPress.org
+CONTRIBUTING.md) ergänzen. "Matchball - Standings & Tables for SAMS" wird als **neues Plugin** bei WordPress.org
 eingereicht (neue Review, neuer SVN-Slug); das alte "SAMS Integration"-Plugin wird
 NICHT migriert, sondern mit Deprecation-Hinweis bis ca. Mitte 2027 weiterbetrieben und
 danach geschlossen. Lizenz (GPLv2 or later) bleibt unverändert, da für
@@ -18,7 +18,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 **Entscheidungsgrundlage (bereits geklärt mit User):**
 - Ziel: **GitHub** (finale Entscheidung; User-Präferenz wegen Größe/Reichweite).
 - Volle Git-Historie via `push --mirror`.
-- **Neuer Name: "Easy SAMS"** — Repo, Plugin-Name, Slug, Textdomain und interne Präfixe
+- **Neuer Name: "Matchball - Standings & Tables for SAMS"** — Repo, Plugin-Name, Slug, Textdomain und interne Präfixe
   werden umbenannt (bessere Unterscheidbarkeit vom Vorgänger-Plugin, saubere Übersetzungen).
 - Vorgänger-Plugin "SAMS Integration" (bereits auf WP.org live) bleibt bestehen und wird
   mit Deprecation-Hinweis bis ca. Mitte 2027 weitergeführt; kein Migrationspfad geplant
@@ -49,7 +49,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 - **Altes Plugin (Vorgänger):** lokal unter `/home/renao/devel/deprecated-sams-integration`
   ausgecheckt; Git-Remote `git@github.com:renao/sams-integration.git` (GitHub), aktiver
   Branch `develop` (kein `main`). **Namens-Kollision:** `github.com/renao/sams-integration`
-  ist bereits durch das alte Repo belegt — das neue GitHub-Repo muss daher `easy-sams`
+  ist bereits durch das alte Repo belegt — das neue GitHub-Repo muss daher `matchball`
   heißen (ohnehin geplant) oder das alte Repo muss umbenannt werden.
 - Altes Plugin ist PHP 7.2+, Version 1.2.0, nutzt Namespace `SAMSPlugin\` und einen
   Composer-Autoloader unter `build/lib/`; hat **keinen** eigenen `admin_notices`-Hook —
@@ -79,63 +79,63 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 
 ---
 
-## Phase A0 — Umbenennung zu "Easy SAMS" (vor dem Umzug)
+## Phase A0 — Umbenennung zu "Matchball - Standings & Tables for SAMS" (vor dem Umzug)
 *keine Abhängigkeiten; als eigener Commit VOR Phase A, damit das GitHub-Repo sauber startet*
 
 **Namenskonventionen (Ziel):**
-- Anzeigename: "Easy SAMS"
-- Slug / Plugin-Ordner / Hauptdatei / Textdomain: `easy-sams` (`easy-sams.php`)
-- Interner Präfix: `ESAMS_` / `esams_` / `esams-` / `esams/` (ersetzt `SIK_`/`sik_`/`sik-`/`sik/`)
+- Anzeigename: "Matchball - Standings & Tables for SAMS"
+- Slug / Plugin-Ordner / Hauptdatei / Textdomain: `matchball` (`matchball.php`)
+- Interner Präfix: `MATCHBALL_` / `matchball_` / `matchball-` / `matchball/` (ersetzt `SIK_`/`sik_`/`sik-`/`sik/`)
   — wichtig für Kollisionsfreiheit, da das alte "SAMS Integration"-Plugin bis Mitte 2027
   parallel live ist und Seiten in der Umstellung beide Plugins installiert haben können.
 
 **Code-Umbenennungen (verifizierte Fundstellen):**
-1. Hauptdatei `sams-integration.php` -> `easy-sams.php` (`git mv`), Header: Plugin Name
-   "Easy SAMS", Text Domain `easy-sams`, Domain Path `/languages` bleibt.
+1. Hauptdatei `sams-integration.php` -> `matchball.php` (`git mv`), Header: Plugin Name
+   "Matchball - Standings & Tables for SAMS", Text Domain `matchball`, Domain Path `/languages` bleibt.
 2. PHP-Klassen `SIK_Plugin`, `SIK_Admin`, `SIK_Api_Client`, `SIK_Blocks`, `SIK_Cron`,
-   `SIK_Rest`, `SIK_Source_Repository` -> `ESAMS_*`; Konstanten `SIK_PLUGIN_VERSION/FILE/DIR/URL`;
+   `SIK_Rest`, `SIK_Source_Repository` -> `MATCHBALL_*`; Konstanten `SIK_PLUGIN_VERSION/FILE/DIR/URL`;
    Funktionen `sik_bootstrap`, `sik_load_textdomain`, `sik_activate`, `sik_deactivate`.
    Dateinamen `includes/class-sams-*.php` bleiben (beschreiben die SAMS-Domäne, nicht die Marke).
-3. DB-/Laufzeit-Bezeichner: Option `sik_sources` -> `esams_sources`
+3. DB-/Laufzeit-Bezeichner: Option `sik_sources` -> `matchball_sources`
    (class-sams-source-repository.php:8), Cron-Hook `sik_sync_cron` + Schedule
    `sik_every_five_minutes` (class-sams-cron.php:8-9), Transient-Präfix `sik_`
    (class-sams-api-client.php:304), Verschlüsselungs-Präfix `sikenc:v1`.
    Kein Migrations-Layer nötig (kein Migrationsplan gewünscht; neue Installationen starten leer).
-4. REST-Namespace `sik/v1` -> `esams/v1` (class-sams-rest.php, alle `register_rest_route`,
+4. REST-Namespace `sik/v1` -> `matchball/v1` (class-sams-rest.php, alle `register_rest_route`,
    plus `rest_url('sik/v1/')` in class-sams-blocks.php:62).
-5. Block-Namen `sik/standings`, `sik/results` -> `esams/standings`, `esams/results`
+5. Block-Namen `sik/standings`, `sik/results` -> `matchball/standings`, `matchball/results`
    (class-sams-blocks.php:26/32, assets/js/blocks.js:370-371, Demo-Content in docker-compose.yml:84).
-   Geplanter `sik/schedules`-Block (ANFORDERUNGEN.md:271) -> `esams/schedules`.
+   Geplanter `sik/schedules`-Block (ANFORDERUNGEN.md:271) -> `matchball/schedules`.
 6. Script/Style-Handles `sik-blocks`/`sik-editor`/`sik-frontend`, JS-Global `sikConfig`,
    Admin-Page-Slug `sik-sources`, Nonce/Action `sik_save_sources`,
    `admin_post_sik_save_sources` (class-sams-admin.php, class-sams-blocks.php).
 7. Textdomain in allen `__()`/`esc_html__()`/`esc_attr__()`-Aufrufen: `sams-integration` ->
-   `easy-sams` (includes/*, assets/js/blocks.js) inkl. `wp_set_script_translations`
+   `matchball` (includes/*, assets/js/blocks.js) inkl. `wp_set_script_translations`
    (class-sams-blocks.php:59) — verhindert Übersetzungs-Durcheinander mit dem alten Plugin.
-8. CSS-Klassen `sik-*` -> `esams-*` in assets/css/frontend.css, assets/css/editor.css,
+8. CSS-Klassen `sik-*` -> `matchball-*` in assets/css/frontend.css, assets/css/editor.css,
    assets/js/blocks.js, includes/class-sams-blocks.php (kosmetisch, aber konsistent).
-9. Env-/Konfig-Variablen `SIK_*` -> `ESAMS_*` in .env.example, docker-compose.yml,
+9. Env-/Konfig-Variablen `SIK_*` -> `MATCHBALL_*` in .env.example, docker-compose.yml,
    docker/wp-config-extra.php, LOCAL_DEV.md; Compose-Projektname, Container-Namen und
-   Mount-Pfad `/var/www/html/wp-content/plugins/sams-integration` -> `easy-sams`;
+   Mount-Pfad `/var/www/html/wp-content/plugins/sams-integration` -> `matchball`;
    setup-sams.sh BASEDIR an den neuen lokalen Pfad anpassen.
-10. Scripts: `PLUGIN_SLUG="easy-sams"` in scripts/create-release-zip.sh (Zeile 5) und
+10. Scripts: `PLUGIN_SLUG="matchball"` in scripts/create-release-zip.sh (Zeile 5) und
     scripts/deploy-wporg-svn.sh (Zeile 5 + Default in Hilfetext Zeile 23), awk-Verweise auf
-    `easy-sams.php` (beide Scripts + später die GitHub-Workflows), Banner-Text
-    "SAMS Integration" in scripts/create-wporg-assets.sh:35 -> "Easy SAMS".
-11. Docs aktualisieren: readme.txt (`=== Easy SAMS ===`, Beschreibungstexte, kurzer Hinweis
+    `matchball.php` (beide Scripts + später die GitHub-Workflows), Banner-Text
+    "SAMS Integration" in scripts/create-wporg-assets.sh:35 -> "Matchball - Standings & Tables for SAMS".
+11. Docs aktualisieren: readme.txt (`=== Matchball - Standings & Tables for SAMS ===`, Beschreibungstexte, kurzer Hinweis
     "Successor of the SAMS Integration plugin"), ANFORDERUNGEN.md (Textdomain Zeile 151,
     `sams-integration.php`-Verweis Zeile 217, `sik/schedules` Zeile 271), CRON_TESTING.md
     (`sik_sync_cron` etc.), MVP_ABNAHME_CHECKLISTE.md, docs/*, .env.example WP_TITLE.
 12. Sprachdateien: `/languages`-Verzeichnis existiert aktuell nicht — bei späteren
-    Übersetzungen Dateinamen `easy-sams-<locale>.po/.mo` verwenden.
+    Übersetzungen Dateinamen `matchball-<locale>.po/.mo` verwenden.
 
 ## Phase A — Repo-Migration (GitHub)
 *depends on Phase A0 (Umbenennung ist committed)*
 1. Neues GitHub-Repository anlegen (unter bestehendem Account/Org `renao`), Sichtbarkeit
-   "Public", Name `easy-sams`.
+   "Public", Name `matchball`.
 2. Lokal: `git remote add github <neue-url>` und `git push --mirror github` (alle Branches + Tags + volle Historie).
    Hinweis: `github.com/renao/sams-integration` ist bereits durch das alte Repo belegt
-   (siehe Code-Fakten) — daher als neues Repo `github.com/renao/easy-sams` verwenden.
+   (siehe Code-Fakten) — daher als neues Repo `github.com/renao/matchball` verwenden.
 3. Default-Branch auf GitHub auf `main` setzen, Branch-Protection-Rule für `main` aktivieren
    (Voraussetzung für sichere Secrets/Environments in Phase B).
 4. Optional (Empfehlung, nicht bestätigt): Codeberg-Repo nicht löschen, sondern
@@ -148,8 +148,8 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    nahezu 1:1 (bereits `actions/checkout@v4`, Standard-Step-Syntax, `on: push/pull_request/
    workflow_dispatch`), nur `runs-on: forgejo-docker` durch `runs-on: ubuntu-latest` ersetzen.
    Jobs bleiben inhaltlich gleich: php_syntax, shell_lint, release_consistency, build_release_zip.
-   Wichtig: awk-Verweise in den Workflows zeigen nach Phase A0 auf `easy-sams.php` und
-   `artifacts/releases/easy-sams-<version>.zip` (ci.yml Zeilen 30/40/41, wporg-release.yml Zeile 35).
+   Wichtig: awk-Verweise in den Workflows zeigen nach Phase A0 auf `matchball.php` und
+   `artifacts/releases/matchball-<version>.zip` (ci.yml Zeilen 30/40/41, wporg-release.yml Zeile 35).
 2. `.forgejo/workflows/wporg-release.yml` nach `.github/workflows/wporg-release.yml`
    verschieben: `runs-on: forgejo-docker` -> `runs-on: ubuntu-latest`; `environment: production`
    Konzept bleibt identisch (GitHub Actions unterstützt `environment:` inkl. optionaler
@@ -165,9 +165,9 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    "Codeberg"/"Forgejo Actions" durch "GitHub"/"GitHub Actions" ersetzen.
 
 ## Phase C — Referenz- & Metadaten-Updates
-*can run parallel with Phase B; baut auf Phase A0 auf (Datei heißt dann `easy-sams.php`)*
-1. `easy-sams.php`: `Plugin URI` und `Author URI` von `codeberg.org/...` auf neue
-   GitHub-URLs ändern (`https://github.com/renao/easy-sams`).
+*can run parallel with Phase B; baut auf Phase A0 auf (Datei heißt dann `matchball.php`)*
+1. `matchball.php`: `Plugin URI` und `Author URI` von `codeberg.org/...` auf neue
+   GitHub-URLs ändern (`https://github.com/renao/matchball`).
 2. `readme.txt`: bestehenden "External service usage"/"Service terms and privacy"-Abschnitt
    unverändert lassen (bereits WP.org-konform); optional eine "Source Code"-Zeile mit
    GitHub-Link ergänzen.
@@ -198,28 +198,28 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 6. Keine zusätzliche "KI-Kennzeichnung" im rechtlichen Sinn nötig (siehe oben) — freiwilliger
    Hinweis in CONTRIBUTING.md/README reicht aus, falls gewünscht.
 
-## Phase E — WordPress.org: neues Listing "Easy SAMS" + Abkündigung des Vorgängers
+## Phase E — WordPress.org: neues Listing "Matchball - Standings & Tables for SAMS" + Abkündigung des Vorgängers
 *depends on Phase A0 (Slug steht) + Phase B (Deploy-Workflow); Review-Wartezeit einplanen*
-1. **Neues WP.org-Listing "Easy SAMS" einreichen (größtenteils manuell):**
+1. **Neues WP.org-Listing "Matchball - Standings & Tables for SAMS" einreichen (größtenteils manuell):**
    a. **Pre-Flight-Check** gegen die WP.org Plugin Guidelines (vor der Einreichung):
       - readme.txt mit dem offiziellen WP.org-Readme-Validator prüfen.
       - Release-ZIP via scripts/create-release-zip.sh bauen und auf einer frischen
         WordPress-Installation hochladen/aktivieren (Install-Smoke-Test).
       - Präfix-Konformität: alle globalen Funktionen/Klassen/Konstanten tragen den
-        eindeutigen Präfix `esams`/`ESAMS` (durch Phase A0 erfüllt; die Review prüft das).
-      - Namens-Kollision prüfen: "Easy SAMS" im WP.org-Verzeichnis noch nicht vergeben;
+        eindeutigen Präfix `matchball`/`Matchball` (durch Phase A0 erfüllt; die Review prüft das).
+      - Namens-Kollision prüfen: "Matchball - Standings & Tables for SAMS" im WP.org-Verzeichnis noch nicht vergeben;
         Nähe zu "SAMS" (Produktname sams-server.de) bewusst beachten — das Vorgänger-Plugin
         nutzte bereits "SAMS Integration", aber neue Namen werden genauer geschaut.
       - Keine obfuskierten/verminften Sourcen ohne Quelltext (blocks.js ist lesbares JS — ok).
    b. **Einreichung:** ZIP über das Developer-Portal hochladen
-      (https://wordpress.org/plugins/developers/add/). Der Slug `easy-sams` wird dabei
+      (https://wordpress.org/plugins/developers/add/). Der Slug `matchball` wird dabei
       reserviert. Frühzeitig einreichen — die Review dauert erfahrungsgemäß Tage bis
-      Wochen, Rückfragen sind üblich. Bis zur Freischaltung kann Easy SAMS über
+      Wochen, Rückfragen sind üblich. Bis zur Freischaltung kann Matchball - Standings & Tables for SAMS über
       GitHub-Releases (ZIP) verteilt werden.
    c. **Review-Loop:** auf Feedback-Mails des Plugin Review Teams reagieren, ggf. Fixes
       committen und ZIP erneut hochladen. Versionsnummer dabei NICHT erhöhen, solange
       noch nichts öffentlich released wurde.
-   d. **Nach Freischaltung:** SVN-Repo `https://plugins.svn.wordpress.org/easy-sams/`
+   d. **Nach Freischaltung:** SVN-Repo `https://plugins.svn.wordpress.org/matchball/`
       wird bereitgestellt. Initial-Import nach `trunk/` + `assets/` (Banner/Icons via
       scripts/create-wporg-assets.sh mit neuem Namen bauen), Tag `3.0.0` anlegen.
       Danach übernimmt der Workflow `wporg-release` (Phase B) alle weiteren Releases.
@@ -228,14 +228,14 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 2. **Altes Plugin abkündigen (bleibt bis ca. Mitte 2027):** — Änderungen im Repo des
    ALTEN Plugins, nicht in diesem Repo:
    - readme.txt: Deprecation-Hinweis an den Anfang der Description
-     ("This plugin is deprecated and will be retired in mid-2027. Successor: Easy SAMS" + Link).
+     ("This plugin is deprecated and will be retired in mid-2027. Successor: Matchball - Standings & Tables for SAMS" + Link).
    - Admin-Notice im Dashboard des alten Plugins ergänzen (dismissible, Hinweis + Link auf
      das neue Plugin; finaler WP.org-Link erst nach Freischaltung, vorher GitHub-Link).
    - Letzte Maintenance-Release des alten Plugins mit "Tested up to"-Bump.
    - Kein Daten-/User-Migrationspfad (bewusste Entscheidung, siehe Decisions).
 3. **Sunset (ca. Mitte 2027):** altes Plugin über plugins@wordpress.org schließen lassen
    ("close plugin"-Request); Kalender-Reminder setzen. Nach der Schließung bleibt der
-   alte Slug dauerhaft reserviert/gesperrt — kein Konflikt mit `easy-sams`.
+   alte Slug dauerhaft reserviert/gesperrt — kein Konflikt mit `matchball`.
 
 ## Verification
 1. `git remote -v` im lokalen Klon zeigt neuen GitHub-Remote; `git log --oneline | wc -l`
@@ -250,9 +250,9 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 7. `grep -rn "sams-integration\|sik_\|SIK_\|sik/\|sik-" .` liefert außerhalb von
    `.git`/Changelog-Historie keine Treffer mehr (Umbenennung vollständig).
 8. `docker compose up` Smoke-Test: Plugin aktiviert sich unter neuem Slug, Blöcke
-   `esams/standings` + `esams/results` registrieren sich im Editor, Admin-Seite erreichbar,
-   Cron-Hook `esams_sync_cron` geplant.
-9. Kollisions-Check: altes Plugin und Easy SAMS auf derselben Testinstanz gleichzeitig
+   `matchball/standings` + `matchball/results` registrieren sich im Editor, Admin-Seite erreichbar,
+   Cron-Hook `matchball_sync_cron` geplant.
+9. Kollisions-Check: altes Plugin und Matchball - Standings & Tables for SAMS auf derselben Testinstanz gleichzeitig
    aktivierbar (keine Klassen-/Konstanten-/Hook-Kollision durch getrennte Präfixe).
 10. readme.txt besteht den offiziellen WP.org-Readme-Validator; Release-ZIP lässt sich auf
     einer frischen WordPress-Installation hochladen und aktivieren (Pre-Flight für Phase E).
@@ -260,7 +260,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 ## Decisions
 - Ziel-Plattform: GitHub (final).
 - Volle Historie via `push --mirror` (bestätigt).
-- Neuer Name: "Easy SAMS"; Slug/Textdomain/Repo `easy-sams`; interner Präfix `esams` (bestätigt).
+- Neuer Name: "Matchball - Standings & Tables for SAMS"; Slug/Textdomain/Repo `matchball`; interner Präfix `matchball` (bestätigt).
 - Vorgänger-Plugin "SAMS Integration" wird NICHT migriert: Deprecation-Hinweis, Weiterbetrieb
   bis ca. Mitte 2027, danach Schließung auf WP.org (bestätigt, Sunset-Datum grob).
 - Kein Migrations-/Upgrade-Pfad zwischen altem und neuem Plugin (bewusste Kosten-Nutzen-Entscheidung).
@@ -281,8 +281,8 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    Das alte Plugin hat aktuell keinen `admin_notices`-Hook — für die Admin-Notice
    muss einer ergänzt werden (siehe Phase E.2).
 4. **Deprecation-Texte** (readme.txt + Admin-Notice des alten Plugins) abstimmen; finaler
-   WP.org-Link auf Easy SAMS erst nach Freischaltung des neuen Listings bekannt.
+   WP.org-Link auf Matchball - Standings & Tables for SAMS erst nach Freischaltung des neuen Listings bekannt.
 5. **WP.org-Review-Timing**: Neueinreichung früh starten (Review kann Wochen dauern);
-   bis dahin kann Easy SAMS über GitHub-Releases (ZIP) verteilt werden.
-6. **Präfix-Wahl `esams`**: Vorschlag; falls dir ein anderer Präfix lieber ist (z.B. `ezs`),
+   bis dahin kann Matchball - Standings & Tables for SAMS über GitHub-Releases (ZIP) verteilt werden.
+6. **Präfix-Wahl `matchball`**: Vorschlag; falls dir ein anderer Präfix lieber ist (z.B. `ezs`),
    vor Umsetzung von Phase A0 final festlegen — danach ist die Änderung aufwendig.

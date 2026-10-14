@@ -32,7 +32,7 @@ make_banner() {
   "${IM_BIN[@]}" -size "${width}x${height}" gradient:"$BG_TOP-$BG_BOTTOM" \
     -fill "$ACCENT" -draw "rectangle 0,$((height-18)) $width,$height" \
     -fill "$TEXT" -font "$FONT" -weight 700 -pointsize $((height/6)) \
-    -gravity northwest -annotate +40+34 "Easy SAMS" \
+    -gravity northwest -annotate +40+34 "Matchball - Standings & Tables for SAMS" \
     -font "$FONT" -weight 400 -pointsize $((height/12)) \
     -gravity northwest -annotate +42+$((height/2)) "WordPress blocks for standings and results" \
     -font "$FONT" -weight 400 -pointsize $((height/14)) \

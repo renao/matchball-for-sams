@@ -11,12 +11,12 @@ NC='\033[0m'
 
 mkdir -p "$LOG_DIR"
 
-echo "🔍 Führe plugin-check für Easy SAMS aus..."
+echo "🔍 Führe plugin-check für Matchball - Standings & Tables for SAMS aus..."
 echo "   Log: $LOG_FILE"
 echo ""
 
 docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
-    /var/www/html/wp-content/plugins/easy-sams \
+    /var/www/html/wp-content/plugins/matchball \
     --no-interaction \
     --severity=warning \
     --format=json 2>&1 | tee "$LOG_FILE"

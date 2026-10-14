@@ -17,23 +17,23 @@ else
     --skip-email
 fi
 
-wp plugin activate easy-sams
+wp plugin activate matchball
 
 if [ "$PLUGIN_CHECK_SKIP_INSTALL" != "1" ]; then
   wp plugin install plugin-check --activate
 fi
 
-if wp post list --post_type=page --post_status=any --name=easy-sams-demo --format=ids 2>/dev/null | grep -q .; then
+if wp post list --post_type=page --post_status=any --name=matchball-demo --format=ids 2>/dev/null | grep -q .; then
   echo "Demo page already exists, skipping."
 else
-  DEMO_CONTENT="<!-- wp:heading --><h2 class=\"wp-block-heading\">Tabelle</h2><!-- /wp:heading --><!-- wp:esams/standings {\"sourceId\":\"$ESAMS_SOURCE_ID\",\"seasonUuid\":\"$ESAMS_SEASON_UUID\",\"leagueUuid\":\"$ESAMS_LEAGUE_UUID\",\"teamUuid\":\"$ESAMS_TEAM_UUID\"} /--><!-- wp:heading --><h2 class=\"wp-block-heading\">Ergebnisse / Spielplan</h2><!-- /wp:heading --><!-- wp:esams/results {\"sourceId\":\"$ESAMS_SOURCE_ID\",\"seasonUuid\":\"$ESAMS_SEASON_UUID\",\"leagueUuid\":\"$ESAMS_LEAGUE_UUID\",\"teamUuid\":\"$ESAMS_TEAM_UUID\",\"includeFuture\":true} /--></p>"
+  DEMO_CONTENT="<!-- wp:heading --><h2 class=\"wp-block-heading\">Tabelle</h2><!-- /wp:heading --><!-- wp:matchball/standings {\"sourceId\":\"$MATCHBALL_SOURCE_ID\",\"seasonUuid\":\"$MATCHBALL_SEASON_UUID\",\"leagueUuid\":\"$MATCHBALL_LEAGUE_UUID\",\"teamUuid\":\"$MATCHBALL_TEAM_UUID\"} /--><!-- wp:heading --><h2 class=\"wp-block-heading\">Ergebnisse / Spielplan</h2><!-- /wp:heading --><!-- wp:matchball/results {\"sourceId\":\"$MATCHBALL_SOURCE_ID\",\"seasonUuid\":\"$MATCHBALL_SEASON_UUID\",\"leagueUuid\":\"$MATCHBALL_LEAGUE_UUID\",\"teamUuid\":\"$MATCHBALL_TEAM_UUID\",\"includeFuture\":true} /--></p>"
   wp post create \
     --post_type=page \
-    --post_title="Easy SAMS Demo" \
-    --post_name=easy-sams-demo \
+    --post_title="Matchball - Standings & Tables for SAMS Demo" \
+    --post_name=matchball-demo \
     --post_status=publish \
     --post_content="$DEMO_CONTENT"
-  echo "Demo-Seite erstellt: $WP_HOME/easy-sams-demo/"
+  echo "Demo-Seite erstellt: $WP_HOME/matchball-demo/"
 fi
 
 tail -f /dev/null

@@ -40,11 +40,11 @@ Runs `shellcheck` on all scripts in `scripts/`.
 
 ### 3. Version consistency check
 
-Compares the `Version` header in `easy-sams.php` with the `Stable tag` in `readme.txt`. Both must be equal and non-empty.
+Compares the `Version` header in `matchball.php` with the `Stable tag` in `readme.txt`. Both must be equal and non-empty.
 
 ### 4. Build release zip
 
-Runs `scripts/create-release-zip.sh` and verifies that `artifacts/releases/easy-sams-<version>.zip` exists.
+Runs `scripts/create-release-zip.sh` and verifies that `artifacts/releases/matchball-<version>.zip` exists.
 
 ## Release job
 
@@ -83,7 +83,7 @@ find . -type f -name "*.php" -not -path "./artifacts/*" -print0 | xargs -0 -n1 p
 shellcheck scripts/*.sh
 
 # Version consistency
-plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' easy-sams.php | tr -d '[:space:]')"
+plugin_version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' matchball.php | tr -d '[:space:]')"
 readme_version="$(awk -F': ' 'tolower($1)=="stable tag" {print $2; exit}' readme.txt | tr -d '[:space:]')"
 test "$plugin_version" = "$readme_version" && echo "Version check passed: $plugin_version"
 
