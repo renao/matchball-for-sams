@@ -40,7 +40,7 @@ class MATCHBALL_Cron {
         if (!isset($schedules[self::SCHEDULE])) {
             $schedules[self::SCHEDULE] = array(
                 'interval' => 300,
-                'display' => __('Every 5 Minutes', 'matchball'),
+                'display' => __('Every 5 Minutes', 'matchball-for-sams'),
             );
         }
         return $schedules;

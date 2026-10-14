@@ -52,7 +52,7 @@ renovate.json
 *.backup
 
 # Language files (template only, translations will be added by WP.org)
-languages/.pot
+languages/*.pot
 
 # IDE
 .idea/

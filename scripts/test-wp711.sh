@@ -40,7 +40,7 @@ docker compose up -d --build
 echo -e "${YELLOW}⏳ Warte auf WordPress Setup (ca. 60s)...${NC}"
 for i in {1..60}; do
     if docker compose exec wpcli wp core is-installed >/dev/null 2>&1 \
-       && docker compose exec wpcli wp plugin is-active matchball >/dev/null 2>&1; then
+       && docker compose exec wpcli wp plugin is-active matchball-for-sams >/dev/null 2>&1; then
         echo -e "${GREEN}✓ WordPress ist bereit und Plugin aktiviert!${NC}"
         break
     fi
@@ -66,14 +66,14 @@ fi
 echo -e "${YELLOW}🔍 Führe plugin-check aus...${NC}"
 PLUGIN_CHECK_LOG="$LOG_DIR/plugin_check_$TEST_DATE.log"
 docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
-    /var/www/html/wp-content/plugins/matchball \
+    /var/www/html/wp-content/plugins/matchball-for-sams \
     --no-interaction \
     --severity=warning 2>&1 | tee "$PLUGIN_CHECK_LOG"
 
 # Schritt 4: PHP Fehler prüfen
 echo -e "${YELLOW}🐞 Prüfe PHP Fehler...${NC}"
 ERROR_LOG="$LOG_DIR/php_errors_$TEST_DATE.log"
-docker compose exec wpcli cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -i "matchball\|matchball" > "$ERROR_LOG" || true
+docker compose exec wpcli cat /var/www/html/wp-content/debug.log 2>/dev/null | grep -i "matchball" > "$ERROR_LOG" || true
 if [ -s "$ERROR_LOG" ]; then
     echo -e "${RED}✗ PHP Fehler gefunden:${NC}"
     cat "$ERROR_LOG"
@@ -101,7 +101,7 @@ fi
 
 # Plugin Version prüfen
 echo -e "   - Teste Plugin Version..."
-PLUGIN_VERSION=$(docker compose exec wpcli wp plugin get matchball --field=version 2>/dev/null || echo "")
+PLUGIN_VERSION=$(docker compose exec wpcli wp plugin get matchball-for-sams --field=version 2>/dev/null || echo "")
 if [ -n "$PLUGIN_VERSION" ]; then
     echo -e "   Plugin Version: ${GREEN}$PLUGIN_VERSION${NC}"
 else

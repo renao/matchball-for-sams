@@ -36,12 +36,12 @@ services:
       WP_DEBUG_DISPLAY: ${WP_DEBUG_DISPLAY:-0}
       PLUGIN_CHECK_SKIP_INSTALL: ${PLUGIN_CHECK_SKIP_INSTALL:-0}
       WORDPRESS_CONFIG_EXTRA: |
-        if (file_exists('/var/www/html/wp-content/plugins/matchball/docker/wp-config-extra.php')) {
-            require_once '/var/www/html/wp-content/plugins/matchball/docker/wp-config-extra.php';
+        if (file_exists('/var/www/html/wp-content/plugins/matchball-for-sams/docker/wp-config-extra.php')) {
+            require_once '/var/www/html/wp-content/plugins/matchball-for-sams/docker/wp-config-extra.php';
         }
     volumes:
       - wp_data:/var/www/html
-      - ./:/var/www/html/wp-content/plugins/matchball
+      - ./:/var/www/html/wp-content/plugins/matchball-for-sams
     healthcheck:
       test: ["CMD-SHELL", "test -f /var/www/html/wp-includes/version.php"]
       interval: 5s
@@ -75,14 +75,14 @@ services:
       PLUGIN_CHECK_SKIP_INSTALL: ${PLUGIN_CHECK_SKIP_INSTALL:-0}
     volumes:
       - wp_data:/var/www/html
-      - ./:/var/www/html/wp-content/plugins/matchball
+      - ./:/var/www/html/wp-content/plugins/matchball-for-sams
     healthcheck:
-      test: ["CMD-SHELL", "wp core is-installed && wp plugin is-active matchball"]
+      test: ["CMD-SHELL", "wp core is-installed && wp plugin is-active matchball-for-sams"]
       interval: 5s
       timeout: 10s
       retries: 30
       start_period: 30s
-    entrypoint: ["/bin/sh", "/var/www/html/wp-content/plugins/matchball/docker/wp-setup.sh"]
+    entrypoint: ["/bin/sh", "/var/www/html/wp-content/plugins/matchball-for-sams/docker/wp-setup.sh"]
 
 volumes:
   db_data:

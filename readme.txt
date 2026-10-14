@@ -10,8 +10,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Gutenberg blocks for standings and results via SAMS API with 5-minute sync and fallback cache. Successor of the SAMS Integration plugin.
 
-Source code: https://github.com/renao/matchball-for-sams
-
 == Description ==
 
 Matchball - Standings & Tables for SAMS provides two Gutenberg blocks for sports websites:
@@ -20,6 +18,8 @@ Matchball - Standings & Tables for SAMS provides two Gutenberg blocks for sports
 * Results block (finished matches)
 
 Data is fetched from a SAMS API source and cached via WordPress transients. A 5-minute WP-Cron sync keeps data fresh, while fallback cache protects frontend output during API issues.
+
+Source code: https://github.com/renao/matchball-for-sams
 
 External service usage:
 

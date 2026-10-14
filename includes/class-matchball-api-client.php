@@ -69,11 +69,11 @@ class MATCHBALL_Api_Client {
     public function request($source_id, $path, $query = array()) {
         $source = $this->sources->get_by_id($source_id);
         if (!$source || empty($source['is_active'])) {
-            return $this->error('inactive_source', __('Selected source is not active.', 'matchball'));
+            return $this->error('inactive_source', __('Selected source is not active.', 'matchball-for-sams'));
         }
 
         if (empty($source['base_url']) || empty($source['api_key'])) {
-            return $this->error('invalid_source_config', __('Source configuration is incomplete.', 'matchball'));
+            return $this->error('invalid_source_config', __('Source configuration is incomplete.', 'matchball-for-sams'));
         }
 
         $path = '/' . ltrim($path, '/');
@@ -115,7 +115,7 @@ class MATCHBALL_Api_Client {
         }
 
         $this->log_http_error($status_code, $path);
-        return $this->fallback_or_error($cache_key, 'http_' . $status_code, __('Remote API error.', 'matchball'));
+        return $this->fallback_or_error($cache_key, 'http_' . $status_code, __('Remote API error.', 'matchball-for-sams'));
     }
 
     private function fallback_or_error($cache_key, $code, $message) {

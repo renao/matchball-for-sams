@@ -19,8 +19,8 @@ class MATCHBALL_Admin {
 
     public function add_menu() {
         add_options_page(
-            __('SAMS Sources', 'matchball'),
-            __('SAMS Sources', 'matchball'),
+            __('SAMS Sources', 'matchball-for-sams'),
+            __('SAMS Sources', 'matchball-for-sams'),
             'manage_options',
             'matchball-sources',
             array($this, 'render_page')
@@ -29,7 +29,7 @@ class MATCHBALL_Admin {
 
     public function handle_save() {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Forbidden', 'matchball'));
+            wp_die(esc_html__('Forbidden', 'matchball-for-sams'));
         }
 
         check_admin_referer('matchball_save_sources');
@@ -80,7 +80,7 @@ class MATCHBALL_Admin {
 
     public function render_page() {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('Forbidden', 'matchball'));
+            wp_die(esc_html__('Forbidden', 'matchball-for-sams'));
         }
 
         $sources = $this->sources->get_all();
@@ -99,14 +99,14 @@ class MATCHBALL_Admin {
         }
 
         echo '<div class="wrap">';
-        echo '<h1>' . esc_html__('SAMS Sources', 'matchball') . '</h1>';
+        echo '<h1>' . esc_html__('SAMS Sources', 'matchball-for-sams') . '</h1>';
 
         echo '<div class="notice notice-info is-dismissible">';
-        echo '<p><strong>' . esc_html__('Security:', 'matchball') . '</strong> ' . esc_html__('API keys are encrypted automatically and stored securely in the database. They are never shown in the admin UI.', 'matchball') . '</p>';
+        echo '<p><strong>' . esc_html__('Security:', 'matchball-for-sams') . '</strong> ' . esc_html__('API keys are encrypted automatically and stored securely in the database. They are never shown in the admin UI.', 'matchball-for-sams') . '</p>';
         echo '</div>';
 
         if (isset($_GET['updated'])) {
-            echo '<div class="notice notice-success"><p>' . esc_html__('Sources saved.', 'matchball') . '</p></div>';
+            echo '<div class="notice notice-success"><p>' . esc_html__('Sources saved.', 'matchball-for-sams') . '</p></div>';
         }
 
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
@@ -125,9 +125,9 @@ class MATCHBALL_Admin {
 
         echo '<table class="widefat striped">';
         echo '<thead><tr>';
-    echo '<th>' . esc_html__('ID', 'matchball') . '</th><th>' . esc_html__('Name', 'matchball') . '</th><th>' . esc_html__('Base URL', 'matchball') . '</th><th>' . esc_html__('API Key', 'matchball') . '</th>';
-    echo '<th>' . esc_html__('Top-level association UUID', 'matchball') . '<br><small style="font-weight:normal">' . esc_html__('Scopes this source: limits cron pre-fetch, match results filter, and the association picker in blocks', 'matchball') . '</small></th>';
-    echo '<th>' . esc_html__('Active', 'matchball') . '</th><th>' . esc_html__('Default', 'matchball') . '</th>';
+    echo '<th>' . esc_html__('ID', 'matchball-for-sams') . '</th><th>' . esc_html__('Name', 'matchball-for-sams') . '</th><th>' . esc_html__('Base URL', 'matchball-for-sams') . '</th><th>' . esc_html__('API Key', 'matchball-for-sams') . '</th>';
+    echo '<th>' . esc_html__('Top-level association UUID', 'matchball-for-sams') . '<br><small style="font-weight:normal">' . esc_html__('Scopes this source: limits cron pre-fetch, match results filter, and the association picker in blocks', 'matchball-for-sams') . '</small></th>';
+    echo '<th>' . esc_html__('Active', 'matchball-for-sams') . '</th><th>' . esc_html__('Default', 'matchball-for-sams') . '</th>';
         echo '</tr></thead><tbody>';
 
         foreach ($sources as $index => $source) {
@@ -137,14 +137,14 @@ class MATCHBALL_Admin {
             echo '<td><input type="text" name="' . esc_attr($prefix . '[name]') . '" value="' . esc_attr($source['name']) . '" /></td>';
             echo '<td><input type="url" size="32" name="' . esc_attr($prefix . '[base_url]') . '" value="' . esc_attr($source['base_url']) . '" /></td>';
             echo '<td>';
-            echo '<input type="password" autocomplete="new-password" placeholder="' . esc_attr__('Leave empty to keep existing key', 'matchball') . '" name="' . esc_attr($prefix . '[api_key]') . '" value="" />';
+            echo '<input type="password" autocomplete="new-password" placeholder="' . esc_attr__('Leave empty to keep existing key', 'matchball-for-sams') . '" name="' . esc_attr($prefix . '[api_key]') . '" value="" />';
             if (!empty($source['id']) && $this->sources->uses_external_api_key($source['id'])) {
-                echo '<p><small>' . esc_html__('Using server-side key override.', 'matchball') . '</small></p>';
+                echo '<p><small>' . esc_html__('Using server-side key override.', 'matchball-for-sams') . '</small></p>';
             }
             echo '</td>';
             echo '<td>';
             echo '<input type="text" size="24" name="' . esc_attr($prefix . '[association_uuid]') . '" value="' . esc_attr($source['association_uuid']) . '" aria-describedby="assoc-help-' . esc_attr((string) $index) . '" />';
-            echo '<p class="description" id="assoc-help-' . esc_attr((string) $index) . '" style="margin-top:4px">' . esc_html__('UUID of the parent/top-level association from SAMS. Leave empty if the API key already limits the scope. This is not the same as the per-block association filter used by editors.', 'matchball') . '</p>';
+            echo '<p class="description" id="assoc-help-' . esc_attr((string) $index) . '" style="margin-top:4px">' . esc_html__('UUID of the parent/top-level association from SAMS. Leave empty if the API key already limits the scope. This is not the same as the per-block association filter used by editors.', 'matchball-for-sams') . '</p>';
             echo '</td>';
             echo '<td><input type="checkbox" name="' . esc_attr($prefix . '[is_active]') . '" value="1" ' . checked(!empty($source['is_active']), true, false) . ' /></td>';
             echo '<td><input type="radio" name="default_source" value="' . esc_attr($source['id']) . '" ' . checked(!empty($source['is_default']), true, false) . ' /></td>';
@@ -152,7 +152,7 @@ class MATCHBALL_Admin {
         }
 
         echo '</tbody></table>';
-        submit_button(__('Save Sources', 'matchball'));
+        submit_button(__('Save Sources', 'matchball-for-sams'));
         echo '</form>';
         echo '</div>';
     }

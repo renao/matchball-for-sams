@@ -12,19 +12,19 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 
 ### 1. Legal and metadata consistency
 
-- [ ] Plugin header in `matchball.php` is complete and accurate
+- [ ] Plugin header in `matchball-for-sams.php` is complete and accurate
   - `Plugin Name: Matchball - Standings & Tables for SAMS`
   - `Version: 3.0.0`
   - `Requires at least: 6.0`
   - `Requires PHP: 7.4`
   - `License: GPL v2 or later`
-  - `Text Domain: matchball`
+  - `Text Domain: matchball-for-sams`
 - [ ] `readme.txt` uses WordPress.org format and matches the plugin header
   - `=== Matchball - Standings & Tables for SAMS ===`
   - `Stable tag: 3.0.0`
   - `Contributors: renao`
   - `License: GPLv2 or later`
-- [ ] `Stable tag` in `readme.txt` matches `Version` in `matchball.php`
+- [ ] `Stable tag` in `readme.txt` matches `Version` in `matchball-for-sams.php`
 - [ ] `LICENSE` file exists and contains GPLv2 or later text
 - [ ] `PRIVACY.md`, `SECURITY.md`, and `CONTRIBUTING.md` exist in the repo root
 - [ ] `readme.txt` contains the required external service disclosure sections
@@ -39,9 +39,9 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 
 ### 3. Build and smoke test
 
-- [ ] `bash scripts/create-release-zip.sh` produces `artifacts/releases/matchball-3.0.0.zip`
+- [ ] `bash scripts/create-release-zip.sh` produces `artifacts/releases/matchball-for-sams-3.0.0.zip`
 - [ ] The release ZIP installs and activates on a clean WordPress installation
-- [ ] The plugin activates under slug `matchball`
+- [ ] The plugin activates under slug `matchball-for-sams`
 - [ ] The cron hook `matchball_sync_cron` is scheduled with interval `matchball_every_five_minutes`
 - [ ] REST namespace `matchball/v1` is registered
 - [ ] Blocks `matchball/standings` and `matchball/results` can be inserted in the editor
@@ -74,7 +74,7 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 1. Go to the WordPress.org plugin submission page:
    https://wordpress.org/plugins/developers/add/
 
-2. Upload the release ZIP (`artifacts/releases/matchball-3.0.0.zip`).
+2. Upload the release ZIP (`artifacts/releases/matchball-for-sams-3.0.0.zip`).
 
 3. Fill in the submission form:
    - Plugin name: `Matchball - Standings & Tables for SAMS`
@@ -90,7 +90,7 @@ Before uploading the plugin ZIP to WordPress.org, complete the following checks:
 ## After approval
 
 1. WordPress.org will provide an SVN repository at:
-   `https://plugins.svn.wordpress.org/matchball/`
+   `https://plugins.svn.wordpress.org/matchball-for-sams/`
 
 2. Use the release workflow or `scripts/deploy-wporg-svn.sh` to deploy:
    ```bash

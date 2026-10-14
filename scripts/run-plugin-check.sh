@@ -16,7 +16,7 @@ echo "   Log: $LOG_FILE"
 echo ""
 
 docker compose exec wpcli php /var/www/html/wp-content/plugins/plugin-check/plugin-check.php \
-    /var/www/html/wp-content/plugins/matchball \
+    /var/www/html/wp-content/plugins/matchball-for-sams \
     --no-interaction \
     --severity=warning \
     --format=json 2>&1 | tee "$LOG_FILE"

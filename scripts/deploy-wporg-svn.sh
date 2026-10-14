@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_SLUG="matchball"
+PLUGIN_SLUG="matchball-for-sams"
 SVN_URL=""
 SVN_WORK_DIR="$ROOT_DIR/artifacts/wporg-svn"
 RELEASE_ZIP=""
@@ -20,7 +20,7 @@ Usage:
   ./scripts/deploy-wporg-svn.sh [options]
 
 Options:
-  --slug <slug>             WordPress.org plugin slug (default: matchball)
+  --slug <slug>             WordPress.org plugin slug (default: matchball-for-sams)
   --svn-url <url>           Full SVN URL (default: https://plugins.svn.wordpress.org/<slug>)
   --work-dir <path>         Local SVN working copy path (default: artifacts/wporg-svn/<slug>)
   --zip <path>              Release zip path (default: artifacts/releases/<slug>-<version>.zip)
@@ -54,9 +54,9 @@ require_cmd() {
   fi
 }
 
-VERSION_FROM_PLUGIN="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' "$ROOT_DIR/matchball.php" | tr -d '[:space:]')"
+VERSION_FROM_PLUGIN="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' "$ROOT_DIR/matchball-for-sams.php" | tr -d '[:space:]')"
 if [[ -z "$VERSION_FROM_PLUGIN" ]]; then
-  echo "Could not read plugin version from matchball.php"
+  echo "Could not read plugin version from matchball-for-sams.php"
   exit 1
 fi
 

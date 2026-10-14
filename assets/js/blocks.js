@@ -10,7 +10,7 @@
 
     function findOptionLabel(options, value, fallback) {
         if (!value) {
-            return fallback || __('Not selected', 'matchball');
+            return fallback || __('Not selected', 'matchball-for-sams');
         }
         var list = Array.isArray(options) ? options : [];
         for (var i = 0; i < list.length; i++) {
@@ -22,7 +22,7 @@
     }
 
     function mapOptions(items, labelKey, firstLabel) {
-        var list = [{ label: firstLabel || __('Select...', 'matchball'), value: '' }];
+        var list = [{ label: firstLabel || __('Select...', 'matchball-for-sams'), value: '' }];
         var mapped = (items || []).map(function (item) {
             return {
                 label: item[labelKey] || item.name || item.uuid,
@@ -37,7 +37,7 @@
     }
 
     function mapSeasonOptions(items, firstLabel) {
-        var list = [{ label: firstLabel || __('Select...', 'matchball'), value: '' }];
+        var list = [{ label: firstLabel || __('Select...', 'matchball-for-sams'), value: '' }];
         var mapped = (items || []).map(function (item) {
             return {
                 label: item.name,
@@ -98,12 +98,12 @@
             var setAttrs = props.setAttributes;
             var blockProps = useBlockProps({ className: 'matchball-editor-block' });
 
-            var baseSourceOptions = [{ label: __('Select source', 'matchball'), value: '' }];
-            var baseSeasonOptions = [{ label: __('Select season', 'matchball'), value: '' }];
-            var baseAssocOptions = [{ label: __('All state associations', 'matchball'), value: '' }];
-            var baseLeagueOptions = [{ label: __('Select league', 'matchball'), value: '' }];
-            var baseTeamOptions = [{ label: __('Optional team', 'matchball'), value: '' }];
-            var loadingOption = [{ label: __('Loading...', 'matchball'), value: '__loading__' }];
+            var baseSourceOptions = [{ label: __('Select source', 'matchball-for-sams'), value: '' }];
+            var baseSeasonOptions = [{ label: __('Select season', 'matchball-for-sams'), value: '' }];
+            var baseAssocOptions = [{ label: __('All state associations', 'matchball-for-sams'), value: '' }];
+            var baseLeagueOptions = [{ label: __('Select league', 'matchball-for-sams'), value: '' }];
+            var baseTeamOptions = [{ label: __('Optional team', 'matchball-for-sams'), value: '' }];
+            var loadingOption = [{ label: __('Loading...', 'matchball-for-sams'), value: '__loading__' }];
 
             var _useState = useState(baseSourceOptions), sourceOptions = _useState[0], setSourceOptions = _useState[1];
             var _useState2 = useState(attrs.sourceId ? loadingOption : baseSeasonOptions), seasonOptions = _useState2[0], setSeasonOptions = _useState2[1];
@@ -121,14 +121,14 @@
                         var items = (res.items || []).map(function (item) {
                             return { id: item.id, name: item.name };
                         });
-                        setSourceOptions(mapOptions(items, 'name', __('Select source', 'matchball')));
+                        setSourceOptions(mapOptions(items, 'name', __('Select source', 'matchball-for-sams')));
                         if (!attrs.sourceId && res.default_source) {
                             setAttrs({ sourceId: res.default_source });
                         }
                     })
                     .catch(function () {
                         if (active) {
-                            setSourceOptions([{ label: __('No sources available', 'matchball'), value: '' }]);
+                            setSourceOptions([{ label: __('No sources available', 'matchball-for-sams'), value: '' }]);
                         }
                     });
 
@@ -153,7 +153,7 @@
                         if (!active) {
                             return;
                         }
-                        setSeasonOptions(mapSeasonOptions(res.items || [], __('Select season', 'matchball')));
+                        setSeasonOptions(mapSeasonOptions(res.items || [], __('Select season', 'matchball-for-sams')));
                     })
                     .catch(function () {
                         if (active) {
@@ -209,7 +209,7 @@
                         if (!active) {
                             return;
                         }
-                        setLeagueOptions(mapOptions(res.items || [], 'name', __('Select league', 'matchball')));
+                        setLeagueOptions(mapOptions(res.items || [], 'name', __('Select league', 'matchball-for-sams')));
                     })
                     .catch(function () {
                         if (active) {
@@ -235,7 +235,7 @@
                         if (!active) {
                             return;
                         }
-                        setTeamOptions(mapOptions(res.items || [], 'name', __('Optional team', 'matchball')));
+                        setTeamOptions(mapOptions(res.items || [], 'name', __('Optional team', 'matchball-for-sams')));
                     })
                     .catch(function () {
                         if (active) {
@@ -263,7 +263,7 @@
 
             var controls = [
                 createSelectField(
-                    __('Data source', 'matchball'),
+                    __('Data source', 'matchball-for-sams'),
                     attrs.sourceId || '',
                     sourceOptions,
                     function (value) {
@@ -271,7 +271,7 @@
                     }
                 ),
                 createSelectField(
-                    __('Season', 'matchball'),
+                    __('Season', 'matchball-for-sams'),
                     attrs.seasonUuid || '',
                     seasonOptions,
                     function (value) {
@@ -279,16 +279,16 @@
                     }
                 ),
                 createSelectField(
-                    __('State association (optional)', 'matchball'),
+                    __('State association (optional)', 'matchball-for-sams'),
                     attrs.associationUuid || '',
                     assocOptions,
                     function (value) {
                         setAttrs({ associationUuid: value, leagueUuid: '', teamUuid: '' });
                     },
-                    __('Filters the league list to a single state association (Landesverband). The available options are determined by the top-level association configured on the data source.', 'matchball')
+                    __('Filters the league list to a single state association (Landesverband). The available options are determined by the top-level association configured on the data source.', 'matchball-for-sams')
                 ),
                 createSelectField(
-                    __('League', 'matchball'),
+                    __('League', 'matchball-for-sams'),
                     attrs.leagueUuid || '',
                     leagueOptions,
                     function (value) {
@@ -296,7 +296,7 @@
                     }
                 ),
                 createSelectField(
-                    __('Team (optional)', 'matchball'),
+                    __('Team (optional)', 'matchball-for-sams'),
                     attrs.teamUuid || '',
                     teamOptions,
                     function (value) {
@@ -307,7 +307,7 @@
 
             if (kind === 'results') {
                 controls.push(el(wp.components.ToggleControl, {
-                    label: __('Include future matches', 'matchball'),
+                    label: __('Include future matches', 'matchball-for-sams'),
                     checked: !!attrs.includeFuture,
                     onChange: function (value) {
                         setAttrs({ includeFuture: !!value });
@@ -315,17 +315,17 @@
                 }));
             }
 
-            var blockTypeLabel = kind === 'results' ? __('Matchball Results', 'matchball') : __('Matchball Standings', 'matchball');
+            var blockTypeLabel = kind === 'results' ? __('Matchball Results', 'matchball-for-sams') : __('Matchball Standings', 'matchball-for-sams');
             var configItems = [
-                __('Source:', 'matchball') + ' ' + findOptionLabel(sourceOptions, attrs.sourceId, __('Not selected', 'matchball')),
-                __('Season:', 'matchball') + ' ' + findOptionLabel(seasonOptions, attrs.seasonUuid, __('Not selected', 'matchball')),
-                __('Association:', 'matchball') + ' ' + findOptionLabel(assocOptions, attrs.associationUuid, __('All', 'matchball')),
-                __('League:', 'matchball') + ' ' + findOptionLabel(leagueOptions, attrs.leagueUuid, __('Not selected', 'matchball')),
-                __('Team:', 'matchball') + ' ' + findOptionLabel(teamOptions, attrs.teamUuid, __('All teams', 'matchball')),
+                __('Source:', 'matchball-for-sams') + ' ' + findOptionLabel(sourceOptions, attrs.sourceId, __('Not selected', 'matchball-for-sams')),
+                __('Season:', 'matchball-for-sams') + ' ' + findOptionLabel(seasonOptions, attrs.seasonUuid, __('Not selected', 'matchball-for-sams')),
+                __('Association:', 'matchball-for-sams') + ' ' + findOptionLabel(assocOptions, attrs.associationUuid, __('All', 'matchball-for-sams')),
+                __('League:', 'matchball-for-sams') + ' ' + findOptionLabel(leagueOptions, attrs.leagueUuid, __('Not selected', 'matchball-for-sams')),
+                __('Team:', 'matchball-for-sams') + ' ' + findOptionLabel(teamOptions, attrs.teamUuid, __('All teams', 'matchball-for-sams')),
             ];
 
             if (kind === 'results') {
-                configItems.push(__('Include future matches:', 'matchball') + ' ' + (attrs.includeFuture ? __('Yes', 'matchball') : __('No', 'matchball')));
+                configItems.push(__('Include future matches:', 'matchball-for-sams') + ' ' + (attrs.includeFuture ? __('Yes', 'matchball-for-sams') : __('No', 'matchball-for-sams')));
             }
 
             var previewLines = configItems.map(function (line, index) {
@@ -338,7 +338,7 @@
                 el(
                     InspectorControls,
                     null,
-                    el(PanelBody, { title: __('SAMS settings', 'matchball'), initialOpen: true }, controls)
+                    el(PanelBody, { title: __('SAMS settings', 'matchball-for-sams'), initialOpen: true }, controls)
                 ),
                 el('div', { className: 'matchball-editor-preview' },
                     el('strong', { className: 'matchball-editor-preview__title' }, blockTypeLabel),
@@ -367,8 +367,8 @@
         });
     }
 
-    register('matchball/standings', __('Matchball Standings', 'matchball'), 'list-view', 'standings');
-    register('matchball/results', __('Matchball Results', 'matchball'), 'chart-bar', 'results', {
+    register('matchball/standings', __('Matchball Standings', 'matchball-for-sams'), 'list-view', 'standings');
+    register('matchball/results', __('Matchball Results', 'matchball-for-sams'), 'chart-bar', 'results', {
         includeFuture: { type: 'boolean', default: false },
     });
 })(window.wp);

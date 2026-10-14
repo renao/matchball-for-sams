@@ -17,7 +17,7 @@ else
     --skip-email
 fi
 
-wp plugin activate matchball
+wp plugin activate matchball-for-sams
 
 if [ "$PLUGIN_CHECK_SKIP_INSTALL" != "1" ]; then
   wp plugin install plugin-check --activate

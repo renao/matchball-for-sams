@@ -56,7 +56,7 @@ class MATCHBALL_Blocks {
             true
         );
 
-        wp_set_script_translations('matchball-blocks', 'matchball');
+        wp_set_script_translations('matchball-blocks', 'matchball-for-sams');
 
         wp_localize_script('matchball-blocks', 'matchballConfig', array(
             'root' => esc_url_raw(rest_url('matchball/v1/')),
@@ -92,25 +92,25 @@ class MATCHBALL_Blocks {
         $team_uuid = isset($attributes['teamUuid']) ? sanitize_text_field($attributes['teamUuid']) : '';
 
         if ($source_id === '' || $league_uuid === '') {
-            return $this->notice(__('Please configure source, season, and league.', 'matchball'));
+            return $this->notice(__('Please configure source, season, and league.', 'matchball-for-sams'));
         }
 
         $result = $this->api->get_rankings($source_id, $league_uuid);
         if (empty($result['ok'])) {
-            return $this->notice(__('Standings unavailable.', 'matchball'));
+            return $this->notice(__('Standings unavailable.', 'matchball-for-sams'));
         }
 
         $rows = isset($result['data']['content']) && is_array($result['data']['content']) ? $result['data']['content'] : array();
         if (empty($rows)) {
-            return $this->notice(__('No standings data available for this selection.', 'matchball'));
+            return $this->notice(__('No standings data available for this selection.', 'matchball-for-sams'));
         }
 
         ob_start();
         echo '<div class="matchball-block matchball-standings">';
         echo '<div class="matchball-table-scroll">';
         echo '<table class="matchball-table matchball-standings__table">';
-        echo '<caption class="screen-reader-text">' . esc_html__('Standings', 'matchball') . '</caption>';
-        echo '<thead><tr><th scope="col">' . esc_html__('Rank', 'matchball') . '</th><th scope="col">' . esc_html__('Team', 'matchball') . '</th><th scope="col">' . esc_html__('Played', 'matchball') . '</th><th scope="col">' . esc_html__('Balls', 'matchball') . '</th><th scope="col">' . esc_html__('Points', 'matchball') . '</th></tr></thead><tbody>';
+        echo '<caption class="screen-reader-text">' . esc_html__('Standings', 'matchball-for-sams') . '</caption>';
+        echo '<thead><tr><th scope="col">' . esc_html__('Rank', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Team', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Played', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Balls', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Points', 'matchball-for-sams') . '</th></tr></thead><tbody>';
         foreach ($rows as $row) {
             $rank = isset($row['rank']) ? $row['rank'] : '';
             $team_name = isset($row['teamName']) ? $row['teamName'] : '';
@@ -136,7 +136,7 @@ class MATCHBALL_Blocks {
             echo '<td class="matchball-standings__rank">' . esc_html($rank) . '</td>';
             echo '<td class="matchball-standings__team">' . esc_html($team_name);
             if ($is_selected_team) {
-                echo ' <span class="screen-reader-text">' . esc_html__('(selected team)', 'matchball') . '</span>';
+                echo ' <span class="screen-reader-text">' . esc_html__('(selected team)', 'matchball-for-sams') . '</span>';
             }
             echo '</td>';
             echo '<td class="matchball-standings__played">' . esc_html($matches_played) . '</td>';
@@ -157,7 +157,7 @@ class MATCHBALL_Blocks {
         $team_uuid = isset($attributes['teamUuid']) ? sanitize_text_field($attributes['teamUuid']) : '';
 
         if ($source_id === '' || $season_uuid === '' || $league_uuid === '') {
-            return $this->notice(__('Please configure source, season, and league.', 'matchball'));
+            return $this->notice(__('Please configure source, season, and league.', 'matchball-for-sams'));
         }
 
         $source = $this->sources->get_by_id($source_id);
@@ -174,12 +174,12 @@ class MATCHBALL_Blocks {
 
         $result = $this->api->get_matches($source_id, $filters);
         if (empty($result['ok'])) {
-            return $this->notice(__('Results unavailable.', 'matchball'));
+            return $this->notice(__('Results unavailable.', 'matchball-for-sams'));
         }
 
         $rows = isset($result['data']['content']) && is_array($result['data']['content']) ? $result['data']['content'] : array();
         if (empty($rows)) {
-            return $this->notice(__('No results available for this selection.', 'matchball'));
+            return $this->notice(__('No results available for this selection.', 'matchball-for-sams'));
         }
 
         $now = current_time('timestamp', true);
@@ -212,12 +212,12 @@ class MATCHBALL_Blocks {
         foreach ($filtered as $row) {
             $timestamp = isset($row['date']) ? strtotime($row['date']) : false;
             $date_label = $timestamp ? esc_html(wp_date(get_option('date_format'), $timestamp)) : '';
-            $time_suffix = ' ' . esc_html__('Uhr', 'matchball');
+            $time_suffix = ' ' . esc_html__('Uhr', 'matchball-for-sams');
             $time_label = isset($row['time']) && $row['time'] !== '' ? esc_html($row['time']) . $time_suffix : ($timestamp ? esc_html(wp_date(get_option('time_format'), $timestamp)) . $time_suffix : '');
             $home_raw = isset($row['team1Description']) ? trim((string) $row['team1Description']) : '';
             $away_raw = isset($row['team2Description']) ? trim((string) $row['team2Description']) : '';
-            $home = $home_raw !== '' ? esc_html($home_raw) : esc_html__('Unknown', 'matchball');
-            $away = $away_raw !== '' ? esc_html($away_raw) : esc_html__('Unknown', 'matchball');
+            $home = $home_raw !== '' ? esc_html($home_raw) : esc_html__('Unknown', 'matchball-for-sams');
+            $away = $away_raw !== '' ? esc_html($away_raw) : esc_html__('Unknown', 'matchball-for-sams');
 
             $set_points  = isset($row['results']['setPoints']) && $row['results']['setPoints'] !== '' ? esc_html($row['results']['setPoints']) : '';
             $has_result  = $set_points !== '';
@@ -240,7 +240,7 @@ class MATCHBALL_Blocks {
             if ($has_result) {
                 echo '<span class="matchball-match-card__score">' . esc_html($set_points) . '</span>';
             } else {
-                echo '<span class="matchball-match-card__vs">' . esc_html__('vs', 'matchball') . '</span>';
+                echo '<span class="matchball-match-card__vs">' . esc_html__('vs', 'matchball-for-sams') . '</span>';
             }
             echo '<span class="matchball-match-card__team matchball-match-card__team--away">' . esc_html($away) . '</span>';
             echo '</div>';
@@ -268,10 +268,10 @@ class MATCHBALL_Blocks {
         }
 
         $last_updated_utc = time() - $age;
-        $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'matchball');
+        $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'matchball-for-sams');
 
         // translators: %s = formatted date and time (e.g. "22. September 2026, 11:21 Uhr")
-        echo '<p class="matchball-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'matchball'), esc_html($formatted)) . '</p>';
+        echo '<p class="matchball-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'matchball-for-sams'), esc_html($formatted)) . '</p>';
     }
 
     private function resolve_source_id($attributes) {

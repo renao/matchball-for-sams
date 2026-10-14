@@ -18,7 +18,7 @@ docker compose up -d
 # Warten bis WordPress und Setup fertig sind
 echo "⏳ Warte auf WordPress Setup..."
 for i in {1..60}; do
-    if docker compose exec wpcli wp plugin is-active matchball 2>/dev/null; then
+    if docker compose exec wpcli wp plugin is-active matchball-for-sams 2>/dev/null; then
         echo -e "${GREEN}✓ WordPress ist bereit und Plugin aktiviert!${NC}"
         break
     fi

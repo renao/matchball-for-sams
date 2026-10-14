@@ -1,7 +1,7 @@
 # Plan: Umzug Codeberg -> GitHub, Umbenennung zu "Matchball - Standings & Tables for SAMS" + Rechtliche Absicherung
 
-TL;DR: Plugin wird zu **"Matchball - Standings & Tables for SAMS"** umbenannt (Slug/Textdomain `matchball`, interner
-Präfix `matchball`), bevor das Repo per `git push --mirror` komplett zu GitHub umzieht — so
+TL;DR: Plugin wird zu **"Matchball - Standings & Tables for SAMS"** umbenannt (Slug/Textdomain `matchball-for-sams`, interner
+Präfix `matchball-for-sams`), bevor das Repo per `git push --mirror` komplett zu GitHub umzieht — so
 startet das neue Repo direkt sauber unter dem neuen Namen. Da GitHub Actions
 syntaktisch fast identisch zu Forgejo Actions ist, werden die bestehenden Workflow-Dateien
 nur von `.forgejo/workflows/` nach `.github/workflows/` verschoben und Runner-Label/
@@ -49,7 +49,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 - **Altes Plugin (Vorgänger):** lokal unter `/home/renao/devel/deprecated-sams-integration`
   ausgecheckt; Git-Remote `git@github.com:renao/sams-integration.git` (GitHub), aktiver
   Branch `develop` (kein `main`). **Namens-Kollision:** `github.com/renao/sams-integration`
-  ist bereits durch das alte Repo belegt — das neue GitHub-Repo muss daher `matchball`
+  ist bereits durch das alte Repo belegt — das neue GitHub-Repo muss daher `matchball-for-sams`
   heißen (ohnehin geplant) oder das alte Repo muss umbenannt werden.
 - Altes Plugin ist PHP 7.2+, Version 1.2.0, nutzt Namespace `SAMSPlugin\` und einen
   Composer-Autoloader unter `build/lib/`; hat **keinen** eigenen `admin_notices`-Hook —
@@ -84,14 +84,14 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 
 **Namenskonventionen (Ziel):**
 - Anzeigename: "Matchball - Standings & Tables for SAMS"
-- Slug / Plugin-Ordner / Hauptdatei / Textdomain: `matchball` (`matchball.php`)
+- Slug / Plugin-Ordner / Hauptdatei / Textdomain: `matchball-for-sams` (`matchball-for-sams.php`)
 - Interner Präfix: `MATCHBALL_` / `matchball_` / `matchball-` / `matchball/` (ersetzt `SIK_`/`sik_`/`sik-`/`sik/`)
   — wichtig für Kollisionsfreiheit, da das alte "SAMS Integration"-Plugin bis Mitte 2027
   parallel live ist und Seiten in der Umstellung beide Plugins installiert haben können.
 
 **Code-Umbenennungen (verifizierte Fundstellen):**
-1. Hauptdatei `sams-integration.php` -> `matchball.php` (`git mv`), Header: Plugin Name
-   "Matchball - Standings & Tables for SAMS", Text Domain `matchball`, Domain Path `/languages` bleibt.
+1. Hauptdatei `sams-integration.php` -> `matchball-for-sams.php` (`git mv`), Header: Plugin Name
+   "Matchball - Standings & Tables for SAMS", Text Domain `matchball-for-sams`, Domain Path `/languages` bleibt.
 2. PHP-Klassen `SIK_Plugin`, `SIK_Admin`, `SIK_Api_Client`, `SIK_Blocks`, `SIK_Cron`,
    `SIK_Rest`, `SIK_Source_Repository` -> `MATCHBALL_*`; Konstanten `SIK_PLUGIN_VERSION/FILE/DIR/URL`;
    Funktionen `sik_bootstrap`, `sik_load_textdomain`, `sik_activate`, `sik_deactivate`.
@@ -110,17 +110,17 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    Admin-Page-Slug `sik-sources`, Nonce/Action `sik_save_sources`,
    `admin_post_sik_save_sources` (class-sams-admin.php, class-sams-blocks.php).
 7. Textdomain in allen `__()`/`esc_html__()`/`esc_attr__()`-Aufrufen: `sams-integration` ->
-   `matchball` (includes/*, assets/js/blocks.js) inkl. `wp_set_script_translations`
+   `matchball-for-sams` (includes/*, assets/js/blocks.js) inkl. `wp_set_script_translations`
    (class-sams-blocks.php:59) — verhindert Übersetzungs-Durcheinander mit dem alten Plugin.
 8. CSS-Klassen `sik-*` -> `matchball-*` in assets/css/frontend.css, assets/css/editor.css,
    assets/js/blocks.js, includes/class-sams-blocks.php (kosmetisch, aber konsistent).
 9. Env-/Konfig-Variablen `SIK_*` -> `MATCHBALL_*` in .env.example, docker-compose.yml,
    docker/wp-config-extra.php, LOCAL_DEV.md; Compose-Projektname, Container-Namen und
-   Mount-Pfad `/var/www/html/wp-content/plugins/sams-integration` -> `matchball`;
+   Mount-Pfad `/var/www/html/wp-content/plugins/sams-integration` -> `matchball-for-sams`;
    setup-sams.sh BASEDIR an den neuen lokalen Pfad anpassen.
-10. Scripts: `PLUGIN_SLUG="matchball"` in scripts/create-release-zip.sh (Zeile 5) und
+10. Scripts: `PLUGIN_SLUG="matchball-for-sams"` in scripts/create-release-zip.sh (Zeile 5) und
     scripts/deploy-wporg-svn.sh (Zeile 5 + Default in Hilfetext Zeile 23), awk-Verweise auf
-    `matchball.php` (beide Scripts + später die GitHub-Workflows), Banner-Text
+    `matchball-for-sams.php` (beide Scripts + später die GitHub-Workflows), Banner-Text
     "SAMS Integration" in scripts/create-wporg-assets.sh:35 -> "Matchball - Standings & Tables for SAMS".
 11. Docs aktualisieren: readme.txt (`=== Matchball - Standings & Tables for SAMS ===`, Beschreibungstexte, kurzer Hinweis
     "Successor of the SAMS Integration plugin"), ANFORDERUNGEN.md (Textdomain Zeile 151,
@@ -132,7 +132,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 ## Phase A — Repo-Migration (GitHub)
 *depends on Phase A0 (Umbenennung ist committed)*
 1. Neues GitHub-Repository anlegen (unter bestehendem Account/Org `renao`), Sichtbarkeit
-   "Public", Name `matchball`.
+   "Public", Name `matchball-for-sams`.
 2. Lokal: `git remote add github <neue-url>` und `git push --mirror github` (alle Branches + Tags + volle Historie).
    Hinweis: `github.com/renao/sams-integration` ist bereits durch das alte Repo belegt
    (siehe Code-Fakten) — daher als neues Repo `github.com/renao/matchball-for-sams` verwenden.
@@ -148,8 +148,8 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    nahezu 1:1 (bereits `actions/checkout@v4`, Standard-Step-Syntax, `on: push/pull_request/
    workflow_dispatch`), nur `runs-on: forgejo-docker` durch `runs-on: ubuntu-latest` ersetzen.
    Jobs bleiben inhaltlich gleich: php_syntax, shell_lint, release_consistency, build_release_zip.
-   Wichtig: awk-Verweise in den Workflows zeigen nach Phase A0 auf `matchball.php` und
-   `artifacts/releases/matchball-<version>.zip` (ci.yml Zeilen 30/40/41, wporg-release.yml Zeile 35).
+   Wichtig: awk-Verweise in den Workflows zeigen nach Phase A0 auf `matchball-for-sams.php` und
+   `artifacts/releases/matchball-for-sams-<version>.zip` (ci.yml Zeilen 30/40/41, wporg-release.yml Zeile 35).
 2. `.forgejo/workflows/wporg-release.yml` nach `.github/workflows/wporg-release.yml`
    verschieben: `runs-on: forgejo-docker` -> `runs-on: ubuntu-latest`; `environment: production`
    Konzept bleibt identisch (GitHub Actions unterstützt `environment:` inkl. optionaler
@@ -165,8 +165,8 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    "Codeberg"/"Forgejo Actions" durch "GitHub"/"GitHub Actions" ersetzen.
 
 ## Phase C — Referenz- & Metadaten-Updates
-*can run parallel with Phase B; baut auf Phase A0 auf (Datei heißt dann `matchball.php`)*
-1. `matchball.php`: `Plugin URI` und `Author URI` von `codeberg.org/...` auf neue
+*can run parallel with Phase B; baut auf Phase A0 auf (Datei heißt dann `matchball-for-sams.php`)*
+1. `matchball-for-sams.php`: `Plugin URI` und `Author URI` von `codeberg.org/...` auf neue
    GitHub-URLs ändern (`https://github.com/renao/matchball-for-sams`).
 2. `readme.txt`: bestehenden "External service usage"/"Service terms and privacy"-Abschnitt
    unverändert lassen (bereits WP.org-konform); optional eine "Source Code"-Zeile mit
@@ -206,20 +206,20 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
       - Release-ZIP via scripts/create-release-zip.sh bauen und auf einer frischen
         WordPress-Installation hochladen/aktivieren (Install-Smoke-Test).
       - Präfix-Konformität: alle globalen Funktionen/Klassen/Konstanten tragen den
-        eindeutigen Präfix `matchball`/`Matchball` (durch Phase A0 erfüllt; die Review prüft das).
+        eindeutigen Präfix `matchball-for-sams`/`Matchball` (durch Phase A0 erfüllt; die Review prüft das).
       - Namens-Kollision prüfen: "Matchball - Standings & Tables for SAMS" im WP.org-Verzeichnis noch nicht vergeben;
         Nähe zu "SAMS" (Produktname sams-server.de) bewusst beachten — das Vorgänger-Plugin
         nutzte bereits "SAMS Integration", aber neue Namen werden genauer geschaut.
       - Keine obfuskierten/verminften Sourcen ohne Quelltext (blocks.js ist lesbares JS — ok).
    b. **Einreichung:** ZIP über das Developer-Portal hochladen
-      (https://wordpress.org/plugins/developers/add/). Der Slug `matchball` wird dabei
+      (https://wordpress.org/plugins/developers/add/). Der Slug `matchball-for-sams` wird dabei
       reserviert. Frühzeitig einreichen — die Review dauert erfahrungsgemäß Tage bis
       Wochen, Rückfragen sind üblich. Bis zur Freischaltung kann Matchball - Standings & Tables for SAMS über
       GitHub-Releases (ZIP) verteilt werden.
    c. **Review-Loop:** auf Feedback-Mails des Plugin Review Teams reagieren, ggf. Fixes
       committen und ZIP erneut hochladen. Versionsnummer dabei NICHT erhöhen, solange
       noch nichts öffentlich released wurde.
-   d. **Nach Freischaltung:** SVN-Repo `https://plugins.svn.wordpress.org/matchball/`
+   d. **Nach Freischaltung:** SVN-Repo `https://plugins.svn.wordpress.org/matchball-for-sams/`
       wird bereitgestellt. Initial-Import nach `trunk/` + `assets/` (Banner/Icons via
       scripts/create-wporg-assets.sh mit neuem Namen bauen), Tag `3.0.0` anlegen.
       Danach übernimmt der Workflow `wporg-release` (Phase B) alle weiteren Releases.
@@ -235,7 +235,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    - Kein Daten-/User-Migrationspfad (bewusste Entscheidung, siehe Decisions).
 3. **Sunset (ca. Mitte 2027):** altes Plugin über plugins@wordpress.org schließen lassen
    ("close plugin"-Request); Kalender-Reminder setzen. Nach der Schließung bleibt der
-   alte Slug dauerhaft reserviert/gesperrt — kein Konflikt mit `matchball`.
+   alte Slug dauerhaft reserviert/gesperrt — kein Konflikt mit `matchball-for-sams`.
 
 ## Verification
 1. `git remote -v` im lokalen Klon zeigt neuen GitHub-Remote; `git log --oneline | wc -l`
@@ -260,7 +260,7 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
 ## Decisions
 - Ziel-Plattform: GitHub (final).
 - Volle Historie via `push --mirror` (bestätigt).
-- Neuer Name: "Matchball - Standings & Tables for SAMS"; Slug/Textdomain/Repo `matchball`; interner Präfix `matchball` (bestätigt).
+- Neuer Name: "Matchball - Standings & Tables for SAMS"; Slug/Textdomain/Repo `matchball-for-sams`; interner Präfix `matchball-for-sams` (bestätigt).
 - Vorgänger-Plugin "SAMS Integration" wird NICHT migriert: Deprecation-Hinweis, Weiterbetrieb
   bis ca. Mitte 2027, danach Schließung auf WP.org (bestätigt, Sunset-Datum grob).
 - Kein Migrations-/Upgrade-Pfad zwischen altem und neuem Plugin (bewusste Kosten-Nutzen-Entscheidung).
@@ -284,5 +284,5 @@ WordPress.org ohnehin verpflichtend und bereits konsistent gesetzt.
    WP.org-Link auf Matchball - Standings & Tables for SAMS erst nach Freischaltung des neuen Listings bekannt.
 5. **WP.org-Review-Timing**: Neueinreichung früh starten (Review kann Wochen dauern);
    bis dahin kann Matchball - Standings & Tables for SAMS über GitHub-Releases (ZIP) verteilt werden.
-6. **Präfix-Wahl `matchball`**: Vorschlag; falls dir ein anderer Präfix lieber ist (z.B. `ezs`),
+6. **Präfix-Wahl `matchball-for-sams`**: Vorschlag; falls dir ein anderer Präfix lieber ist (z.B. `ezs`),
    vor Umsetzung von Phase A0 final festlegen — danach ist die Änderung aufwendig.
