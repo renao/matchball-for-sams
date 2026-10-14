@@ -17,8 +17,8 @@ if [[ ! -f "$SOURCE" ]]; then
   exit 1
 fi
 
-"${IM_BIN[@]}" "$SOURCE" -resize 128x128 "$OUT_DIR/icon-128x128.png"
-"${IM_BIN[@]}" "$SOURCE" -resize 256x256 "$OUT_DIR/icon-256x256.png"
+"${IM_BIN[@]}" "$SOURCE" -resize 128x128 PNG32:"$OUT_DIR/icon-128x128.png"
+"${IM_BIN[@]}" "$SOURCE" -resize 256x256 PNG32:"$OUT_DIR/icon-256x256.png"
 
 cat > "$OUT_DIR/asset-notes.txt" <<'EOF'
 WordPress.org assets for this plugin.
