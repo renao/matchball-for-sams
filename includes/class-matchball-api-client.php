@@ -4,13 +4,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class ESAMS_Api_Client {
+class MATCHBALL_Api_Client {
     private const FRESH_TTL = 300;       // 5 minutes target freshness for MVP
     private const STALE_TTL = 86400;     // 24 hours stale tolerance
     private const HTTP_TIMEOUT = 5;
     private const MAX_PAGES = 200;
 
-    /** @var ESAMS_Source_Repository */
+    /** @var MATCHBALL_Source_Repository */
     private $sources;
 
     public function __construct($sources) {
@@ -69,11 +69,11 @@ class ESAMS_Api_Client {
     public function request($source_id, $path, $query = array()) {
         $source = $this->sources->get_by_id($source_id);
         if (!$source || empty($source['is_active'])) {
-            return $this->error('inactive_source', __('Selected source is not active.', 'easy-sams'));
+            return $this->error('inactive_source', __('Selected source is not active.', 'matchball-for-sams'));
         }
 
         if (empty($source['base_url']) || empty($source['api_key'])) {
-            return $this->error('invalid_source_config', __('Source configuration is incomplete.', 'easy-sams'));
+            return $this->error('invalid_source_config', __('Source configuration is incomplete.', 'matchball-for-sams'));
         }
 
         $path = '/' . ltrim($path, '/');
@@ -115,7 +115,7 @@ class ESAMS_Api_Client {
         }
 
         $this->log_http_error($status_code, $path);
-        return $this->fallback_or_error($cache_key, 'http_' . $status_code, __('Remote API error.', 'easy-sams'));
+        return $this->fallback_or_error($cache_key, 'http_' . $status_code, __('Remote API error.', 'matchball-for-sams'));
     }
 
     private function fallback_or_error($cache_key, $code, $message) {
@@ -301,7 +301,7 @@ class ESAMS_Api_Client {
 
     private function cache_key($source_id, $path, $query) {
         $material = wp_json_encode(array($source_id, $path, $query));
-        return 'esams_' . md5($material);
+        return 'matchball_' . md5($material);
     }
 
     private function ok($data, $from_cache, $stale, $age, $fallback_code = '') {
@@ -328,6 +328,8 @@ class ESAMS_Api_Client {
     }
 
     private function log_http_error($status_code, $path) {
-        error_log(sprintf('[ESAMS] API error status=%d path=%s', (int) $status_code, $path));
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log(sprintf('[Matchball] API error status=%d path=%s', (int) $status_code, $path));
+        }
     }
 }

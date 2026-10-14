@@ -1,11 +1,17 @@
-WordPress.org asset files generated locally.
+WordPress.org assets for this plugin.
 
 Included:
-- banner-772x250.png
-- banner-1544x500.png
-- icon-128x128.png
-- icon-256x256.png
+- icon-source.png: original square artwork (source only, not uploaded to wp.org)
+- icon-128x128.png / icon-256x256.png: generated from icon-source.png
+  via scripts/create-wporg-assets.sh
 
-Optional next step:
-- add real screenshots as screenshot-1.png, screenshot-2.png, ...
-- upload these files to the top-level assets directory in the WordPress.org SVN repository
+Banners:
+- intentionally omitted (banners are optional on wordpress.org)
+
+Screenshots (optional, add manually):
+- screenshot-1.png, screenshot-2.png, ...
+- captions come from the numbered list in the "== Screenshots ==" section of readme.txt
+
+Deploy:
+- scripts/deploy-wporg-svn.sh syncs this folder to the assets directory in the
+  WordPress.org SVN repository

@@ -4,11 +4,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class ESAMS_Blocks {
-    /** @var ESAMS_Source_Repository */
+class MATCHBALL_Blocks {
+    /** @var MATCHBALL_Source_Repository */
     private $sources;
 
-    /** @var ESAMS_Api_Client */
+    /** @var MATCHBALL_Api_Client */
     private $api;
 
     public function __construct($sources, $api) {
@@ -23,13 +23,13 @@ class ESAMS_Blocks {
     }
 
     public function register_blocks() {
-        register_block_type('esams/standings', array(
+        register_block_type('matchball/standings', array(
             'api_version' => 2,
             'render_callback' => array($this, 'render_standings'),
             'attributes' => $this->base_attributes(),
         ));
 
-        register_block_type('esams/results', array(
+        register_block_type('matchball/results', array(
             'api_version' => 2,
             'render_callback' => array($this, 'render_results'),
             'attributes' => array_merge($this->base_attributes(), array(
@@ -40,37 +40,37 @@ class ESAMS_Blocks {
     }
 
     public function enqueue_editor_assets() {
-        $script_path = ESAMS_PLUGIN_DIR . 'assets/js/blocks.js';
-        $script_version = file_exists($script_path) ? filemtime($script_path) : ESAMS_PLUGIN_VERSION;
+        $script_path = MATCHBALL_PLUGIN_DIR . 'assets/js/blocks.js';
+        $script_version = file_exists($script_path) ? filemtime($script_path) : MATCHBALL_PLUGIN_VERSION;
 
         // Enqueue editor styles for SAMS blocks
-        $style_path = ESAMS_PLUGIN_DIR . 'assets/css/editor.css';
-        $style_version = file_exists($style_path) ? filemtime($style_path) : ESAMS_PLUGIN_VERSION;
-        wp_enqueue_style('esams-editor', ESAMS_PLUGIN_URL . 'assets/css/editor.css', array(), $style_version);
+        $style_path = MATCHBALL_PLUGIN_DIR . 'assets/css/editor.css';
+        $style_version = file_exists($style_path) ? filemtime($style_path) : MATCHBALL_PLUGIN_VERSION;
+        wp_enqueue_style('matchball-editor', MATCHBALL_PLUGIN_URL . 'assets/css/editor.css', array(), $style_version);
 
         wp_enqueue_script(
-            'esams-blocks',
-            ESAMS_PLUGIN_URL . 'assets/js/blocks.js',
+            'matchball-blocks',
+            MATCHBALL_PLUGIN_URL . 'assets/js/blocks.js',
             array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-block-editor', 'wp-api-fetch', 'wp-i18n'),
             $script_version,
             true
         );
 
-        wp_set_script_translations('esams-blocks', 'easy-sams');
+        wp_set_script_translations('matchball-blocks', 'matchball-for-sams');
 
-        wp_localize_script('esams-blocks', 'esamsConfig', array(
-            'root' => esc_url_raw(rest_url('esams/v1/')),
+        wp_localize_script('matchball-blocks', 'matchballConfig', array(
+            'root' => esc_url_raw(rest_url('matchball/v1/')),
             'nonce' => wp_create_nonce('wp_rest'),
         ));
     }
 
     public function enqueue_frontend_assets() {
-        $style_path = ESAMS_PLUGIN_DIR . 'assets/css/frontend.css';
-        $style_version = file_exists($style_path) ? filemtime($style_path) : ESAMS_PLUGIN_VERSION;
+        $style_path = MATCHBALL_PLUGIN_DIR . 'assets/css/frontend.css';
+        $style_version = file_exists($style_path) ? filemtime($style_path) : MATCHBALL_PLUGIN_VERSION;
 
         wp_enqueue_style(
-            'esams-frontend',
-            ESAMS_PLUGIN_URL . 'assets/css/frontend.css',
+            'matchball-frontend',
+            MATCHBALL_PLUGIN_URL . 'assets/css/frontend.css',
             array(),
             $style_version
         );
@@ -92,25 +92,25 @@ class ESAMS_Blocks {
         $team_uuid = isset($attributes['teamUuid']) ? sanitize_text_field($attributes['teamUuid']) : '';
 
         if ($source_id === '' || $league_uuid === '') {
-            return $this->notice(__('Please configure source, season, and league.', 'easy-sams'));
+            return $this->notice(__('Please configure source, season, and league.', 'matchball-for-sams'));
         }
 
         $result = $this->api->get_rankings($source_id, $league_uuid);
         if (empty($result['ok'])) {
-            return $this->notice(__('Standings unavailable.', 'easy-sams'));
+            return $this->notice(__('Standings unavailable.', 'matchball-for-sams'));
         }
 
         $rows = isset($result['data']['content']) && is_array($result['data']['content']) ? $result['data']['content'] : array();
         if (empty($rows)) {
-            return $this->notice(__('No standings data available for this selection.', 'easy-sams'));
+            return $this->notice(__('No standings data available for this selection.', 'matchball-for-sams'));
         }
 
         ob_start();
-        echo '<div class="esams-block esams-standings">';
-        echo '<div class="esams-table-scroll">';
-        echo '<table class="esams-table esams-standings__table">';
-        echo '<caption class="screen-reader-text">' . esc_html__('Standings', 'easy-sams') . '</caption>';
-        echo '<thead><tr><th scope="col">' . esc_html__('Rank', 'easy-sams') . '</th><th scope="col">' . esc_html__('Team', 'easy-sams') . '</th><th scope="col">' . esc_html__('Played', 'easy-sams') . '</th><th scope="col">' . esc_html__('Balls', 'easy-sams') . '</th><th scope="col">' . esc_html__('Points', 'easy-sams') . '</th></tr></thead><tbody>';
+        echo '<div class="matchball-block matchball-standings">';
+        echo '<div class="matchball-table-scroll">';
+        echo '<table class="matchball-table matchball-standings__table">';
+        echo '<caption class="screen-reader-text">' . esc_html__('Standings', 'matchball-for-sams') . '</caption>';
+        echo '<thead><tr><th scope="col">' . esc_html__('Rank', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Team', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Played', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Balls', 'matchball-for-sams') . '</th><th scope="col">' . esc_html__('Points', 'matchball-for-sams') . '</th></tr></thead><tbody>';
         foreach ($rows as $row) {
             $rank = isset($row['rank']) ? $row['rank'] : '';
             $team_name = isset($row['teamName']) ? $row['teamName'] : '';
@@ -133,19 +133,19 @@ class ESAMS_Blocks {
             $is_selected_team = $team_uuid !== '' && $row_team_uuid === $team_uuid;
 
             echo '<tr' . ($is_selected_team ? ' class="is-selected-team"' : '') . '>';
-            echo '<td class="esams-standings__rank">' . esc_html($rank) . '</td>';
-            echo '<td class="esams-standings__team">' . esc_html($team_name);
+            echo '<td class="matchball-standings__rank">' . esc_html($rank) . '</td>';
+            echo '<td class="matchball-standings__team">' . esc_html($team_name);
             if ($is_selected_team) {
-                echo ' <span class="screen-reader-text">' . esc_html__('(selected team)', 'easy-sams') . '</span>';
+                echo ' <span class="screen-reader-text">' . esc_html__('(selected team)', 'matchball-for-sams') . '</span>';
             }
             echo '</td>';
-            echo '<td class="esams-standings__played">' . esc_html($matches_played) . '</td>';
-            echo '<td class="esams-standings__balls">' . esc_html($balls_display) . '</td>';
-            echo '<td class="esams-standings__points">' . esc_html($points) . '</td>';
+            echo '<td class="matchball-standings__played">' . esc_html($matches_played) . '</td>';
+            echo '<td class="matchball-standings__balls">' . esc_html($balls_display) . '</td>';
+            echo '<td class="matchball-standings__points">' . esc_html($points) . '</td>';
             echo '</tr>';
         }
         echo '</tbody></table></div>';
-        echo $this->updated_hint($result);
+        $this->render_updated_hint($result);
         echo '</div>';
         return ob_get_clean();
     }
@@ -157,7 +157,7 @@ class ESAMS_Blocks {
         $team_uuid = isset($attributes['teamUuid']) ? sanitize_text_field($attributes['teamUuid']) : '';
 
         if ($source_id === '' || $season_uuid === '' || $league_uuid === '') {
-            return $this->notice(__('Please configure source, season, and league.', 'easy-sams'));
+            return $this->notice(__('Please configure source, season, and league.', 'matchball-for-sams'));
         }
 
         $source = $this->sources->get_by_id($source_id);
@@ -174,12 +174,12 @@ class ESAMS_Blocks {
 
         $result = $this->api->get_matches($source_id, $filters);
         if (empty($result['ok'])) {
-            return $this->notice(__('Results unavailable.', 'easy-sams'));
+            return $this->notice(__('Results unavailable.', 'matchball-for-sams'));
         }
 
         $rows = isset($result['data']['content']) && is_array($result['data']['content']) ? $result['data']['content'] : array();
         if (empty($rows)) {
-            return $this->notice(__('No results available for this selection.', 'easy-sams'));
+            return $this->notice(__('No results available for this selection.', 'matchball-for-sams'));
         }
 
         $now = current_time('timestamp', true);
@@ -207,17 +207,17 @@ class ESAMS_Blocks {
         }
 
         ob_start();
-        echo '<div class="esams-block esams-results">';
-        echo '<ul class="esams-match-list">';
+        echo '<div class="matchball-block matchball-results">';
+        echo '<ul class="matchball-match-list">';
         foreach ($filtered as $row) {
             $timestamp = isset($row['date']) ? strtotime($row['date']) : false;
             $date_label = $timestamp ? esc_html(wp_date(get_option('date_format'), $timestamp)) : '';
-            $time_suffix = ' ' . esc_html__('Uhr', 'easy-sams');
+            $time_suffix = ' ' . esc_html__('Uhr', 'matchball-for-sams');
             $time_label = isset($row['time']) && $row['time'] !== '' ? esc_html($row['time']) . $time_suffix : ($timestamp ? esc_html(wp_date(get_option('time_format'), $timestamp)) . $time_suffix : '');
             $home_raw = isset($row['team1Description']) ? trim((string) $row['team1Description']) : '';
             $away_raw = isset($row['team2Description']) ? trim((string) $row['team2Description']) : '';
-            $home = $home_raw !== '' ? esc_html($home_raw) : esc_html__('Unknown', 'easy-sams');
-            $away = $away_raw !== '' ? esc_html($away_raw) : esc_html__('Unknown', 'easy-sams');
+            $home = $home_raw !== '' ? esc_html($home_raw) : esc_html__('Unknown', 'matchball-for-sams');
+            $away = $away_raw !== '' ? esc_html($away_raw) : esc_html__('Unknown', 'matchball-for-sams');
 
             $set_points  = isset($row['results']['setPoints']) && $row['results']['setPoints'] !== '' ? esc_html($row['results']['setPoints']) : '';
             $has_result  = $set_points !== '';
@@ -234,30 +234,32 @@ class ESAMS_Blocks {
 
             $meta_parts = array_filter(array($date_label, $time_label, $venue));
 
-            echo '<li class="esams-match-card">';
-            echo '<div class="esams-match-card__matchup">';
-            echo '<span class="esams-match-card__team esams-match-card__team--home">' . $home . '</span>';
+            echo '<li class="matchball-match-card">';
+            echo '<div class="matchball-match-card__matchup">';
+            echo '<span class="matchball-match-card__team matchball-match-card__team--home">' . esc_html($home) . '</span>';
             if ($has_result) {
-                echo '<span class="esams-match-card__score">' . $set_points . '</span>';
+                echo '<span class="matchball-match-card__score">' . esc_html($set_points) . '</span>';
             } else {
-                echo '<span class="esams-match-card__vs">' . esc_html__('vs', 'easy-sams') . '</span>';
+                echo '<span class="matchball-match-card__vs">' . esc_html__('vs', 'matchball-for-sams') . '</span>';
             }
-            echo '<span class="esams-match-card__team esams-match-card__team--away">' . $away . '</span>';
+            echo '<span class="matchball-match-card__team matchball-match-card__team--away">' . esc_html($away) . '</span>';
             echo '</div>';
             if (!empty($meta_parts)) {
-                echo '<div class="esams-match-card__meta">' . implode('<span class="esams-match-card__sep" aria-hidden="true"></span>', $meta_parts) . '</div>';
+                $separator = '<span class="matchball-match-card__sep" aria-hidden="true"></span>';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $separator is static markup; every item in $meta_parts is individually escaped above.
+                echo '<div class="matchball-match-card__meta">' . implode($separator, $meta_parts) . '</div>';
             }
             echo '</li>';
         }
         echo '</ul>';
-        echo $this->updated_hint($result);
+        $this->render_updated_hint($result);
         echo '</div>';
         return ob_get_clean();
     }
 
-    private function updated_hint($result) {
+    private function render_updated_hint($result) {
         if (!is_array($result) || empty($result['ok'])) {
-            return '';
+            return;
         }
 
         $age = 0;
@@ -266,9 +268,10 @@ class ESAMS_Blocks {
         }
 
         $last_updated_utc = time() - $age;
-        $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'easy-sams');
+        $formatted = wp_date('j. F Y, H:i', $last_updated_utc) . ' ' . __('Uhr', 'matchball-for-sams');
 
-        return '<p class="esams-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'easy-sams'), esc_html($formatted)) . '</p>';
+        // translators: %s = formatted date and time (e.g. "22. September 2026, 11:21 Uhr")
+        echo '<p class="matchball-updated-hint">' . sprintf(esc_html__('Last updated: %s', 'matchball-for-sams'), esc_html($formatted)) . '</p>';
     }
 
     private function resolve_source_id($attributes) {
@@ -280,6 +283,6 @@ class ESAMS_Blocks {
     }
 
     private function notice($message) {
-        return '<div class="esams-notice">' . esc_html($message) . '</div>';
+        return '<div class="matchball-notice">' . esc_html($message) . '</div>';
     }
 }

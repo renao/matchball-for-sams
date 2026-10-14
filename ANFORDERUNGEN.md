@@ -148,7 +148,7 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 ### Internationalisierung (i18n)
 
 **WordPress i18n (Textdomain + Übersetzungsdateien):**
-- Textdomain: `easy-sams`
+- Textdomain: `matchball-for-sams`
 - UI-Texte: Alle englisch + Deutsch im MVP
 - Datum/Zeit: Nach `wp_get_locale()` (automatisch)
 - Datenbezeichnungen: TBD nach API-Discovery
@@ -214,7 +214,7 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 
 #### Vor der ersten Einreichung
 
-1. Plugin-Version in `easy-sams.php` prüfen (`Version: 3.0.0`)
+1. Plugin-Version in `matchball-for-sams.php` prüfen (`Version: 3.0.0`)
 2. `Stable tag` in `readme.txt` auf dieselbe Version prüfen
 3. `Contributors` in `readme.txt` mit echtem WordPress.org-Username prüfen
 4. `readme.txt` durch den offiziellen Readme-Validator laufen lassen
@@ -268,7 +268,7 @@ Block zeigt kommende Spiele chronologisch. Wird nach MVP-Release implementiert.
 - Freigabe an WordPress Plugin-Verzeichnis (Einreichung)
 
 ### Phase 2: Geplante Features (nach MVP-Release)
-1. **Spielpläne-Block** (esams/schedules)
+1. **Spielpläne-Block** (matchball/schedules)
 2. **i18n/Internationalisierung** (Deutsch/Englisch)
 3. **Performance-Optimierungen** (bei Bedarf)
 4. **Advanced Testing** (Unit/Integration Tests)

@@ -1,17 +1,17 @@
-# Privacy Notice for Easy SAMS
+# Privacy Notice for Matchball - Standings & Tables for SAMS
 
-This document describes the data flows of the **Easy SAMS** WordPress plugin. It applies to the plugin code and its behavior when installed on a WordPress site. It does **not** govern the GitHub repository itself or the policies of wordpress.org.
+This document describes the data flows of the **Matchball - Standings & Tables for SAMS** WordPress plugin. It applies to the plugin code and its behavior when installed on a WordPress site. It does **not** govern the GitHub repository itself or the policies of wordpress.org.
 
 ## Scope
 
-Easy SAMS is a self-hosted WordPress plugin. It fetches sports data (standings, results) from a SAMS API endpoint configured by the site administrator. The plugin does not provide a hosted service and does not process personal data of website visitors by default.
+Matchball - Standings & Tables for SAMS is a self-hosted WordPress plugin. It fetches sports data (standings, results) from a SAMS API endpoint configured by the site administrator. The plugin does not provide a hosted service and does not process personal data of website visitors by default.
 
 ## What data is processed
 
 ### Administrator-provided configuration
 
 - **SAMS API credentials** (base URL, API key, optional association UUID) are stored in the WordPress database via `wp_options`.
-- API keys are **encrypted at rest** before storage. The encryption key is derived from WordPress salts or from an optional environment/constant override (`ESAMS_ENCRYPTION_KEY`).
+- API keys are **encrypted at rest** before storage. The encryption key is derived from WordPress salts or from an optional environment/constant override (`MATCHBALL_ENCRYPTION_KEY`).
 - API keys are **never logged, displayed, or transmitted** anywhere except to the configured SAMS API endpoint.
 
 ### Server-to-server API requests
@@ -19,7 +19,7 @@ Easy SAMS is a self-hosted WordPress plugin. It fetches sports data (standings, 
 - The plugin sends HTTP requests from the WordPress server to the configured SAMS API endpoint.
 - Each request includes the configured API key in the `X-Api-Key` header, as required by the SAMS API.
 - Requests are initiated by:
-  - WP-Cron (`esams_sync_cron`), running every 5 minutes.
+  - WP-Cron (`matchball_sync_cron`), running every 5 minutes.
   - Block rendering on the frontend, when cached data is missing or stale.
   - REST API calls from the block editor (authenticated users with `edit_posts`).
 - No personal data of website visitors is included in these requests.
@@ -33,12 +33,12 @@ Easy SAMS is a self-hosted WordPress plugin. It fetches sports data (standings, 
 ### Error logging
 
 - On errors, the plugin writes short log messages via WordPress `error_log()`.
-- Log entries contain only status codes, source IDs, and internal stage names (for example `esams_sync_cron`, `leagues`).
+- Log entries contain only status codes, source IDs, and internal stage names (for example `matchball_sync_cron`, `leagues`).
 - API keys, request bodies, and personal data are **never** logged.
 
 ### REST API
 
-- The plugin registers REST routes under `esams/v1/`.
+- The plugin registers REST routes under `matchball/v1/`.
 - All routes require the `edit_posts` capability. Only authenticated editors and administrators can access them.
 - These routes return SAMS metadata (sources, seasons, associations, leagues, teams) needed by the block editor. They do not expose visitor data.
 

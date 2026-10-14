@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class ESAMS_Cron {
-    private const HOOK = 'esams_sync_cron';
-    private const SCHEDULE = 'esams_every_five_minutes';
+class MATCHBALL_Cron {
+    private const HOOK = 'matchball_sync_cron';
+    private const SCHEDULE = 'matchball_every_five_minutes';
 
-    /** @var ESAMS_Source_Repository */
+    /** @var MATCHBALL_Source_Repository */
     private $sources;
 
-    /** @var ESAMS_Api_Client */
+    /** @var MATCHBALL_Api_Client */
     private $api;
 
     public function __construct($sources, $api) {
@@ -40,7 +40,7 @@ class ESAMS_Cron {
         if (!isset($schedules[self::SCHEDULE])) {
             $schedules[self::SCHEDULE] = array(
                 'interval' => 300,
-                'display' => __('Every 5 Minutes', 'easy-sams'),
+                'display' => __('Every 5 Minutes', 'matchball-for-sams'),
             );
         }
         return $schedules;
@@ -122,10 +122,13 @@ class ESAMS_Cron {
     }
 
     private function log_sync_issue($source_id, $stage, $result) {
+        if (!defined('WP_DEBUG') || !WP_DEBUG) {
+            return;
+        }
         $code = 'unknown';
         if (is_array($result) && !empty($result['error']['code'])) {
             $code = (string) $result['error']['code'];
         }
-        error_log(sprintf('[ESAMS] Cron sync issue source=%s stage=%s code=%s', $source_id, $stage, $code));
+        error_log(sprintf('[Matchball] Cron sync issue source=%s stage=%s code=%s', $source_id, $stage, $code));
     }
 }

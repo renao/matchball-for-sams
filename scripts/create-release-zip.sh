@@ -2,15 +2,15 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_SLUG="easy-sams"
-VERSION="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' "$ROOT_DIR/easy-sams.php" | tr -d '[:space:]')"
+PLUGIN_SLUG="matchball-for-sams"
+VERSION="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' "$ROOT_DIR/matchball-for-sams.php" | tr -d '[:space:]')"
 OUT_DIR="$ROOT_DIR/artifacts/releases"
 STAGING_DIR="$OUT_DIR/${PLUGIN_SLUG}"
 ZIP_PATH="$OUT_DIR/${PLUGIN_SLUG}-${VERSION}.zip"
 DISTIGNORE_FILE="$ROOT_DIR/.distignore"
 
 if [[ -z "$VERSION" ]]; then
-  echo "Could not read plugin version from easy-sams.php"
+  echo "Could not read plugin version from matchball-for-sams.php"
   exit 1
 fi
 

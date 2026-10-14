@@ -3,7 +3,7 @@
 # Setup-Script für WordPress Plugin Anforderungsrahmen
 set -e
 
-BASEDIR="/home/renao/devel/easy-sams"
+BASEDIR="/home/renao/devel/matchball-sams"
 
 echo "==========================================" 
 echo "Setup: Anforderungsrahmen-Struktur"

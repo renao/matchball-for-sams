@@ -1,8 +1,8 @@
-=== Easy SAMS ===
+=== Matchball - Standings & Tables for SAMS ===
 Contributors: renao
 Tags: standings, results, sports, api, gutenberg
 Requires at least: 6.0
-Tested up to: 6.5
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 3.0.0
 License: GPLv2 or later
@@ -10,16 +10,16 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Gutenberg blocks for standings and results via SAMS API with 5-minute sync and fallback cache. Successor of the SAMS Integration plugin.
 
-Source code: https://github.com/renao/easy-sams
-
 == Description ==
 
-Easy SAMS provides two Gutenberg blocks for sports websites:
+Matchball - Standings & Tables for SAMS provides two Gutenberg blocks for sports websites:
 
 * Standings block (league table)
 * Results block (finished matches)
 
 Data is fetched from a SAMS API source and cached via WordPress transients. A 5-minute WP-Cron sync keeps data fresh, while fallback cache protects frontend output during API issues.
+
+Source code: https://github.com/renao/matchball-for-sams
 
 External service usage:
 
@@ -38,7 +38,7 @@ Service terms and privacy:
 == Installation ==
 
 1. Upload the plugin folder to /wp-content/plugins/ or install the ZIP via Plugins > Add New > Upload Plugin.
-2. Activate Easy SAMS in the WordPress admin.
+2. Activate Matchball - Standings & Tables for SAMS in the WordPress admin.
 3. Open SAMS Sources in admin and add at least one source (base URL and API key).
 4. Insert a Standings or Results block in Gutenberg and configure source, season, and league.
 
@@ -63,6 +63,12 @@ The plugin shows cached data and a "last updated" hint instead of failing hard.
 = Where can I find the official API documentation? =
 
 The provider documentation is available at https://wiki.sams-server.de/wiki/REST-API-Schnittstelle .
+
+== Screenshots ==
+
+1. Backend output: standings table and results with settings sidebar
+2. Standings block example from the frontend
+3. Results block example from the frontend
 
 == Changelog ==
 

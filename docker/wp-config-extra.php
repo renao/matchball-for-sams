@@ -4,8 +4,8 @@ if (!defined('ABSPATH')) {
     return;
 }
 
-$debug = getenv('WP_DEBUG');
-if ($debug === '1' || strtolower((string) $debug) === 'true') {
+$matchball_debug = getenv('WP_DEBUG');
+if ($matchball_debug === '1' || strtolower((string) $matchball_debug) === 'true') {
     if (!defined('WP_DEBUG')) {
         define('WP_DEBUG', true);
     }
@@ -17,22 +17,22 @@ if ($debug === '1' || strtolower((string) $debug) === 'true') {
     }
 }
 
-$global_api_key = getenv('ESAMS_API_KEY');
-if (!defined('ESAMS_API_KEY') && is_string($global_api_key) && trim($global_api_key) !== '') {
-    define('ESAMS_API_KEY', trim($global_api_key));
+$matchball_global_api_key = getenv('MATCHBALL_API_KEY');
+if (!defined('MATCHBALL_API_KEY') && is_string($matchball_global_api_key) && trim($matchball_global_api_key) !== '') {
+    define('MATCHBALL_API_KEY', trim($matchball_global_api_key));
 }
 
-$source_id = getenv('ESAMS_SOURCE_ID');
-$source_specific_key = '';
-if (is_string($source_id) && trim($source_id) !== '') {
-    $sanitized_source_id = strtoupper(str_replace('-', '_', preg_replace('/[^a-zA-Z0-9_-]/', '', trim($source_id))));
-    $env_name = 'ESAMS_API_KEY_' . $sanitized_source_id;
-    $source_specific_key = getenv($env_name);
+$matchball_source_id = getenv('MATCHBALL_SOURCE_ID');
+$matchball_source_specific_key = '';
+if (is_string($matchball_source_id) && trim($matchball_source_id) !== '') {
+    $matchball_sanitized_source_id = strtoupper(str_replace('-', '_', preg_replace('/[^a-zA-Z0-9_-]/', '', trim($matchball_source_id))));
+    $matchball_env_name = 'MATCHBALL_API_KEY_' . $matchball_sanitized_source_id;
+    $matchball_source_specific_key = getenv($matchball_env_name);
 
-    if (is_string($source_specific_key) && trim($source_specific_key) !== '') {
-        $const_name = 'ESAMS_API_KEY_' . $sanitized_source_id;
-        if (!defined($const_name)) {
-            define($const_name, trim($source_specific_key));
+    if (is_string($matchball_source_specific_key) && trim($matchball_source_specific_key) !== '') {
+        $matchball_const_name = 'MATCHBALL_API_KEY_' . $matchball_sanitized_source_id;
+        if (!defined($matchball_const_name)) {
+            define($matchball_const_name, trim($matchball_source_specific_key));
         }
     }
 }

@@ -1,6 +1,6 @@
-# Security Policy for Easy SAMS
+# Security Policy for Matchball - Standings & Tables for SAMS
 
-We take security issues seriously. If you believe you have found a vulnerability in the Easy SAMS WordPress plugin or its repository, please follow the process below.
+We take security issues seriously. If you believe you have found a vulnerability in the Matchball - Standings & Tables for SAMS WordPress plugin or its repository, please follow the process below.
 
 ## Supported versions
 
@@ -17,7 +17,7 @@ The predecessor plugin **SAMS Integration** is maintained separately and is sche
 
 **Preferred method:** Use GitHub's **Private vulnerability reporting** feature:
 
-1. Go to <https://github.com/renao/easy-sams/security/advisories/new>
+1. Go to <https://github.com/renao/matchball-for-sams/security/advisories/new>
 2. Submit a private security advisory with a clear description of the issue, steps to reproduce, and affected version(s).
 
 If you cannot use GitHub's reporting feature, you may also open a confidential issue or contact the maintainer through the contact options visible on the GitHub profile. Please do **not** disclose security issues in public issues, discussions, or pull requests before they are resolved.
@@ -34,7 +34,7 @@ A helpful report should contain:
 
 ## Response process
 
-Easy SAMS is an uncommercial hobby project. We handle security reports on a **best-effort basis** and cannot promise fixed response times.
+Matchball - Standings & Tables for SAMS is an uncommercial hobby project. We handle security reports on a **best-effort basis** and cannot promise fixed response times.
 
 Typical handling:
 
