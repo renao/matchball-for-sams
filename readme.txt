@@ -64,6 +64,12 @@ The plugin shows cached data and a "last updated" hint instead of failing hard.
 
 The provider documentation is available at https://wiki.sams-server.de/wiki/REST-API-Schnittstelle .
 
+== Screenshots ==
+
+1. Backend output: standings table and results with settings sidebar
+2. Standings block example from the frontend
+3. Results block example from the frontend
+
 == Changelog ==
 
 = 3.0.0 =
