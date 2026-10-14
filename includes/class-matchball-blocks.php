@@ -245,7 +245,9 @@ class MATCHBALL_Blocks {
             echo '<span class="matchball-match-card__team matchball-match-card__team--away">' . esc_html($away) . '</span>';
             echo '</div>';
             if (!empty($meta_parts)) {
-                echo '<div class="matchball-match-card__meta">' . esc_html(implode('<span class="matchball-match-card__sep" aria-hidden="true"></span>', $meta_parts)) . '</div>';
+                $separator = '<span class="matchball-match-card__sep" aria-hidden="true"></span>';
+                // $meta_parts are individually escaped above; do not escape the separator markup.
+                echo '<div class="matchball-match-card__meta">' . implode($separator, $meta_parts) . '</div>';
             }
             echo '</li>';
         }
