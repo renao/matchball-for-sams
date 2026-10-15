@@ -3,7 +3,7 @@
  * Plugin Name: Matchball - Standings & Tables for SAMS
  * Plugin URI: https://github.com/renao/matchball-for-sams
  * Description: Gutenberg blocks for standings and results via SAMS API.
- * Version: 3.0.0
+ * Version: 3.0.1
  * Author: Matchball SAMS
  * Author URI: https://github.com/renao
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('MATCHBALL_PLUGIN_VERSION', '3.0.0');
+define('MATCHBALL_PLUGIN_VERSION', '3.0.1');
 define('MATCHBALL_PLUGIN_FILE', __FILE__);
 define('MATCHBALL_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MATCHBALL_PLUGIN_URL', plugin_dir_url(__FILE__));

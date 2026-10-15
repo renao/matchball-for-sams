@@ -4,7 +4,7 @@ Tags: standings, results, sports, api, gutenberg
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,9 @@ The provider documentation is available at https://wiki.sams-server.de/wiki/REST
 
 == Changelog ==
 
+= 3.0.1 =
+* Bundled German (de_DE) translations for admin screens, blocks and the editor
+
 = 3.0.0 =
 * Initial public release with Standings and Results blocks
 * 5-minute sync with WP-Cron
@@ -79,6 +82,9 @@ The provider documentation is available at https://wiki.sams-server.de/wiki/REST
 * Graceful fallback on API errors
 
 == Upgrade Notice ==
+
+= 3.0.1 =
+Adds bundled German (de_DE) translations.
 
 = 3.0.0 =
 Major MVP release line for the current plugin generation.
