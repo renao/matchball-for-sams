@@ -1,0 +1,315 @@
+# German translations for Matchball - Standings & Tables for SAMS.
+# Copyright (C) 2026 Matchball SAMS
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Matchball - Standings & Tables for SAMS 3.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/matchball-for-sams\n"
+"POT-Creation-Date: 2026-10-15T20:29:22+00:00\n"
+"PO-Revision-Date: 2026-10-15 20:40+0200\n"
+"Last-Translator: Matchball SAMS\n"
+"Language-Team: Deutsch\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: matchball-for-sams\n"
+
+#. Plugin Name of the plugin
+#: matchball-for-sams.php
+msgid "Matchball - Standings & Tables for SAMS"
+msgstr "Matchball - Standings & Tables for SAMS"
+
+#. Description of the plugin
+#: matchball-for-sams.php
+msgid "Gutenberg blocks for standings and results via SAMS API."
+msgstr "Gutenberg-Blöcke für Tabellen und Ergebnisse über die SAMS-API."
+
+#. Author of the plugin
+#: matchball-for-sams.php
+msgid "Matchball SAMS"
+msgstr "Matchball SAMS"
+
+#: includes/class-matchball-admin.php:22
+#: includes/class-matchball-admin.php:23
+#: includes/class-matchball-admin.php:102
+msgid "SAMS Sources"
+msgstr "SAMS-Quellen"
+
+#: includes/class-matchball-admin.php:32
+#: includes/class-matchball-admin.php:83
+msgid "Forbidden"
+msgstr "Kein Zugriff"
+
+#: includes/class-matchball-admin.php:105
+msgid "Security:"
+msgstr "Sicherheit:"
+
+#: includes/class-matchball-admin.php:105
+msgid "API keys are encrypted automatically and stored securely in the database. They are never shown in the admin UI."
+msgstr "API-Schlüssel werden automatisch verschlüsselt und sicher in der Datenbank gespeichert. Sie werden in der Admin-Oberfläche nie angezeigt."
+
+#: includes/class-matchball-admin.php:110
+msgid "Sources saved."
+msgstr "Quellen gespeichert."
+
+#: includes/class-matchball-admin.php:129
+msgid "ID"
+msgstr "ID"
+
+#: includes/class-matchball-admin.php:129
+msgid "Name"
+msgstr "Name"
+
+#: includes/class-matchball-admin.php:129
+msgid "Base URL"
+msgstr "Basis-URL"
+
+#: includes/class-matchball-admin.php:129
+msgid "API Key"
+msgstr "API-Schlüssel"
+
+#: includes/class-matchball-admin.php:130
+msgid "Top-level association UUID"
+msgstr "UUID des Spitzenverbands"
+
+#: includes/class-matchball-admin.php:130
+msgid "Scopes this source: limits cron pre-fetch, match results filter, and the association picker in blocks"
+msgstr "Begrenzt diese Quelle: schränkt den Cron-Prefetch, den Ergebnisfilter und die Verbandsauswahl in Blöcken ein"
+
+#: includes/class-matchball-admin.php:131
+msgid "Active"
+msgstr "Aktiv"
+
+#: includes/class-matchball-admin.php:131
+msgid "Default"
+msgstr "Standard"
+
+#: includes/class-matchball-admin.php:141
+msgid "Leave empty to keep existing key"
+msgstr "Leer lassen, um den vorhandenen Schlüssel zu behalten"
+
+#: includes/class-matchball-admin.php:143
+msgid "Using server-side key override."
+msgstr "Serverseitiger Schlüssel-Override aktiv."
+
+#: includes/class-matchball-admin.php:148
+msgid "UUID of the parent/top-level association from SAMS. Leave empty if the API key already limits the scope. This is not the same as the per-block association filter used by editors."
+msgstr "UUID des übergeordneten Spitzenverbands aus SAMS. Leer lassen, wenn der API-Schlüssel den Bereich bereits einschränkt. Nicht zu verwechseln mit dem Verbandsfilter pro Block im Editor."
+
+#: includes/class-matchball-admin.php:156
+msgid "Save Sources"
+msgstr "Quellen speichern"
+
+#: includes/class-matchball-api-client.php:72
+msgid "Selected source is not active."
+msgstr "Die ausgewählte Quelle ist nicht aktiv."
+
+#: includes/class-matchball-api-client.php:76
+msgid "Source configuration is incomplete."
+msgstr "Die Konfiguration der Quelle ist unvollständig."
+
+#: includes/class-matchball-api-client.php:118
+msgid "Remote API error."
+msgstr "Fehler der Remote-API."
+
+#: includes/class-matchball-blocks.php:95
+#: includes/class-matchball-blocks.php:160
+msgid "Please configure source, season, and league."
+msgstr "Bitte Quelle, Saison und Liga konfigurieren."
+
+#: includes/class-matchball-blocks.php:100
+msgid "Standings unavailable."
+msgstr "Tabelle derzeit nicht verfügbar."
+
+#: includes/class-matchball-blocks.php:105
+msgid "No standings data available for this selection."
+msgstr "Keine Tabellendaten für diese Auswahl verfügbar."
+
+#: includes/class-matchball-blocks.php:112
+msgid "Standings"
+msgstr "Tabelle"
+
+#: includes/class-matchball-blocks.php:113
+msgid "Rank"
+msgstr "Rang"
+
+#: includes/class-matchball-blocks.php:113
+msgid "Team"
+msgstr "Team"
+
+#: includes/class-matchball-blocks.php:113
+msgid "Played"
+msgstr "Spiele"
+
+#: includes/class-matchball-blocks.php:113
+msgid "Balls"
+msgstr "Bälle"
+
+#: includes/class-matchball-blocks.php:113
+msgid "Points"
+msgstr "Punkte"
+
+#: includes/class-matchball-blocks.php:139
+msgid "(selected team)"
+msgstr "(ausgewähltes Team)"
+
+#: includes/class-matchball-blocks.php:177
+msgid "Results unavailable."
+msgstr "Ergebnisse derzeit nicht verfügbar."
+
+#: includes/class-matchball-blocks.php:182
+msgid "No results available for this selection."
+msgstr "Keine Ergebnisse für diese Auswahl verfügbar."
+
+#: includes/class-matchball-blocks.php:215
+#: includes/class-matchball-blocks.php:271
+msgid "Uhr"
+msgstr "Uhr"
+
+#: includes/class-matchball-blocks.php:219
+#: includes/class-matchball-blocks.php:220
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#: includes/class-matchball-blocks.php:243
+msgid "vs"
+msgstr ":"
+
+#. translators: %s = formatted date and time (e.g. "22. September 2026, 11:21 Uhr")
+#: includes/class-matchball-blocks.php:274
+#, php-format
+msgid "Last updated: %s"
+msgstr "Zuletzt aktualisiert: %s"
+
+#: includes/class-matchball-cron.php:43
+msgid "Every 5 Minutes"
+msgstr "Alle 5 Minuten"
+
+#: assets/js/blocks.js:13
+#: assets/js/blocks.js:320
+#: assets/js/blocks.js:321
+#: assets/js/blocks.js:323
+msgid "Not selected"
+msgstr "Nicht ausgewählt"
+
+#: assets/js/blocks.js:25
+#: assets/js/blocks.js:40
+msgid "Select..."
+msgstr "Auswählen …"
+
+#: assets/js/blocks.js:101
+#: assets/js/blocks.js:124
+msgid "Select source"
+msgstr "Quelle auswählen"
+
+#: assets/js/blocks.js:102
+#: assets/js/blocks.js:156
+msgid "Select season"
+msgstr "Saison auswählen"
+
+#: assets/js/blocks.js:103
+msgid "All state associations"
+msgstr "Alle Landesverbände"
+
+#: assets/js/blocks.js:104
+#: assets/js/blocks.js:212
+msgid "Select league"
+msgstr "Liga auswählen"
+
+#: assets/js/blocks.js:105
+#: assets/js/blocks.js:238
+msgid "Optional team"
+msgstr "Team (optional)"
+
+#: assets/js/blocks.js:106
+msgid "Loading..."
+msgstr "Wird geladen …"
+
+#: assets/js/blocks.js:131
+msgid "No sources available"
+msgstr "Keine Quellen verfügbar"
+
+#: assets/js/blocks.js:266
+msgid "Data source"
+msgstr "Datenquelle"
+
+#: assets/js/blocks.js:274
+msgid "Season"
+msgstr "Saison"
+
+#: assets/js/blocks.js:282
+msgid "State association (optional)"
+msgstr "Landesverband (optional)"
+
+#: assets/js/blocks.js:288
+msgid "Filters the league list to a single state association (Landesverband). The available options are determined by the top-level association configured on the data source."
+msgstr "Filtert die Ligenliste auf einen einzelnen Landesverband. Die verfügbaren Optionen ergeben sich aus dem Spitzenverband der Datenquelle."
+
+#: assets/js/blocks.js:291
+msgid "League"
+msgstr "Liga"
+
+#: assets/js/blocks.js:299
+msgid "Team (optional)"
+msgstr "Team (optional)"
+
+#: assets/js/blocks.js:310
+msgid "Include future matches"
+msgstr "Zukünftige Spiele einbeziehen"
+
+#: assets/js/blocks.js:318
+#: assets/js/blocks.js:371
+msgid "Matchball Results"
+msgstr "Matchball Ergebnisse"
+
+#: assets/js/blocks.js:318
+#: assets/js/blocks.js:370
+msgid "Matchball Standings"
+msgstr "Matchball Tabelle"
+
+#: assets/js/blocks.js:320
+msgid "Source:"
+msgstr "Quelle:"
+
+#: assets/js/blocks.js:321
+msgid "Season:"
+msgstr "Saison:"
+
+#: assets/js/blocks.js:322
+msgid "Association:"
+msgstr "Verband:"
+
+#: assets/js/blocks.js:322
+msgid "All"
+msgstr "Alle"
+
+#: assets/js/blocks.js:323
+msgid "League:"
+msgstr "Liga:"
+
+#: assets/js/blocks.js:324
+msgid "Team:"
+msgstr "Team:"
+
+#: assets/js/blocks.js:324
+msgid "All teams"
+msgstr "Alle Teams"
+
+#: assets/js/blocks.js:328
+msgid "Include future matches:"
+msgstr "Zukünftige Spiele:"
+
+#: assets/js/blocks.js:328
+msgid "Yes"
+msgstr "Ja"
+
+#: assets/js/blocks.js:328
+msgid "No"
+msgstr "Nein"
+
+#: assets/js/blocks.js:341
+msgid "SAMS settings"
+msgstr "SAMS-Einstellungen"
