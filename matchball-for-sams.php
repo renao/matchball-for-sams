@@ -32,6 +32,7 @@ require_once MATCHBALL_PLUGIN_DIR . 'includes/class-matchball-cron.php';
 require_once MATCHBALL_PLUGIN_DIR . 'includes/class-matchball-plugin.php';
 
 function matchball_bootstrap() {
+    load_plugin_textdomain('matchball-for-sams', false, dirname(plugin_basename(MATCHBALL_PLUGIN_FILE)) . '/languages');
     $plugin = new MATCHBALL_Plugin();
     $plugin->init();
 }
