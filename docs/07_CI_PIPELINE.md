@@ -54,6 +54,7 @@ Runs `scripts/create-release-zip.sh` and verifies that `artifacts/releases/match
 - Installs bash, zip, unzip, rsync, and subversion
 - Validates that `WPORG_SVN_USERNAME` and `WPORG_SVN_PASSWORD` secrets are set
 - Runs `scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release <version>"`
+- Creates a GitHub Release `v<version>` with the release ZIP attached (after a successful SVN commit; existing releases get the ZIP re-uploaded)
 
 ## Required secrets
 

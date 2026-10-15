@@ -3,6 +3,9 @@ name: WP.org Release Deploy
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   deploy-to-wporg-svn:
     runs-on: ubuntu-latest
@@ -34,3 +37,17 @@ jobs:
         run: |
           version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' matchball-for-sams.php | tr -d '[:space:]')"
           bash ./scripts/deploy-wporg-svn.sh --non-interactive --commit --message "Release ${version}"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version="$(awk -F': ' '/^ \* Version:/ {print $2; exit}' matchball-for-sams.php | tr -d '[:space:]')"
+          tag="v${version}"
+          zip_path="artifacts/releases/matchball-for-sams-${version}.zip"
+          test -f "$zip_path"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$zip_path" --clobber
+          else
+            gh release create "$tag" "$zip_path" --title "$tag" --generate-notes
+          fi
