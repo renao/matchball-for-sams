@@ -195,7 +195,7 @@ rsync -a --delete --exclude '.svn/' "$PLUGIN_DIR_IN_ZIP/" "$SVN_WORK_DIR/tags/$V
 if [[ "$SYNC_ASSETS" == true ]]; then
   if [[ -d "$ASSETS_DIR" ]]; then
     echo "Sync assets/ from: $ASSETS_DIR"
-    rsync -a --delete --exclude '.svn/' "$ASSETS_DIR/" "$SVN_WORK_DIR/assets/"
+    rsync -a --delete --exclude '.svn/' --exclude 'icon-source.png' --exclude 'asset-notes.txt' "$ASSETS_DIR/" "$SVN_WORK_DIR/assets/"
   else
     echo "Assets dir not found, skipping: $ASSETS_DIR"
   fi
