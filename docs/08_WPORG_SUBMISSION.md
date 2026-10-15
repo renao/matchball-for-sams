@@ -125,7 +125,7 @@ Do not add deprecation logic for the old plugin to this repository.
 - WordPress Plugin Developer FAQ: https://developer.wordpress.org/plugins/wordpress-org/
 - Plugin Guidelines: https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/
 - Readme Validator: https://wordpress.org/plugins/developers/readme-validator/
-- SVN Deploy Workflow: `.github/workflows/wporg-release.yml`
+- SVN Deploy Workflow: `.github/workflows/release.yml`
 
 ---
 

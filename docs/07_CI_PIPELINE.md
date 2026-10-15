@@ -5,7 +5,7 @@ This project uses **GitHub Actions** for continuous integration and release auto
 ## Workflow files
 
 - `.github/workflows/ci.yml` — Quality checks and release artifact build
-- `.github/workflows/wporg-release.yml` — Manual deployment to WordPress.org SVN
+- `.github/workflows/release.yml` — Manual release: deployment to WordPress.org SVN and GitHub Release creation
 
 ## Triggers
 
@@ -48,7 +48,7 @@ Runs `scripts/create-release-zip.sh` and verifies that `artifacts/releases/match
 
 ## Release job
 
-`deploy-to-wporg-svn` in `.github/workflows/wporg-release.yml`:
+`release` in `.github/workflows/release.yml`:
 
 - Checks out the repository
 - Installs bash, zip, unzip, rsync, and subversion
@@ -68,7 +68,7 @@ Add them via **Settings → Secrets and variables → Actions** (or in the `prod
 ## Manual release start
 
 1. Go to the **Actions** tab in the GitHub repository.
-2. Select **WP.org Release Deploy**.
+2. Select **Release**.
 3. Click **Run workflow**, choose branch `main`, and start the workflow.
 4. Review the job log.
 
